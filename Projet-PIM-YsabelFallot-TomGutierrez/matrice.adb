@@ -17,7 +17,7 @@ package body Matrice is
 		end loop;
 end Initialiser;
 	
-	procedure Transposer(Mat: in out T_Matrice) is
+procedure Transposer(Mat: in out T_Matrice) is
 		aux : T_Reel;
 	begin
 		for i in 1..Mat.Nb_Ligne loop
@@ -28,6 +28,22 @@ end Initialiser;
 			end loop;
 		end loop;
 end Transposer;
+
+function Transposer_f(Mat : in T_Matrice) return T_Matrice is
+		Mat_Res : T_Matrice;
+	begin
+		Initialsier(Mat_Res,Mat.Nb_Ligne,Mat.Nb_Colonne);
+		for i in 1..Mat.Nb_Ligne loop
+			for j in 1..i loop
+				if i/=j then
+					Mat_Res.Matrice(i)(j) := Mat.Matrice(j)(i);
+					Mat_Res.Matrice(j)(i) := Mat.Matrice(i)(j);
+				else 
+					Mat_Res.Matice(i)(j) := Mat.Matrice(i)(j);
+			end loop;
+		end loop;
+		return Mat_res;
+end Transposer_f;
 
 procedure Produit(A : in T_Matrice, B : in T_Matrice, Mat_Res : out T_Matrice) is
 	begin
@@ -43,6 +59,23 @@ procedure Produit(A : in T_Matrice, B : in T_Matrice, Mat_Res : out T_Matrice) i
 			end loop;
 		end loop;
 end Produit;
+
+function Produit_f(A : in T_Matrice, B : in T_Matrice) return T_Matrice is
+	Mat_Res : T_Matrice;
+	begin
+		--Vérification de la compatibilité des matrices pour le produit matriciel
+		if A.Nb_Colonne /= B.Nb_Ligne then
+			raise PRODUIT_INDEFINI_EXCEPTION;
+		end if;
+		
+		Initialiser(Mat_Res,A.Nb_Ligne,B.Nb_Colonne);
+		for i in 1..Mat.Nb_Ligne loop
+			for j in 1..Mat.Nb_Colonne loop
+				Mat_Res.Matrice(i)(j) := Mat_Res.Matrice(i)(j) + A.Matrice(i)(j)*B.Matrice(j)(i);
+			end loop;
+		end loop;
+		return Mat_Res;
+end Produit_f;
 		
 procedure Copier(Mat : in T_Matrice, Copie : out T_Matrice) is
 	begin
@@ -53,6 +86,18 @@ procedure Copier(Mat : in T_Matrice, Copie : out T_Matrice) is
 			end loop;
 		end loop:
 end Copier;
+
+function Copier_f(Mat : in T_Matrice) return T_Matrice is
+	Copie : T_Matrice 
+	begin
+		Initisalier(Copie, Mat.Nb_Ligle, Mat.Nb_Colonne);
+		for i in 1..Mat.Nb_Ligne loop
+			for j in 1..Mat.Nb_Colonne loop
+				Copie.Matrice(i)(j) := Mat.Matrice(i)(j);
+			end loop;
+		end loop:
+		return Copie;
+end Copier_f;
 
 procedure Sommer(A : in T_Matrice, B : in T_Matrice, Mat_Res : out T_Matrice) is
 	begin
@@ -68,6 +113,23 @@ procedure Sommer(A : in T_Matrice, B : in T_Matrice, Mat_Res : out T_Matrice) is
 			end loop;
 		end loop;	
 end Sommer;
+
+function Sommer_f(A : in T_Matrice, B : in T_Matrice) is
+		Mat_Res : T_Matrice;
+	begin
+		--Vérification de la compatibilité des matrices pour la somme matriciel
+		if A.Nb_Colonne /= B.Nb_Colonne and then A.Nb.Ligen /= B.Nb_Ligne  then
+			raise SOMME_INDEFINIE_EXCEPTION;
+		end if;
+		
+		Initialiser(Mat_Res,A.Nb_Ligne,B.Nb_Colonne);
+		for i in 1..Mat.Nb_Ligne loop
+			for j in 1..Mat.Nb_Colonne loop
+				Mat_Res.Matrice(i)(j) := A.Matrice(i)(j)+B.Matrice(i)(j);
+			end loop;
+		end loop;
+		return Mat_Res;
+end Sommer_f;
 
 procedure Enregistrer(Mat : in out T_Matrice, Ind_Ligne : in Integer, Ind_Colonne ; in Integer, Valeur : in T_Reel) is
 	begin
@@ -96,6 +158,19 @@ procedure Sommer_Const(Mat : in out T_Matrice, Const : in T_Reel) is
 			end loop;
 		end loop;
 end Sommer_Const;
+
+procedure Afficher(Mat : in T_Matrice) is
+begin
+	for i in 1..Mat.Nb_Ligne loop
+		Put("| ");
+		for j in 1..Mat.Nb_Colonne loop
+			Put(Mat.Matrice(i)(j),1);
+			Put(" ");
+		end loop;
+		Put("|");
+		New_Line;
+	end loop;
+end Afficher;
 
 function Ligne_Vide (Num_Ligne : in Integer, Mat : in T_Matrice) return Boolean is
 		Num_Colonne : Integer:

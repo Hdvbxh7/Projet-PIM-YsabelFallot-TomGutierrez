@@ -13,14 +13,26 @@ package Matrice is
 	-- Transposer une matrice.
 	procedure Transposer(Mat: in out T_Matrice);
 	
+	-- Transposer une matrice
+	function Transposer_f(Mat : in T_Matrice) return T_Matrice;
+	
 	-- Fait le produit matriciel de deux matrices et le stocke dans une troisième matrice
 	procedure Produit(A : in T_Matrice, B : in T_Matrice, Mat_Res : out T_Matrice);
+	
+	-- Fait le produit matriciel et renvoie la matrice
+	function Produit_f(A : in T_Matrice, B : in T_Matrice) return T_Matrice;
 	
 	-- Copie une matrice dans une autre
 	procedure Copier(Mat : in T_Matrice, Copie : out T_Matrice);
 	
+	-- Copier une matrice dans une autre
+	function Copier_f(Mat : in T_Matrice) return T_Matrice:
+	
 	-- Somme deux matrices et la stocke dans une troisième matrice
 	procedure Sommer(A : in T_Matrice, B : in T_Matrice, Mat_Res : out T_Matrice);
+	
+	-- Somme deux matrices et renvoie le résultat
+	function Sommer(A : in T_Matrice, B : in T_Matrice) return T_Matrice;
 	
 	-- Enregistre la valeur donnée en paramètre au coefficient de coordonnées données
 	procedure Enregistrer(Mat : in out T_Matrice, Ind_Ligne : in Integer, Ind_Colonne ; in Integer, Valeur : in T_Reel);
@@ -33,6 +45,9 @@ package Matrice is
 	
 	-- Fait la somme d'une constante avec une matrice
 	procedure Sommer_Const(Mat : in out T_Matrice, Const : in T_Reel);
+	
+	-- Afficher une matrice
+	procedure Afficher (Mat : in T_Matrice);
 	
 	-- Savoir si la ligne de la matrice ne contient que des 0
 	function Ligne_Vide (Num_Ligne : in Integer, Mat : in T_Matrice) return Boolean;
