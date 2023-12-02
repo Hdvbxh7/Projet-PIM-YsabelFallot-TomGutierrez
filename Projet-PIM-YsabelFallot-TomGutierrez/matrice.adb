@@ -149,6 +149,12 @@ procedure Obtenir_Val(Mat: in T_Matrice, Ind_Ligne : in Integer, Ind_Colonne :in
 	begin
 		Valeur := Mat.Matrice(Ind_Ligne)(Ind_Colonne);
 end Obtenir_Val;
+
+function Obtenir_Val_f(Mat: in T_Matrice, Ind_Ligne : in Integer, Ind_Colonne :in Integer) return T_Reel is
+	Valeur : T_Reel;
+	begin
+		 return Valeur := Mat.Matrice(Ind_Ligne)(Ind_Colonne);
+end Obtenir_Val_f;
 	
 procedure Sommer_Const(Mat : in out T_Matrice, Const : in T_Reel) is
 	begin
