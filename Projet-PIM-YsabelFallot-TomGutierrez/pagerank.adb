@@ -12,7 +12,7 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
 procedure PageRank is
 
-
+    File_Error : Exception;
     No_Argument_Error : Exception;
 	sujet : Ada.Text_IO.File_Type;
     K: Integer;
@@ -25,6 +25,7 @@ procedure PageRank is
     N2: Integer;
     Entier: Integer;
     i: Integer;
+    compt: Integer;
 begin
     --Initialiser les variables
     epsilon:=0.0;
@@ -34,8 +35,9 @@ begin
     choix:=True;
 
     --Traiter les arguments
+    begin
+    i:=1;
     if Argument_Count>1 then
-        i:=1;
         while Argument_Count/=i loop
             --Etudier la valeur de l'argument
             if Argument (i)="-K" then
@@ -58,19 +60,44 @@ begin
                 i:=i+2;
             else
                 Put("Erreur dans l’entrée des arguments!");
-                break;
             end if;
         end loop;
     elsif Argument_Count < 1 then
-		raise No_Argument_Error;
+		raise No_Argument_Error;    
 	end if;
+    exception
+        When Constraint_Error => Put("Erreur dans l’entrée des arguments!");
+        when No_Argument_Error =>Put_Line ("Pas de fichier.");
+		                        New_Line;
+		                        Put_Line ("Usage : " & Command_Name & " <fichier>");
+    end;
+    begin
+    open (sujet, In_File, Argument (i));
+    Get (sujet, N);
+    Get(sujet,alpha);
+    compt:=0;
+    while not End_Of_file (sujet) loop
+			Get (sujet, Entier);
+            compt:=compt+1;
+    end loop;
+    exception
+		when End_Error =>
+			-- la fin du fichier a été atteinte.
+			-- se produit en particulier si on a des caractères après le
+			-- dernier entier (un blanc, une ligne vide)
+			null;
+    end;
+    N2:=compt/2;
+    if (2*N2)/=compt then
+        raise Data_Error;
+    end if;
     Put(alpha);
     Put(K);
     Put(epsilon);
     Put(To_String(prefixe));
+    Put(N);
+    Put(N2);
 exception
-	when No_Argument_Error =>
-		Put_Line ("Pas de fichier.");
-		New_Line;
-		Put_Line ("Usage : " & Command_Name & " <fichier>");
+    when Data_Error =>
+		Put_Line ("Mauvais format du fichier : devrait être entier, reel, entier*");
 end PageRank;
