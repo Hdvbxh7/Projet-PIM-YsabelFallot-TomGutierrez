@@ -58,6 +58,7 @@ begin
                 i:=i+2;
             else
                 Put("Erreur dans l’entrée des arguments!");
+                break;
             end if;
         end loop;
     elsif Argument_Count < 1 then
@@ -66,6 +67,7 @@ begin
     Put(alpha);
     Put(K);
     Put(epsilon);
+    Put(To_String(prefixe));
 exception
 	when No_Argument_Error =>
 		Put_Line ("Pas de fichier.");
