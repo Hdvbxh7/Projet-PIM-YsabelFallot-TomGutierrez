@@ -32,23 +32,23 @@ package Matrice_Reel is
 	Afficher(Mat);
 	
 	-- Test Obtenir_Valeur (procédure et fonction)
---	Obtenir_Val(Mat,2,2,Val);
---	Put("Val : ");
---	Put(Val,1);
---	New_Line;
---	Obtanir_Val(Mat,3,1,Val);
---	Put("Val : ");
---	Put(Val,1);
---	New_Line;
+	Obtenir_Val(Mat,2,2,Val);
+	Put("Val : ");
+	Put(Val,1);
+	New_Line;
+	Obtenir_Val(Mat,3,1,Val);
+	Put("Val : ");
+	Put(Val,1);
+	New_Line;
 	
 	Val:= Obtenir_Val_f(Mat,2,2);
 	Put("Val_f : ");
 	Put(Obtenir_Val_f(Mat,2,2));
 	New_Line;
---	Val := Obtanir_Val_f(Mat,3,1);
---	Put("Val_f : ");
---	Put(Val,1);
---	New_Line;
+	Val := Obtenir_Val_f(Mat,3,1);
+	Put("Val_f : ");
+	Put(Val,1);
+	New_Line;
 	
 	-- Test Transposer (Procédure et fonction)
 	Transposer(Mat);
@@ -100,17 +100,28 @@ package Matrice_Reel is
 	New_Line;
 	Afficher(Mat);
 	
+	
+	
+	for i in 1..Nombre_Lignes(Mat) loop
+		if Ligne_Vide (i,Mat) then
+			Put("Ligne ");
+			Put(i,1);
+			Put(" vide");
+			New_Line;
+		else 
+			Put("Ligne ");
+			Put(i,1);
+			Put(" non vide");
+			New_Line;
+		end if;
+	end loop;
+	New_Line;
+	
 	Sommer_Const(100.0,Mat);
 	Put("Mat Somme_const :");
 	New_Line;
 	Afficher(Mat);
 	
-	if Ligne_Vide (3,Mat) then
-		Put("Ligne 3 vide");
-	else 
-		Put("LIgne non vide");
-	end if;
-		
 	Put("Nb_ligne :");
 	Put(Nombre_Lignes(Mat),1);
 	New_Line;

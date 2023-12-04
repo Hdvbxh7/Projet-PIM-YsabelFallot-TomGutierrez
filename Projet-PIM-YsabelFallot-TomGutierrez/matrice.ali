@@ -6,7 +6,7 @@ RV NO_EXCEPTIONS
 RV NO_FLOATING_POINT
 RV NO_IO
 
-U matrice%b		matrice.adb		eeb2d92d NE OO PK GE
+U matrice%b		matrice.adb		664bc105 NE OO PK GE
 W ada%s			ada.ads			ada.ali
 W ada.float_text_io%s	a-flteio.ads		a-flteio.ali
 W ada.integer_text_io%s	a-inteio.ads		a-inteio.ali
@@ -35,7 +35,7 @@ D a-unccon.ads		20230508121439 0e9b276f ada.unchecked_conversion%s
 D interfac.ads		20230508121439 edec285f interfaces%s
 D i-cstrea.ads		20230508121439 e53d8b8e interfaces.c_streams%s
 D matrice.ads		20231204161436 818e9e03 matrice%s
-D matrice.adb		20231204161652 4e339a8a matrice%b
+D matrice.adb		20231204162603 c6ca82a2 matrice%b
 D matrice_exceptions.ads  20231204152022 69ed2429 matrice_exceptions%s
 D system.ads		20230508121439 a2da961d system%s
 D s-crtl.ads		20230508121439 8a0692f8 system.crtl%s
@@ -70,13 +70,13 @@ X 12 a-tiflio.ads
 X 17 matrice.ads
 4i11 Num_Colonne{integer}
 5i10 Num_Ligne{integer}
-7k9*Matrice 4z11 5z10 70E14 79l5 79e12 18|5w6 7b14 208l5 208t12
+7k9*Matrice 4z11 5z10 70E14 79l5 79e12 18|5w6 7b14 209l5 209t12
 9R14*T_Matrice 13r41 16r42 19r40 19r58 22r34 22r52 22r77 25r35 25r53 25r71
 . 28r35 28r58 31r36 31r54 34r33 34r51 34r76 37r34 37r52 37r70 40r44 43r65
 . 46r39 49r40 52r64 55r38 58r63 61r41 64r43 72c14 77e27 18|9r41 20r35 32r32
 . 32r50 33r27 49r26 49r44 49r69 64r27 64r45 64r63 65r19 81r27 81r51 91r28
 . 91r46 92r17 103r25 103r43 103r68 118r26 118r44 118r62 119r27 135r36 140r57
-. 149r31 154r32 161r56 170r29 183r55 197r33 202r35
+. 149r31 154r32 161r56 170r29 183r55 198r33 203r35
 13U19*Initialiser 13<31 13>52 13>79 18|9b19 18l5 18t16 35s17 56s17 72s17
 . 83s17 94s17 110s17 126s17
 13r31 Mat{9R14} 18|9b31 11m17 12m17 15m33
@@ -127,13 +127,13 @@ X 17 matrice.ads
 52r51 Mat{9R14} 18|161b43 163r29 164r37 165m33 165r62
 55U19*Afficher 55>29 18|170b11 181l5 181t13
 55r29 Mat{9R14} 18|170b20 172r21 174r29 175r29
-58V18*Ligne_Vide{boolean} 58>30 58>54 18|183b10 195l5 195t15
+58V18*Ligne_Vide{boolean} 58>30 58>54 18|183b10 196l5 196t15
 58i30 Num_Ligne{integer} 18|183b22 190r40
 58r54 Mat{9R14} 18|183b46 189r37 190r28
-61V18*Nombre_Lignes{integer} 61>32 18|197b10 200l5 200t18
-61r32 Mat{9R14} 18|197b24 199r24
-64V18*Nombre_Colonnes{integer} 64>34 18|202b10 205l5 205t20
-64r34 Mat{9R14} 18|202b26 204r24
+61V18*Nombre_Lignes{integer} 61>32 18|198b10 201l5 201t18
+61r32 Mat{9R14} 18|198b24 200r24
+64V18*Nombre_Colonnes{integer} 64>34 18|203b10 206l5 206t20
+64r34 Mat{9R14} 18|203b26 205r24
 70A14 T_Tab_Colonne(float)<integer> 71r43
 71A14 T_Valeur(70A14)<integer> 74r35
 74a25 Matrice{71A14} 18|15m37 25r44 26m37 26r58 27m37 39m49 39r70 40m49 40r70
@@ -142,10 +142,10 @@ X 17 matrice.ads
 . 151r31 157r31 165m37 165r66 175r33 190r32
 75i25 Nb_Ligne{integer} 18|11m21 23r33 35r41 36r33 52r38 56r39 57r31 68r38
 . 72r40 73r31 83r41 84r33 94r40 95r33 106r60 106r74 110r39 111r31 122r60
-. 122r74 126r39 127r31 142r33 163r33 172r25 189r41 199r28
+. 122r74 126r39 127r31 142r33 163r33 172r25 189r41 200r28
 76i25 Nb_Colonne{integer} 18|12m21 35r54 52r22 56r50 58r39 68r22 72r53 74r39
 . 83r55 85r41 94r54 96r41 106r22 106r38 110r50 112r39 122r22 122r38 126r50
-. 128r39 143r41 164r41 174r33 204r28
+. 128r39 143r41 164r41 174r33 205r28
 X 18 matrice.adb
 13i21 i{integer} 15r45
 14i29 j{integer} 15r48
@@ -177,8 +177,8 @@ X 18 matrice.adb
 164i29 j{integer} 165r48 165r77
 172i13 i{integer} 175r41
 174i21 j{integer} 175r44
-184i17 Num_Colonne{integer} 187m17 189r23 190r51
-185b17 A_Que_Zero{boolean} 188m17 189r59 191m33 194r24
+184i17 Num_Colonne{integer} 187m17 189r23 190r51 193m25 193r40
+185b17 A_Que_Zero{boolean} 188m17 189r59 191m33 195r24
 X 19 matrice_exceptions.ads
 2K9*Matrice_Exceptions 18|4w6 4r38 19|7e23
 4X5*PRODUIT_INDEFINI_EXCEPTION 18|53r31 69r31

@@ -8,7 +8,7 @@ RV NO_FLOATING_POINT
 RV NO_IO
 RV NO_STANDARD_STORAGE_POOLS
 
-U test_matrice%b	test_matrice.adb	6d72a1f1 NE OO SU IL
+U test_matrice%b	test_matrice.adb	210de14d NE OO SU IL
 W ada%s			ada.ads			ada.ali
 Z ada.exceptions%s	a-except.adb		a-except.ali
 W ada.float_text_io%s	a-flteio.ads		a-flteio.ali
@@ -35,7 +35,7 @@ D a-unccon.ads		20230508121439 0e9b276f ada.unchecked_conversion%s
 D interfac.ads		20230508121439 edec285f interfaces%s
 D i-cstrea.ads		20230508121439 e53d8b8e interfaces.c_streams%s
 D matrice.ads		20231204161436 818e9e03 matrice%s
-D matrice.adb		20231204161652 4e339a8a matrice%b
+D matrice.adb		20231204162603 c6ca82a2 matrice%b
 D matrice_exceptions.ads  20231204152022 69ed2429 matrice_exceptions%s
 D system.ads		20230508121439 a2da961d system%s
 D s-crtl.ads		20230508121439 8a0692f8 system.crtl%s
@@ -52,7 +52,7 @@ D s-stoele.adb		20230508121439 8f5a9db6 system.storage_elements%b
 D s-traent.ads		20230508121439 c81cbf8c system.traceback_entries%s
 D s-unstyp.ads		20230508121439 fa2a7f59 system.unsigned_types%s
 D s-wchcon.ads		20230508121439 d9032363 system.wch_con%s
-D test_matrice.adb	20231204161607 4c7d7c55 test_matrice%b
+D test_matrice.adb	20231204162613 00023ce9 test_matrice%b
 D unchconv.ads		20230508121439 ca2f9e18 unchecked_conversion%s
 G a e
 G c Z b b [test_matrice standard 7 11 none]
@@ -65,14 +65,14 @@ X 4 a-inteio.ads
 18K13*Integer_Text_IO[13|46] 35|2w10 2r37
 X 11 a-textio.ads
 58K13*Text_IO 727e16 35|1w10 1r37
-263U14*New_Line 35|24s9 31s9 47s9 56s9 61s9 67s9 73s9 79s9 84s9 90s9 95s9
-. 100s9 105s9 116s9 120s9
-464U14*Put 35|23s9 30s9 45s9 55s9 60s9 66s9 72s9 78s9 83s9 89s9 94s9 99s9
-. 104s9 109s17 111s17 114s9 118s9
+263U14*New_Line 35|24s9 31s9 38s9 42s9 47s9 51s9 56s9 61s9 67s9 73s9 79s9
+. 84s9 90s9 95s9 100s9 110s25 115s25 118s9 122s9 127s9 131s9
+464U14*Put 35|23s9 30s9 36s9 40s9 45s9 49s9 55s9 60s9 66s9 72s9 78s9 83s9
+. 89s9 94s9 99s9 107s25 109s25 112s25 114s25 121s9 125s9 129s9
 X 12 a-tiflio.ads
-82U14*Put 35|46s9[3|20]
+82U14*Put 35|37s9[3|20] 41s9[3|20] 46s9[3|20] 50s9[3|20]
 X 13 a-tiinio.ads
-80U14*Put 35|115s9[4|18] 119s9[4|18]
+80U14*Put 35|108s25[4|18] 113s25[4|18] 126s9[4|18] 130s9[4|18]
 X 17 matrice.ads
 4i11 Num_Colonne{integer} 35|11r30
 5i10 Num_Ligne{integer} 35|11r49
@@ -89,23 +89,26 @@ X 17 matrice.ads
 37V18 Sommer_f{9R14[35|10]} 35|93s16[10]
 40U19 Enregistrer 35|28s9[10] 29s9[10]
 43U19 Produit_Const 35|98s9[10]
-49V18 Obtenir_Val_f{float} 35|44s15[10] 46s13[10]
-52U19 Sommer_Const 35|103s9[10]
+46U19 Obtenir_Val 35|35s9[10] 39s9[10]
+49V18 Obtenir_Val_f{float} 35|44s15[10] 46s13[10] 48s16[10]
+52U19 Sommer_Const 35|120s9[10]
 55U19 Afficher 35|25s9[10] 32s9[10] 57s9[10] 62s9[10] 68s9[10] 74s9[10] 80s9[10]
-. 85s9[10] 91s9[10] 96s9[10] 101s9[10] 106s9[10]
-58V18 Ligne_Vide{boolean} 35|108s12[10]
-61V18 Nombre_Lignes{integer} 35|115s13[10]
-64V18 Nombre_Colonnes{integer} 35|119s13[10]
+. 85s9[10] 91s9[10] 96s9[10] 101s9[10] 123s9[10]
+58V18 Ligne_Vide{boolean} 35|106s20[10]
+61V18 Nombre_Lignes{integer} 35|105s21[10] 126s13[10]
+64V18 Nombre_Colonnes{integer} 35|130s13[10]
 X 19 matrice_exceptions.ads
 2K9*Matrice_Exceptions 7e23 35|4w6 4r38
 X 35 test_matrice.adb
-7U11*test_matrice 7b11 122l5 122t17
+7U11*test_matrice 7b11 133l5 133t17
 10K9 Matrice_Reel[17|7] 12r13
-14r9 Mat{17|9R14[10]} 22m21 25r18 28m21 28r21 29m21 29r21 32r18 44r29 46r27
-. 54m20 54r20 57r18 59r28 65r16 70m21 71r25 77r17 82r26 88r16 93r25 98m27
-. 98r27 101r18 103m28 103r28 106r18 108r26 115r27 119r29
+14r9 Mat{17|9R14[10]} 22m21 25r18 28m21 28r21 29m21 29r21 32r18 35r21 39r21
+. 44r29 46r27 48r30 54m20 54r20 57r18 59r28 65r16 70m21 71r25 77r17 82r26
+. 88r16 93r25 98m27 98r27 101r18 105r35 106r34 120m28 120r28 123r18 126r27
+. 130r29
 15r9 Res{17|9R14[10]} 59m9 62r18 65m20 68r18 71m9 74r18 77r21 82m9 82r30
 . 88r20 93m9 93r29
 16r9 Res_P_ou_S{17|9R14[10]} 77m25 80r18 85r18 88m24 91r18 96r18
-17f9 Val{float} 44m9
+17f9 Val{float} 35m29 37r13 39m29 41r13 44m9 48m9 50r13
+105i13 i{integer} 106r32 108r29 113r29
 

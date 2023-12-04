@@ -190,6 +190,7 @@ function Ligne_Vide (Num_Ligne : in Integer; Mat : in T_Matrice) return Boolean 
 			if Mat.Matrice(Num_Ligne)(Num_Colonne) /= 0.0 then
 				A_Que_Zero := false;
 			end if;
+			Num_Colonne := Num_Colonne +1;
 		end loop;
 		return A_Que_Zero;
 end Ligne_Vide;
