@@ -120,6 +120,7 @@ begin
         Put("Matrice creuse");
     else
         Put("Matrice pleine");
+        --matricepleine(K,epsilon,alpha,prefixe,N,N2,sujet);
     end if;
     Put(alpha);
     Put(K);
