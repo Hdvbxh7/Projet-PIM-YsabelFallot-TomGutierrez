@@ -64,7 +64,7 @@ begin
         --Ajout des valeurs de la ligne z dans la matrice H
         if compt/=0 then 
             N3:=1.0/Float(compt);
-            compt:=0;
+            compt:=1;
             while Obtenir_Val_f(list,compt,1)/=0.0 loop
                 Enregistrer(H,Integer(Obtenir_Val_f(list,compt,1)),z,N3);
                 compt:=compt+1;
@@ -105,6 +105,8 @@ begin
         Sommer(pi,pik,ecartm);
         distance:=Sqrt(Obtenir_Val_f(Produit_f(ecartm,Transposer_f(ecartm)),1,1));
     end loop;
+    Afficher(pi);
+    Afficher(G);
     --Générer les fichiers résultats
     --Trier les pages et leur poids dans une matrice
     class:=0;
@@ -121,6 +123,7 @@ begin
         end loop;
         Enregistrer(mat,class,1,Float(imax));
         Enregistrer(mat,class,2,max);
+        Enregistrer(pi,imax,1,0.0);
     end loop;
     --Créer le fichier sujet.prw
     --Nommer prefixe.prw
@@ -267,15 +270,4 @@ begin
         Put("Matrice pleine");
         matricepleine(K,epsilon,alpha,prefixe,N,N2,sujet);
     end if;
-    Put(alpha);
-    Put(K);
-    Put(epsilon);
-    Put(To_String(prefixe));
-    Put(N);
-    Put(N2);
-    for i in 1..7 loop
-        for j in 1..2 loop
-            Put(Obtenir_Val_f(sujet,i,j));
-        end loop;
-    end loop;
 end PageRank;

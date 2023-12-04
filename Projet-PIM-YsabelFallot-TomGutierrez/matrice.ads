@@ -67,8 +67,8 @@ private
 	--type Integer is integer;
 	--Num_Colonne : constant Integer := 10;
 	--Num_Ligne : constant Integer := 10;
-	type T_Tab_Colonne is array (1..10) of Float;
-	type T_Valeur is array (1..10) of T_Tab_Colonne ;
+	type T_Tab_Colonne is array (1..100) of Float;
+	type T_Valeur is array (1..100) of T_Tab_Colonne ;
 	type T_Matrice is
 		record
 			Matrice : T_Valeur;

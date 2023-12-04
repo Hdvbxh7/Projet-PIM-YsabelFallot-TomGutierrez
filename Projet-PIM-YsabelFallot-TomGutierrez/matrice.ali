@@ -16,7 +16,7 @@ W ada.text_io%s		a-textio.adb		a-textio.ali
 W matrice%s		matrice.adb		matrice.ali
 W matrice_exceptions%s	matrice_exceptions.ads	matrice_exceptions.ali
 
-U matrice%s		matrice.ads		818e9e03 BN EE NE OO PK GE
+U matrice%s		matrice.ads		515236b4 BN EE NE OO PK GE
 
 D ada.ads		20230707070819 76789da1 ada%s
 D a-except.ads		20230707070819 a7106115 ada.exceptions%s
@@ -31,8 +31,8 @@ D a-tiinio.ads		20230707070819 390edddb ada.text_io.integer_io%s
 D a-unccon.ads		20230707070819 0e9b276f ada.unchecked_conversion%s
 D interfac.ads		20230707070819 5ab55268 interfaces%s
 D i-cstrea.ads		20230707070819 e53d8b8e interfaces.c_streams%s
-D matrice.ads		20231204162729 818e9e03 matrice%s
-D matrice.adb		20231204162729 c6ca82a2 matrice%b
+D matrice.ads		20231204224347 515236b4 matrice%s
+D matrice.adb		20231204225615 c6ca82a2 matrice%b
 D matrice_exceptions.ads  20231204154950 69ed2429 matrice_exceptions%s
 D system.ads		20230707070819 4635ec04 system%s
 D s-crtl.ads		20230707070819 0ebbdb71 system.crtl%s
@@ -128,7 +128,7 @@ X 14 matrice.ads
 61r32 Mat{9R14} 15|198b24 200r24
 64V18*Nombre_Colonnes{integer} 64>34 15|203b10 206l5 206t20
 64r34 Mat{9R14} 15|203b26 205r24
-70A14 T_Tab_Colonne(float)<integer> 71r43
+70A14 T_Tab_Colonne(float)<integer> 71r44
 71A14 T_Valeur(70A14)<integer> 74r35
 74a25 Matrice{71A14} 15|15m37 25r44 26m37 26r58 27m37 39m49 39r70 40m49 40r70
 . 42m49 42r70 59m41 59r66 59r84 59r100 75m41 75r66 75r84 75r100 86m39 86r60
