@@ -1,5 +1,6 @@
 with Ada.Text_IO;            use Ada.Text_IO;
 with Ada.Integer_Text_IO;       use Ada.Integer_Text_IO;
+with Ada.Float_Text_IO;   use Ada.Float_Text_IO;
 with Matrice_Exceptions;         use Matrice_Exceptions;
 with Matrice;
 
@@ -11,13 +12,13 @@ package body Matrice is
 		Mat.Nb_Colonne := Taille_Colonne;
 		for i in 1..Taille_Ligne loop
 			for j in 1..Taille_Colonne loop
-				Mat.Matrice(i)(j) := 0;
+				Mat.Matrice(i)(j) := 0.0;
 			end loop;
 		end loop;
 end Initialiser;
 	
 procedure Transposer(Mat : in out T_Matrice) is
-		aux : Integer;
+		aux : Float;
 	begin
 		for i in 1..Mat.Nb_Ligne loop
 			for j in 1..i loop
@@ -131,12 +132,12 @@ function Sommer_f(A : in T_Matrice; B : in T_Matrice) return T_Matrice is
 		return Mat_Res;
 end Sommer_f;
 
-procedure Enregistrer(Mat : in out T_Matrice; Ind_Ligne : in Integer; Ind_Colonne : in Integer; Valeur : in Integer) is
+procedure Enregistrer(Mat : in out T_Matrice; Ind_Ligne : in Integer; Ind_Colonne : in Integer; Valeur : in Float) is
 	begin
 		Mat.Matrice(Ind_ligne)(Ind_Colonne) := Valeur;
 end Enregistrer;
 
-procedure Produit_Const (Const : in Integer; Mat : in out T_Matrice) is
+procedure Produit_Const (Const : in Float; Mat : in out T_Matrice) is
 	begin
 		for i in 1..Mat.Nb_Ligne loop
 			for j in 1..Mat.Nb_Colonne loop
@@ -145,19 +146,19 @@ procedure Produit_Const (Const : in Integer; Mat : in out T_Matrice) is
 		end loop;
 end Produit_Const;
 
-procedure Obtenir_Val(Mat: in T_Matrice; Ind_Ligne : in Integer; Ind_Colonne :in Integer; Valeur : out Integer) is
+procedure Obtenir_Val(Mat: in T_Matrice; Ind_Ligne : in Integer; Ind_Colonne :in Integer; Valeur : out Float) is
 	begin
 		Valeur := Mat.Matrice(Ind_Ligne)(Ind_Colonne);
 end Obtenir_Val;
 
-function Obtenir_Val_f(Mat: in T_Matrice; Ind_Ligne : in Integer; Ind_Colonne :in Integer) return Integer is
-	Valeur : Integer;
+function Obtenir_Val_f(Mat: in T_Matrice; Ind_Ligne : in Integer; Ind_Colonne :in Integer) return Float is
+	Valeur : Float;
 	begin	
 		Valeur := Mat.Matrice(Ind_Ligne)(Ind_Colonne);
 		 return Valeur;
 end Obtenir_Val_f;
 	
-procedure Sommer_Const(Const : in Integer ; Mat : in out T_Matrice) is
+procedure Sommer_Const(Const : in Float ; Mat : in out T_Matrice) is
 	begin
 		for i in 1..Mat.Nb_Ligne loop
 			for j in 1..Mat.Nb_Colonne loop
@@ -186,7 +187,7 @@ function Ligne_Vide (Num_Ligne : in Integer; Mat : in T_Matrice) return Boolean 
 		Num_Colonne := 1;
 		A_Que_Zero := true;
 		while Num_Colonne <=Mat.Nb_Ligne and then A_Que_Zero loop
-			if Mat.Matrice(Num_Ligne)(Num_Colonne) /= 0 then
+			if Mat.Matrice(Num_Ligne)(Num_Colonne) /= 0.0 then
 				A_Que_Zero := false;
 			end if;
 		end loop;

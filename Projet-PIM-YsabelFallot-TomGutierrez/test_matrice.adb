@@ -1,5 +1,6 @@
 with Ada.Text_IO;           use Ada.Text_IO;
 with Ada.Integer_Text_IO;   use Ada.Integer_Text_IO;
+with Ada.Float_Text_IO;   use Ada.Float_Text_IO;
 with Matrice_Exceptions;         use Matrice_Exceptions;
 with Matrice;
 
@@ -13,7 +14,7 @@ package Matrice_Reel is
 	Mat : T_Matrice;
 	Res : T_Matrice;
 	Res_P_ou_S : T_Matrice;
-	Val : Integer;
+	Val : Float;
 	
 	begin
 	
@@ -24,8 +25,8 @@ package Matrice_Reel is
 	Afficher(Mat);
 	
 	-- Test enregistrer
-	Enregistrer(Mat,2,2,50);
-	Enregistrer(Mat,3,1,46);
+	Enregistrer(Mat,2,2,50.0);
+	Enregistrer(Mat,3,1,46.0);
 	Put("Ajoute sur Mat de deux valeurs");
 	New_Line;
 	Afficher(Mat);
@@ -94,12 +95,12 @@ package Matrice_Reel is
 	New_Line;
 	Afficher(Res_P_ou_S);
 	
-	Produit_Const(5,Mat);
+	Produit_Const(5.0,Mat);
 	Put("Mat Prod_Const :");
 	New_Line;
 	Afficher(Mat);
 	
-	Sommer_Const(100,Mat);
+	Sommer_Const(100.0,Mat);
 	Put("Mat Somme_const :");
 	New_Line;
 	Afficher(Mat);
