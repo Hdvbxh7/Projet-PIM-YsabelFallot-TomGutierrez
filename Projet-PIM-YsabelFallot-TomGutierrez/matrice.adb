@@ -1,6 +1,6 @@
 with Ada.Text_IO;            use Ada.Text_IO;
 with Ada.Integer_Text_IO;       use Ada.Integer_Text_IO;
-with Ada.Unchecked_Deallocation;
+with Matrice_Exceptions;         use Matrice_Exceptions;
 with Matrice;
 
 package body Matrice is
@@ -17,7 +17,7 @@ package body Matrice is
 end Initialiser;
 	
 procedure Transposer(Mat : in out T_Matrice) is
-		aux : T_Reel;
+		aux : Integer;
 	begin
 		for i in 1..Mat.Nb_Ligne loop
 			for j in 1..i loop
@@ -38,7 +38,7 @@ function Transposer_f(Mat : in T_Matrice) return T_Matrice is
 					Mat_Res.Matrice(i)(j) := Mat.Matrice(j)(i);
 					Mat_Res.Matrice(j)(i) := Mat.Matrice(i)(j);
 				else 
-					Mat_Res.Matice(i)(j) := Mat.Matrice(i)(j);
+					Mat_Res.Matrice(i)(j) := Mat.Matrice(i)(j);
 				end if;
 			end loop;
 		end loop;
@@ -90,7 +90,7 @@ end Copier;
 function Copier_f(Mat : in T_Matrice) return T_Matrice is
 	Copie : T_Matrice ;
 	begin
-		Initialiser(Copie, Mat.Nb_Ligle, Mat.Nb_Colonne);
+		Initialiser(Copie, Mat.Nb_Ligne, Mat.Nb_Colonne);
 		for i in 1..Mat.Nb_Ligne loop
 			for j in 1..Mat.Nb_Colonne loop
 				Copie.Matrice(i)(j) := Mat.Matrice(i)(j);
@@ -102,7 +102,7 @@ end Copier_f;
 procedure Sommer(A : in T_Matrice; B : in T_Matrice; Mat_Res : out T_Matrice) is
 	begin
 		--Vérification de la compatibilité des matrices pour la somme matriciel
-		if A.Nb_Colonne /= B.Nb_Colonne and then A.Nb.Ligen /= B.Nb_Ligne  then
+		if A.Nb_Colonne /= B.Nb_Colonne and then A.Nb_Ligne /= B.Nb_Ligne  then
 			raise SOMME_INDEFINIE_EXCEPTION;
 		end if;
 		
@@ -118,7 +118,7 @@ function Sommer_f(A : in T_Matrice; B : in T_Matrice) return T_Matrice is
 		Mat_Res : T_Matrice;
 	begin
 		--Vérification de la compatibilité des matrices pour la somme matriciel
-		if A.Nb_Colonne /= B.Nb_Colonne and then A.Nb.Ligen /= B.Nb_Ligne  then
+		if A.Nb_Colonne /= B.Nb_Colonne and then A.Nb_Ligne /= B.Nb_Ligne  then
 			raise SOMME_INDEFINIE_EXCEPTION;
 		end if;
 		
@@ -131,12 +131,12 @@ function Sommer_f(A : in T_Matrice; B : in T_Matrice) return T_Matrice is
 		return Mat_Res;
 end Sommer_f;
 
-procedure Enregistrer(Mat : in out T_Matrice; Ind_Ligne : in Integer; Ind_Colonne : in Integer; Valeur : in T_Reel) is
+procedure Enregistrer(Mat : in out T_Matrice; Ind_Ligne : in Integer; Ind_Colonne : in Integer; Valeur : in Integer) is
 	begin
 		Mat.Matrice(Ind_ligne)(Ind_Colonne) := Valeur;
 end Enregistrer;
 
-procedure Produit_Const (Const : in T_Reel; Mat : in out T_Matrice) is
+procedure Produit_Const (Const : in Integer; Mat : in out T_Matrice) is
 	begin
 		for i in 1..Mat.Nb_Ligne loop
 			for j in 1..Mat.Nb_Colonne loop
@@ -145,19 +145,19 @@ procedure Produit_Const (Const : in T_Reel; Mat : in out T_Matrice) is
 		end loop;
 end Produit_Const;
 
-procedure Obtenir_Val(Mat: in T_Matrice; Ind_Ligne : in Integer; Ind_Colonne :in Integer; Valeur : out T_Reel) is
+procedure Obtenir_Val(Mat: in T_Matrice; Ind_Ligne : in Integer; Ind_Colonne :in Integer; Valeur : out Integer) is
 	begin
 		Valeur := Mat.Matrice(Ind_Ligne)(Ind_Colonne);
 end Obtenir_Val;
 
-function Obtenir_Val_f(Mat: in T_Matrice; Ind_Ligne : in Integer; Ind_Colonne :in Integer) return T_Reel is
-	Valeur : T_Reel;
+function Obtenir_Val_f(Mat: in T_Matrice; Ind_Ligne : in Integer; Ind_Colonne :in Integer) return Integer is
+	Valeur : Integer;
 	begin	
 		Valeur := Mat.Matrice(Ind_Ligne)(Ind_Colonne);
 		 return Valeur;
 end Obtenir_Val_f;
 	
-procedure Sommer_Const(Const : in T_Reel ; Mat : in out T_Matrice) is
+procedure Sommer_Const(Const : in Integer ; Mat : in out T_Matrice) is
 	begin
 		for i in 1..Mat.Nb_Ligne loop
 			for j in 1..Mat.Nb_Colonne loop
@@ -200,7 +200,7 @@ end Nombre_Lignes;
 
 function Nombre_Colonnes(Mat : in T_Matrice) return Integer is
 	begin
-		return Mat.Nb_Colonnes;
+		return Mat.Nb_Colonne;
 end Nombre_Colonnes;
 
 

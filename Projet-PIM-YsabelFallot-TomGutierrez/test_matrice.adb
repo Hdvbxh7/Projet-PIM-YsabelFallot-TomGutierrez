@@ -1,19 +1,19 @@
 with Ada.Text_IO;           use Ada.Text_IO;
 with Ada.Integer_Text_IO;   use Ada.Integer_Text_IO;
-with Ada.Unchecked_Deallocation;
+with Matrice_Exceptions;         use Matrice_Exceptions;
 with Matrice;
 
 procedure test_matrice is
 
 
 package Matrice_Reel is
-		new Matrice(T_Reel => Integer , Num_Colonne => 10, Num_Ligne => 10);
+		new Matrice( Num_Colonne => 10, Num_Ligne => 10);
 	use Matrice_Reel;
 	
 	Mat : T_Matrice;
 	Res : T_Matrice;
 	Res_P_ou_S : T_Matrice;
-	--Val : T_Reel;
+	Val : Integer;
 	
 	begin
 	
@@ -40,9 +40,9 @@ package Matrice_Reel is
 --	Put(Val,1);
 --	New_Line;
 	
---	Val:= Obtenir_Val_f(Mat,2,2);
+	Val:= Obtenir_Val_f(Mat,2,2);
 	Put("Val_f : ");
-	Put(Obtenir_Val_f(Mat,2,2),1);
+	Put(Obtenir_Val_f(Mat,2,2));
 	New_Line;
 --	Val := Obtanir_Val_f(Mat,3,1);
 --	Put("Val_f : ");
@@ -66,6 +66,7 @@ package Matrice_Reel is
 	New_Line;
 	Afficher(Res);
 	
+	Initialiser(Mat,4,4);
 	Res := Copier_f(Mat);
 	Put("Res Copier_f :");
 	New_Line;
