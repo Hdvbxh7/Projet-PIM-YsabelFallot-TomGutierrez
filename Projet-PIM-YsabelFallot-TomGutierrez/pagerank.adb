@@ -4,13 +4,18 @@ with Ada.Integer_Text_IO;	use Ada.Integer_Text_IO;
 with Ada.Text_IO;          use Ada.Text_IO;
 with Ada.Command_Line;     use Ada.Command_Line;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
---with matrice; use matrice;
+with Matrice; -- use Matrice;
 
 --R0:Renvoyer le PageRank dans un fichier .pr et le poids de chaque noeud du graphe dans un 
 --fichier.prw à partir d’un graphe orienté dans un fichier .net
 
 procedure PageRank is
-    type T_Tableau is array (1..2,1..7) of Integer;--temporaire le temps que matrice fonctionne
+
+	package Matrice_Reel is
+		new Matrice( Num_Colonne => 100, Num_Ligne => 100);
+	use Matrice_Reel;
+	
+    --type T_Tableau is array (1..2,1..7) of Integer;--temporaire le temps que matrice fonctionne
     No_Argument_Error : Exception;
 	F_sujet : Ada.Text_IO.File_Type;
     K: Integer;
@@ -19,7 +24,7 @@ procedure PageRank is
     prefixe: Unbounded_String;
     choix: Boolean;
     N:Integer;
-    sujet: T_Tableau;
+    sujet: T_Matrice;
     N2: Integer;
     Entier: Integer;
     i: Integer;
@@ -99,7 +104,7 @@ begin
     end;
     --Créer la matrice sujet
     --préparation pour matrice sujet
-    --Initialiser(sujet,N2,2)
+    Initialiser(sujet,N2,2);
     open (F_sujet, In_File, Argument (i));
     Get (F_sujet, Entier);
     Get(F_sujet,alpha);
@@ -108,11 +113,11 @@ begin
         --ajouter les valeurs du fichier sujet.net dans la matrice sujet
         compt:=compt+1;
         Get (F_sujet, Entier);
-        --Enregistrer(sujet,compt,1,Entier)
-        sujet(1,compt):=Entier;
+        Enregistrer(sujet,compt,1,Entier);
+        --sujet(1,compt):=Entier;
         Get (F_sujet, Entier);
-        --Enregistrer(sujet,compt,1,Entier)
-        sujet(2,compt):=Entier;
+        Enregistrer(sujet,compt,2,Entier);
+        --sujet(2,compt):=Entier;
     end loop;
     Close(F_sujet);
     --Choisir le programme à éxécuter
@@ -130,7 +135,7 @@ begin
     Put(N2);
     for i in 1..7 loop
         for j in 1..2 loop
-            Put(sujet(j,i));
+            Put(Obtenir_Val_f(sujet,i,j));
         end loop;
     end loop;
 end PageRank;
