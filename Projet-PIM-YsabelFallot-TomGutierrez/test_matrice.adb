@@ -7,8 +7,7 @@ procedure test_matrice is
 
 
 package Matrice_Reel is
-		new Matrice(T_Reel => Integer, T_CASSE_COUILLE => Boolean);
-		-- , Num_Colonne => 10, Num_Ligne => 10);
+		new Matrice(T_Reel => Integer , Num_Colonne => 10, Num_Ligne => 10);
 	use Matrice_Reel;
 	
 	Mat : T_Matrice;
@@ -25,7 +24,7 @@ package Matrice_Reel is
 	Afficher(Mat);
 	
 	-- Test enregistrer
-	Enregistrer(Mat,2,2,50.5);
+	Enregistrer(Mat,2,2,50);
 	Enregistrer(Mat,3,1,46);
 	Put("Ajoute sur Mat de deux valeurs");
 	New_Line;
@@ -78,7 +77,7 @@ package Matrice_Reel is
 	New_Line;
 	Afficher(Res_P_ou_S);
 	
-	Res := Produit_f(Mat,Res,Res_P_ou_S);
+	Res := Produit_f(Mat,Res);
 	Put("Res_P_ou_S Produit_f :");
 	New_Line;
 	Afficher(Res_P_ou_S);
@@ -89,7 +88,7 @@ package Matrice_Reel is
 	New_Line;
 	Afficher(Res_P_ou_S);
 	
-	Res := Sommer_f(Mat,Res,Res_P_ou_S);
+	Res := Sommer_f(Mat,Res);
 	Put("Res_P_ou_S Sommer_f :");
 	New_Line;
 	Afficher(Res_P_ou_S);
