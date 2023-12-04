@@ -4,21 +4,16 @@ with Ada.Integer_Text_IO;	use Ada.Integer_Text_IO;
 with Ada.Text_IO;          use Ada.Text_IO;
 with Ada.Command_Line;     use Ada.Command_Line;
 with Ada.Numerics.Elementary_Functions; use Ada.Numerics.Elementary_Functions;
-with Matrice;
 
 
 package body mp is
 
-    package Matrice_Reel is
-		new Matrice( Num_Colonne => 100, Num_Ligne => 100);
-	use Matrice_Reel;
     
 procedure matricepleine(K:Integer;epsilon:Float;alpha:Float;prefixe:Unbounded_String;N:Integer;N2:Integer;sujet:T_Matrice) is
     
 
 
     File : Ada.Text_IO.File_Type; 
-    ecart:Float;
     distance:Float;
     N3:Float;
     max:Float;
@@ -34,8 +29,13 @@ procedure matricepleine(K:Integer;epsilon:Float;alpha:Float;prefixe:Unbounded_St
     e:T_Matrice;
     G:T_Matrice;
     S:T_Matrice;
+    S1:T_Matrice;
+    e1:T_Matrice;
     H:T_Matrice;
     list:T_Matrice;
+    ecartm:T_Matrice;
+    prefixepr:Unbounded_String;
+    prefixeprw:Unbounded_String;
 begin
     --Initialiser le programme
     --Générer e
@@ -55,7 +55,7 @@ begin
         end loop;
         --Ajout des valeurs de la ligne z dans la matrice H
         if compt/=0 then 
-            N3:=Float(1/compt);
+            N3:=1.0/Float(compt);
             compt:=0;
             while Obtenir_Val_f(list,compt,1)/=0.0 loop
                 Enregistrer(H,Integer(Obtenir_Val_f(list,compt,1)),z,N3);
@@ -70,28 +70,32 @@ begin
         if Ligne_Vide(i,S) then
             --remplacer la valeur de chaque coordonnées de la ligne par 1/N
             for j in 1..N loop
-                Enregistrer(H,i,j,1/N);
+                Enregistrer(H,i,j,1.0/Float(N));
             end loop;
         end if;
     end loop;
     --Calculer G
-    Initialiser(G,N,N);
-    Copier(Sommer_f(Produit_Const(alpha,S),Produit_Const(e,(1.0-alpha)/N)),G);
+    S1:=S;
+    e1:=e;
+    Produit_Const(alpha,S1); 
+    Produit_Const((1.0-alpha)/Float(N),e1);
+    copier(Sommer_f(S,e1),G);
     --Calculer le poids des différentes pages
     Initialiser(mat,N,2);
     --initialiser pi
     Initialiser(pi,N,1);
     for i in 1..N loop
-        Enregistrer(pi,i,1,1/N);
+        Enregistrer(pi,i,1,1.0/Float(N));
     end loop;
     --Calculer le poids de chaque page en fonction de k
     i:=0;
-    distance:=0;
+    distance:=0.0;
     while i<K and distance<epsilon loop
         copier(pi,pik);
         Produit(pi,G,pi);
-        Sommer(pi,Produit_Const(-1,pik),ecart);
-        distance:=Sqrt(Obtenir_Val_f(Produit(ecart,Transposer_f(ecart)),1,1));
+        Produit_Const(-1.0,pik);
+        Sommer(pi,pik,ecartm);
+        distance:=Sqrt(Obtenir_Val_f(Produit_f(ecartm,Transposer_f(ecartm)),1,1));
     end loop;
     --Générer les fichiers résultats
     --Trier les pages et leur poids dans une matrice
@@ -107,16 +111,21 @@ begin
                 imax:=i;
             end if;
         end loop;
-        Enregistrer(mat,class,1,imax);
+        Enregistrer(mat,class,1,Float(imax));
         Enregistrer(mat,class,2,max);
     end loop;
     --Créer le fichier sujet.prw
     --Nommer prefixe.prw
-	Append (prefixe, ".prw");
+    prefixeprw:=prefixe;
+	Append (prefixeprw, ".prw");
     --initialiser sujet.prw
-	Create (File, Out_File, To_String (prefixe));  
+	Create (File, Out_File, To_String (prefixeprw));  
 	New_Line (File);
-    Put (File, N & " " & alpha & " " & K );
+    Put (File, N );
+    Put (File, " ");
+    Put (File, alpha );
+    Put (File, " ");
+    Put (File, K );
     New_Line (File);
     for i in 1..N loop
         Put (File, Obtenir_Val_f(mat,i,2));
@@ -125,9 +134,10 @@ begin
 	close (File);
     --Créer le fichier sujet.pr
     --Nommer prefixe.pr
-	Append (prefixe, ".pr");
+    prefixepr:=prefixe;
+	Append (prefixepr, ".pr");
     --initialiser sujet.pr
-	Create (File, Out_File, To_String (prefixe));
+	Create (File, Out_File, To_String (prefixepr));
 	New_Line (File);
     Put (File, N);
     New_Line (File);
