@@ -27,8 +27,6 @@ procedure PageRank is
     max:Float;
     imax:Integer;
     i:Integer;
-    z:Integer;
-    j:Integer;
     compt:Integer;
     class:Integer;
     mat:T_Matrice;
@@ -71,6 +69,7 @@ begin
             end loop;
         end if;
     end loop;
+    --Afficher(H);
     --Trabsformer H en S
     Copier(H,S);
     for i in 1..N loop
@@ -78,10 +77,11 @@ begin
         if Ligne_Vide(i,S) then
             --remplacer la valeur de chaque coordonnées de la ligne par 1/N
             for j in 1..N loop
-                Enregistrer(H,i,j,1.0/Float(N));
+                Enregistrer(S,i,j,1.0/Float(N));
             end loop;
         end if;
     end loop;
+    --Afficher(S);
     --Calculer G
     S1:=S;
     e1:=e;
@@ -91,22 +91,34 @@ begin
     --Calculer le poids des différentes pages
     Initialiser(mat,N,2);
     --initialiser pi
-    Initialiser(pi,N,1);
+    Initialiser(pi,1,N);
     for i in 1..N loop
-        Enregistrer(pi,i,1,1.0/Float(N));
+        Enregistrer(pi,1,i,1.0/Float(N));
     end loop;
     --Calculer le poids de chaque page en fonction de k
     i:=0;
     distance:=0.0;
-    while i<K and distance<epsilon loop
-        copier(pi,pik);
-        Produit(pi,G,pi);
-        Produit_Const(-1.0,pik);
-        Sommer(pi,pik,ecartm);
-        distance:=Sqrt(Obtenir_Val_f(Produit_f(ecartm,Transposer_f(ecartm)),1,1));
-    end loop;
-    Afficher(pi);
-    Afficher(G);
+    if epsilon/=0.0 then
+        while i<K and distance<=epsilon loop
+            copier(pi,pik);
+            Produit(pi,G,pi);
+            Produit_Const(-1.0,pik);
+            Sommer(pi,pik,ecartm);
+            distance:=Sqrt(Obtenir_Val_f(Produit_f(ecartm,Transposer_f(ecartm)),1,1));
+        end loop;
+    else
+        while i<K loop
+            copier(pi,pik);
+            Put(Nombre_Lignes(G));
+            Put(Nombre_Colonnes(pi));
+            Produit(pi,G,pi);
+            Produit_Const(-1.0,pik);
+            Sommer(pi,pik,ecartm);
+            distance:=Sqrt(Obtenir_Val_f(Produit_f(ecartm,Transposer_f(ecartm)),1,1));
+        end loop;
+    end if;
+    --Afficher(pi);
+    --Afficher(G);
     --Générer les fichiers résultats
     --Trier les pages et leur poids dans une matrice
     class:=0;
