@@ -8,7 +8,7 @@ RV NO_FLOATING_POINT
 RV NO_IO
 RV NO_STANDARD_STORAGE_POOLS
 
-U test_matrice%b	test_matrice.adb	210de14d NE OO SU IL
+U test_matrice%b	test_matrice.adb	c3e273c6 NE OO SU IL
 W ada%s			ada.ads			ada.ali
 Z ada.exceptions%s	a-except.adb		a-except.ali
 W ada.float_text_io%s	a-flteio.ads		a-flteio.ali
@@ -52,7 +52,7 @@ D s-stoele.adb		20230508121439 8f5a9db6 system.storage_elements%b
 D s-traent.ads		20230508121439 c81cbf8c system.traceback_entries%s
 D s-unstyp.ads		20230508121439 fa2a7f59 system.unsigned_types%s
 D s-wchcon.ads		20230508121439 d9032363 system.wch_con%s
-D test_matrice.adb	20231204162613 00023ce9 test_matrice%b
+D test_matrice.adb	20231204164141 e2edae62 test_matrice%b
 D unchconv.ads		20230508121439 ca2f9e18 unchecked_conversion%s
 G a e
 G c Z b b [test_matrice standard 7 11 none]
@@ -78,7 +78,7 @@ X 17 matrice.ads
 5i10 Num_Ligne{integer} 35|11r49
 7k9*Matrice 79e12 35|5w6 11r21
 9R14 T_Matrice 35|14r15[10] 15r15[10] 16r22[10]
-13U19 Initialiser 35|22s9[10] 70s9[10]
+13U19 Initialiser 35|22s9[10] 70s9[10] 133s9[10]
 16U19 Transposer 35|54s9[10]
 19V18 Transposer_f{9R14[35|10]} 35|59s15[10]
 22U19 Produit 35|77s9[10]
@@ -86,7 +86,7 @@ X 17 matrice.ads
 28U19 Copier 35|65s9[10]
 31V18 Copier_f{9R14[35|10]} 35|71s16[10]
 34U19 Sommer 35|88s9[10]
-37V18 Sommer_f{9R14[35|10]} 35|93s16[10]
+37V18 Sommer_f{9R14[35|10]} 35|93s16[10] 135s16[10]
 40U19 Enregistrer 35|28s9[10] 29s9[10]
 43U19 Produit_Const 35|98s9[10]
 46U19 Obtenir_Val 35|35s9[10] 39s9[10]
@@ -100,14 +100,14 @@ X 17 matrice.ads
 X 19 matrice_exceptions.ads
 2K9*Matrice_Exceptions 7e23 35|4w6 4r38
 X 35 test_matrice.adb
-7U11*test_matrice 7b11 133l5 133t17
+7U11*test_matrice 7b11 137l5 137t17
 10K9 Matrice_Reel[17|7] 12r13
 14r9 Mat{17|9R14[10]} 22m21 25r18 28m21 28r21 29m21 29r21 32r18 35r21 39r21
 . 44r29 46r27 48r30 54m20 54r20 57r18 59r28 65r16 70m21 71r25 77r17 82r26
 . 88r16 93r25 98m27 98r27 101r18 105r35 106r34 120m28 120r28 123r18 126r27
-. 130r29
+. 130r29 133m21 135r25
 15r9 Res{17|9R14[10]} 59m9 62r18 65m20 68r18 71m9 74r18 77r21 82m9 82r30
-. 88r20 93m9 93r29
+. 88r20 93m9 93r29 135m9 135r29
 16r9 Res_P_ou_S{17|9R14[10]} 77m25 80r18 85r18 88m24 91r18 96r18
 17f9 Val{float} 35m29 37r13 39m29 41r13 44m9 48m9 50r13
 105i13 i{integer} 106r32 108r29 113r29

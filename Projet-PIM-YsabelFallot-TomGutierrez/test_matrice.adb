@@ -130,5 +130,8 @@ package Matrice_Reel is
 	Put(Nombre_Colonnes(Mat),1);
 	New_Line;
 	
-end test_matrice;
+	Initialiser(Mat,10,10);
+	--Exception
+	Res := Sommer_f(Mat,Res);
 
+end test_matrice;
