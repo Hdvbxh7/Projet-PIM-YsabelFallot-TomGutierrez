@@ -4,11 +4,15 @@ with Ada.Integer_Text_IO;	use Ada.Integer_Text_IO;
 with Ada.Text_IO;          use Ada.Text_IO;
 with Ada.Command_Line;     use Ada.Command_Line;
 with Ada.Numerics.Elementary_Functions; use Ada.Numerics.Elementary_Functions;
+with Matrice;
 
 
 package body mp is
 
-
+    package Matrice_Reel is
+		new Matrice( Num_Colonne => 100, Num_Ligne => 100);
+	use Matrice_Reel;
+    
 procedure matricepleine(K:Integer;epsilon:Float;alpha:Float;prefixe:Unbounded_String;N:Integer;N2:Integer;sujet:T_Matrice) is
     
 
@@ -36,7 +40,7 @@ begin
     --Initialiser le programme
     --Générer e
     Initialiser(e,N,N);
-    Sommer_Const(e,1.0);
+    Sommer_Const(1.0,e);
     --Générer H
     Initialiser(H,N,N);
     for z in 0..N-1 loop
@@ -44,17 +48,17 @@ begin
         compt:=0;       
         Initialiser(list,N,1);
         for i in 1..N2 loop
-            if sujet(i,1)=z then
+            if Obtenir_Val_f(sujet,i,1)=Float(z) then
                 compt:=compt+1;
                 Enregistrer(list,compt,1,Obtenir_Val_f(sujet,i,2)+1.0);
             end if;
         end loop;
         --Ajout des valeurs de la ligne z dans la matrice H
         if compt/=0 then 
-            N3:=1/compt;
+            N3:=Float(1/compt);
             compt:=0;
-            while Obtenir_Val_f(list,compt,1)/=0 loop
-                Enregistrer(H,Obtenir_Val_f(list,compt,1),z,N3);
+            while Obtenir_Val_f(list,compt,1)/=0.0 loop
+                Enregistrer(H,Integer(Obtenir_Val_f(list,compt,1)),z,N3);
                 compt:=compt+1;
             end loop;
         end if;
