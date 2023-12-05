@@ -14,9 +14,16 @@ with Matrice; -- use Matrice;
 procedure PageRank is
 
     package Matrice_Reel is
-		new Matrice( Num_Colonne => 1000, Num_Ligne => 1000);
+		new Matrice( T_Reel=>Float,Num_Colonne => 1000, Num_Ligne => 1000);
 	use Matrice_Reel;
 
+    procedure Afficher_T_Reel_Float (Val : in Float) is
+	begin
+		Put(Val,1);
+end Afficher_T_Reel_Float;
+procedure Afficher_Mat is
+            new Matrice_Reel.Afficher(Afficher_T_Reel_Float);
+        
     procedure matricepleine(K:Integer;epsilon:Float;alpha:Float;prefixe:Unbounded_String;N:Integer;N2:Integer;sujet:T_Matrice) is
     
 
@@ -45,14 +52,14 @@ procedure PageRank is
 begin
     --Initialiser le programme
     --Générer e
-    Initialiser(e,N,N);
+    Initialiser(e,N,N,0.0);
     Sommer_Const(1.0,e);
     --Générer H
-    Initialiser(H,N,N);
+    Initialiser(H,N,N,0.0);
     for z in 0..N-1 loop
         --préparation des valeurs de la ligne z de la matrice H
         compt:=0;       
-        Initialiser(list,N,1);
+        Initialiser(list,N,1,0.0);
         for i in 1..N2 loop
             if Obtenir_Val_f(sujet,i,1)=Float(z) then
                 compt:=compt+1;
@@ -64,7 +71,7 @@ begin
             N3:=1.0/Float(compt);
             compt:=1;
             while Obtenir_Val_f(list,compt,1)/=0.0 loop
-                Enregistrer(H,z,Integer(Obtenir_Val_f(list,compt,1)),N3);
+                Enregistrer(H,z+1,Integer(Obtenir_Val_f(list,compt,1)),N3);
                 compt:=compt+1;
             end loop;
         end if;
@@ -82,17 +89,18 @@ begin
         end if;
     end loop;
 
-    --Afficher(S);
+    --Afficher_Mat(S);
     --Calculer G
     S1:=S;
+    --Afficher_Mat(S1);
     e1:=e;
     Produit_Const(alpha,S1); 
     Produit_Const((1.0-alpha)/Float(N),e1);
-    copier(Sommer_f(S,e1),G);
+    copier(Sommer_f(S1,e1),G);
     --Calculer le poids des différentes pages
-    Initialiser(mat,N,2);
+    Initialiser(mat,N,2,0.0);
     --initialiser pi
-    Initialiser(pi,1,N);
+    Initialiser(pi,1,N,0.0);
     --Afficher(pi);
     for i in 1..N loop
         Enregistrer(pi,1,i,1.0/Float(N));
@@ -133,7 +141,6 @@ begin
             --Put(Obtenir_Val_f(pi,1,i));
             if Obtenir_Val_f(pi,1,i)>max then
                 --Put(Obtenir_Val_f(pi,1,i));
-                New_Line;
                 max:=Obtenir_Val_f(pi,1,i);
                 imax:=i;
             end if;
@@ -241,7 +248,6 @@ begin
     begin
     open (F_sujet, In_File, Argument (i));--ouvrir le fichier sujet.net
     Get (F_sujet, N);--récuperer le nombre de sommet
-    Get(F_sujet,alpha);--utiliser pour les test
     --compter le nombre de vecteur dans le fichier
     compt:=0;
     while not End_Of_file (F_sujet) loop
@@ -267,10 +273,9 @@ begin
     end;
     --Créer la matrice sujet
     --préparation pour matrice sujet
-    Initialiser(sujet,N2,2);
+    Initialiser(sujet,N2,2,0.0);
     open (F_sujet, In_File, Argument (i));
     Get (F_sujet, Entier);
-    Get(F_sujet,alpha);
     compt:=0;
     while compt<N2 loop
         --ajouter les valeurs du fichier sujet.net dans la matrice sujet
