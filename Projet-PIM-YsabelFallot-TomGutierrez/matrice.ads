@@ -1,14 +1,12 @@
 -- Définition des matrices
 generic		
 	 type T_Reel is digits <>; --! type réel de précision quelconque
-	-- type T_Reel is private;
-	  Num_Colonne : Integer; -- Nb maximun de colonne possibles pour les matrices
-	 Num_Ligne : Integer; -- Nb maximum de ligne possibles pour les matrices
+	 Num_Colonne : Integer; -- Nombre maximum de colonne possibles pour les matrices
+	 Num_Ligne : Integer; -- Nombre maximum de ligne possibles pour les matrices
 	
 package Matrice is
 
 	type T_Matrice is  private;
-	
 	
 	-- Initialiser une matrice.avec tous ses coefficients qui valent Val
 	procedure Initialiser(Mat : out T_Matrice; Taille_Ligne : in Integer; Taille_Colonne : in Integer; Val : in T_Reel);
@@ -16,7 +14,7 @@ package Matrice is
 	-- Transposer une matrice.
 	procedure Transposer(Mat: in out T_Matrice);
 	
-	-- Transposer une matrice
+	-- Renvoie la transposer de la matrice Mat
 	function Transposer_f(Mat : in T_Matrice) return T_Matrice;
 	
 	-- Fait le produit matriciel de deux matrices et le stocke dans une troisième matrice
@@ -28,7 +26,7 @@ package Matrice is
 	-- Copie une matrice dans une autre
 	procedure Copier(Mat : in T_Matrice; Copie : out T_Matrice);
 	
-	-- Copier une matrice dans une autre
+	-- Renvoie une copie de Mat
 	function Copier_f(Mat : in T_Matrice) return T_Matrice;
 	
 	-- Somme deux matrices et la stocke dans une troisième matrice
@@ -46,13 +44,13 @@ package Matrice is
 	-- Stock dans Valeur le coefficient de la matrice aux coordonnées données
 	procedure Obtenir_Val(Mat: in T_Matrice; Ind_Ligne : in Integer; Ind_Colonne :in Integer; Valeur : out T_Reel);
 	
-	-- Retourne la valeur a des coordonnées données
+	-- Retourne la valeur aux coordonnées données
 	function Obtenir_Val_f(Mat: in T_Matrice; Ind_Ligne : in Integer; Ind_Colonne : in Integer) return T_Reel;
 	
 	-- Fait la somme d'une constante avec une matrice
 	procedure Sommer_Const(Const : in T_Reel ; Mat : in out T_Matrice);
 	
-	-- Afficher une matrice, dont les coefficients sont des T_Reel générics
+	-- Afficher une matrice, dont les coefficients sont des T_Reel génériques
 	generic
         with procedure Afficher_T_Reel (Val : in T_Reel);
 	procedure Afficher (Mat : in T_Matrice);
@@ -67,16 +65,14 @@ package Matrice is
 	function Nombre_Colonnes(Mat : in T_Matrice) return Integer;
 	
 private 
-	--type Integer is integer;
-	--Num_Colonne : constant Integer := 10;
-	--Num_Ligne : constant Integer := 10;
-	type T_Tab_Colonne is array (1..100) of T_Reel;
-	type T_Valeur is array (1..100) of T_Tab_Colonne ;
+
+	type T_Tab_Colonne is array (1..100) of T_Reel; -- Premier tableau représentant les colonnes de la matrice
+	type T_Tab_Ligne is array (1..100) of T_Tab_Colonne ; -- Deuxième tableau dont les indices correspondent aux lignes de la matrice et qui contient la tableau des colonnes
 	type T_Matrice is
 		record
-			Matrice : T_Valeur;
-			Nb_Ligne : Integer;
-			Nb_Colonne : Integer;
+			Matrice : T_Tab_Ligne; -- Tableau de tableau représentant la matrice
+			Nb_Ligne : Integer; -- Nombre de lignes de la matrice
+			Nb_Colonne : Integer; -- Nombre de colonnes de la matrice
 		end record;
 		
 end Matrice;

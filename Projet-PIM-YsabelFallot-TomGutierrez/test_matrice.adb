@@ -6,12 +6,12 @@ with Matrice;
 
 procedure test_matrice is
 
-
+-- Intanciation des matrices
 package Matrice_Reel is
 		new Matrice( T_Reel => Float, Num_Colonne => 10, Num_Ligne => 10);
 	use Matrice_Reel;
 	
-	
+-- Instanciation de la foncion Afficher
 procedure Afficher_T_Reel_Float (Val : in Float) is
 	begin
 		Put(Val,1);
@@ -77,7 +77,7 @@ procedure Afficher_Mat is
 	New_Line;
 	Afficher_Mat(Res);
 	
-	--Initialiser(Mat,4,4,0.0);
+	Initialiser(Mat,4,4,0.0);
 	Res := Copier_f(Mat);
 	Put("Res Copier_f :");
 	New_Line;
@@ -89,33 +89,11 @@ procedure Afficher_Mat is
 	New_Line;
 	Afficher_Mat(Res_P_ou_S);
 	
-	
-	New_Line;
-	Put("Mat");
-	New_Line;
-	Afficher_Mat(Mat);
-	New_Line;
-	
-	New_Line;
-	Put("Res");
-	New_Line;
-	Afficher_Mat(Res);
-	New_Line;
-	
 	Initialiser(Res_P_ou_S,4,4,0.0);
 	Res_P_ou_S := Produit_f(Mat,Res);
 	Put("Res_P_ou_S Produit_f :");
 	New_Line;
 	Afficher_Mat(Res_P_ou_S);
-	
-	New_Line;
-	Put("Res");
-	New_Line;
-	Afficher_Mat(Res);
-	New_Line;
-	
-	New_Line;
-	New_Line;
 	
 	-- Test Sommer (procédure et fonction)
 	Sommer(Mat,Res,Res_P_ou_S);
@@ -130,13 +108,13 @@ procedure Afficher_Mat is
 	Afficher_Mat(Res_P_ou_S);
 	New_Line;
 	
+	-- Test de Produit_Const
 	Produit_Const(5.0,Mat);
 	Put("Mat Prod_Const :");
 	New_Line;
 	Afficher_Mat(Mat);
 	
-	
-	
+	-- Test de Ligne_Vide sur toutes les lignes de Mat
 	for i in 1..Nombre_Lignes(Mat) loop
 		if Ligne_Vide (i,Mat) then
 			Put("Ligne ");
@@ -152,21 +130,26 @@ procedure Afficher_Mat is
 	end loop;
 	New_Line;
 	
+	-- Test de Sommer_Const
 	Sommer_Const(100.0,Mat);
 	Put("Mat Somme_const :");
 	New_Line;
 	Afficher_Mat(Mat);
 	
+	-- Test de Nombre_Lignes
 	Put("Nb_ligne :");
 	Put(Nombre_Lignes(Mat),1);
 	New_Line;
 	
+	-- Test de Nombre_Colonnes
 	Put("Nb_Colonne :");
 	Put(Nombre_Colonnes(Mat),1);
 	New_Line;
 	
+	-- Test d'exceptions
+	
 	Initialiser(Mat,10,10,0.0);
-	--Exception
+	
 	Res := Sommer_f(Mat,Res);
 
 end test_matrice;
