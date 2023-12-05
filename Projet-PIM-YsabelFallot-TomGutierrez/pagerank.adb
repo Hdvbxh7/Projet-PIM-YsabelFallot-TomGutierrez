@@ -64,7 +64,7 @@ begin
             N3:=1.0/Float(compt);
             compt:=1;
             while Obtenir_Val_f(list,compt,1)/=0.0 loop
-                Enregistrer(H,Integer(Obtenir_Val_f(list,compt,1)),z,N3);
+                Enregistrer(H,z,Integer(Obtenir_Val_f(list,compt,1)),N3);
                 compt:=compt+1;
             end loop;
         end if;
@@ -81,6 +81,7 @@ begin
             end loop;
         end if;
     end loop;
+
     --Afficher(S);
     --Calculer G
     S1:=S;
@@ -92,12 +93,15 @@ begin
     Initialiser(mat,N,2);
     --initialiser pi
     Initialiser(pi,1,N);
+    --Afficher(pi);
     for i in 1..N loop
         Enregistrer(pi,1,i,1.0/Float(N));
     end loop;
     --Calculer le poids de chaque page en fonction de k
     i:=0;
     distance:=0.0;
+    --Afficher(pi);
+    --Afficher(G);
     if epsilon/=0.0 then
         while i<K and distance<=epsilon loop
             copier(pi,pik);
@@ -105,18 +109,16 @@ begin
             Produit_Const(-1.0,pik);
             Sommer(pi,pik,ecartm);
             distance:=Sqrt(Obtenir_Val_f(Produit_f(ecartm,Transposer_f(ecartm)),1,1));
+            i:=i+1;
         end loop;
     else
         while i<K loop
-            copier(pi,pik);
-            Put(Nombre_Lignes(G));
-            Put(Nombre_Colonnes(pi));
-            Produit(pi,G,pi);
-            Produit_Const(-1.0,pik);
-            Sommer(pi,pik,ecartm);
-            distance:=Sqrt(Obtenir_Val_f(Produit_f(ecartm,Transposer_f(ecartm)),1,1));
+            Produit(pi,G,pik);
+            pi:=pik;
+            i:=i+1;
         end loop;
     end if;
+    --Afficher(pi);
     --Afficher(pi);
     --Afficher(G);
     --Générer les fichiers résultats
@@ -128,14 +130,20 @@ begin
         imax:=1;
         --Chercher le max
         for i in 1..N loop
-            if Obtenir_Val_f(pi,i,1)>max then
-                max:=Obtenir_Val_f(pi,i,1);
+            --Put(Obtenir_Val_f(pi,1,i));
+            if Obtenir_Val_f(pi,1,i)>max then
+                --Put(Obtenir_Val_f(pi,1,i));
+                New_Line;
+                max:=Obtenir_Val_f(pi,1,i);
                 imax:=i;
             end if;
         end loop;
-        Enregistrer(mat,class,1,Float(imax));
+        --Put(class);
+        --Afficher(mat);
+        Enregistrer(mat,class,1,Float(imax-1));
         Enregistrer(mat,class,2,max);
-        Enregistrer(pi,imax,1,0.0);
+        Enregistrer(pi,1,imax,0.0);
+
     end loop;
     --Créer le fichier sujet.prw
     --Nommer prefixe.prw
