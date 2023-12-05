@@ -172,7 +172,8 @@ begin
 	for i in 1..Mat.Nb_Ligne loop
 		Put("| ");
 		for j in 1..Mat.Nb_Colonne loop
-			Afficher_T_Reel(Mat.Matrice(i)(j));
+			--Afficher_T_Reel(Mat.Matrice(i)(j));
+			Put(Mat.Matrice(i)(j));
 			Put(" ");
 		end loop;
 		Put("|");
