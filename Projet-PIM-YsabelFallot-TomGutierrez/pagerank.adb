@@ -17,12 +17,6 @@ procedure PageRank is
 		new Matrice( T_Reel=>Float,Num_Colonne => 1000, Num_Ligne => 1000);
 	use Matrice_Reel;
 
-    procedure Afficher_T_Reel_Float (Val : in Float) is
-	begin
-		Put(Val,1);
-end Afficher_T_Reel_Float;
-procedure Afficher_Mat is
-            new Matrice_Reel.Afficher(Afficher_T_Reel_Float);
         
     procedure matricepleine(K:Integer;epsilon:Float;alpha:Float;prefixe:Unbounded_String;N:Integer;N2:Integer;sujet:T_Matrice) is
     
@@ -76,7 +70,6 @@ begin
             end loop;
         end if;
     end loop;
-    --Afficher(H);
     --Trabsformer H en S
     Copier(H,S);
     for i in 1..N loop
@@ -89,10 +82,8 @@ begin
         end if;
     end loop;
 
-    --Afficher_Mat(S);
     --Calculer G
     S1:=S;
-    --Afficher_Mat(S1);
     e1:=e;
     Produit_Const(alpha,S1); 
     Produit_Const((1.0-alpha)/Float(N),e1);
@@ -101,15 +92,12 @@ begin
     Initialiser(mat,N,2,0.0);
     --initialiser pi
     Initialiser(pi,1,N,0.0);
-    --Afficher(pi);
     for i in 1..N loop
         Enregistrer(pi,1,i,1.0/Float(N));
     end loop;
     --Calculer le poids de chaque page en fonction de k
     i:=0;
     distance:=0.0;
-    --Afficher(pi);
-    --Afficher(G);
     if epsilon/=0.0 then
         while i<K and distance<=epsilon loop
             copier(pi,pik);
@@ -126,9 +114,6 @@ begin
             i:=i+1;
         end loop;
     end if;
-    --Afficher(pi);
-    --Afficher(pi);
-    --Afficher(G);
     --Générer les fichiers résultats
     --Trier les pages et leur poids dans une matrice
     class:=0;
@@ -138,15 +123,11 @@ begin
         imax:=1;
         --Chercher le max
         for i in 1..N loop
-            --Put(Obtenir_Val_f(pi,1,i));
             if Obtenir_Val_f(pi,1,i)>max then
-                --Put(Obtenir_Val_f(pi,1,i));
                 max:=Obtenir_Val_f(pi,1,i);
                 imax:=i;
             end if;
         end loop;
-        --Put(class);
-        --Afficher(mat);
         Enregistrer(mat,class,1,Float(imax-1));
         Enregistrer(mat,class,2,max);
         Enregistrer(pi,1,imax,0.0);
@@ -255,11 +236,7 @@ begin
             compt:=compt+1;
     end loop;
     exception
-		when End_Error =>
-			-- la fin du fichier a été atteinte.
-			-- se produit en particulier si on a des caractères après le
-			-- dernier entier (un blanc, une ligne vide)
-			null;
+		when End_Error =>null;
     end;
     Close(F_sujet);
     begin
@@ -282,10 +259,8 @@ begin
         compt:=compt+1;
         Get (F_sujet, Entier);
         Enregistrer(sujet,compt,1,Float(Entier));
-        --sujet(1,compt):=Entier;
         Get (F_sujet, Entier);
         Enregistrer(sujet,compt,2,Float(Entier));
-        --sujet(2,compt):=Entier;
     end loop;
     Close(F_sujet);
     --Choisir le programme à éxécuter
