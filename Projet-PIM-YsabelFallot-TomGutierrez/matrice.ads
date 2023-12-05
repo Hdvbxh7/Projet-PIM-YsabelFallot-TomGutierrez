@@ -1,7 +1,7 @@
 -- Définition des matrices
 generic		
-	 -- type T_Reel is digits <>; --! type réel de précision quelconque
-	 type T_Reel is private;
+	 type T_Reel is digits <>; --! type réel de précision quelconque
+	-- type T_Reel is private;
 	  Num_Colonne : Integer; -- Nb maximun de colonne possibles pour les matrices
 	 Num_Ligne : Integer; -- Nb maximum de ligne possibles pour les matrices
 	
@@ -10,8 +10,8 @@ package Matrice is
 	type T_Matrice is  private;
 	
 	
-	-- Initialiser une matrice.
-	procedure Initialiser(Mat : out T_Matrice; Taille_Ligne : in Integer; Taille_Colonne : in Integer);
+	-- Initialiser une matrice.avec tous ses coefficients qui valent Val
+	procedure Initialiser(Mat : out T_Matrice; Taille_Ligne : in Integer; Taille_Colonne : in Integer; Val : in T_Reel);
 	
 	-- Transposer une matrice.
 	procedure Transposer(Mat: in out T_Matrice);

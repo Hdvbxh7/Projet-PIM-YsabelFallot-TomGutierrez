@@ -8,19 +8,18 @@ procedure test_matrice is
 
 
 package Matrice_Reel is
-		new Matrice( Num_Colonne => 10, Num_Ligne => 10);
+		new Matrice( T_Reel => Float, Num_Colonne => 10, Num_Ligne => 10);
 	use Matrice_Reel;
 	
 	
-procedure Afficher_T_Reel_Int_ou_Float (Val : T_Reel) is
+procedure Afficher_T_Reel_Float (Val : in Float) is
 	begin
 		Put(Val,1);
-end Afficher_T_Reel_Int_ou_Float;
+end Afficher_T_Reel_Float;
 
 procedure Afficher_Mat is
-            new Afficher(Afficher_T_Reel_Int_ou_Float);
+            new Matrice_Reel.Afficher(Afficher_T_Reel_Float);
 
-procedure
 	
 	Mat : T_Matrice;
 	Res : T_Matrice;
@@ -30,86 +29,111 @@ procedure
 	begin
 	
 	-- Test initialiser
-	Initialiser(Mat,4,4);
+	Initialiser(Mat,4,4,0.0);
 	Put("Mat initialisé :");
 	New_Line;
-	Afficher(Mat);
+	Afficher_Mat(Mat);
 	
 	-- Test enregistrer
 	Enregistrer(Mat,2,2,50.0);
 	Enregistrer(Mat,3,1,46.0);
 	Put("Ajoute sur Mat de deux valeurs");
 	New_Line;
-	Afficher(Mat);
+	Afficher_Mat(Mat);
 	
 	-- Test Obtenir_Valeur (procédure et fonction)
 	Obtenir_Val(Mat,2,2,Val);
 	Put("Val : ");
-	Put(Val,1);
+	Afficher_T_Reel_Float(Val);
 	New_Line;
 	Obtenir_Val(Mat,3,1,Val);
 	Put("Val : ");
-	Put(Val,1);
+	Afficher_T_Reel_Float(Val);
 	New_Line;
 	
 	Val:= Obtenir_Val_f(Mat,2,2);
 	Put("Val_f : ");
-	Put(Obtenir_Val_f(Mat,2,2));
+	Afficher_T_Reel_Float(Val);
 	New_Line;
 	Val := Obtenir_Val_f(Mat,3,1);
 	Put("Val_f : ");
-	Put(Val,1);
+	Afficher_T_Reel_Float(Val);
 	New_Line;
 	
 	-- Test Transposer (Procédure et fonction)
 	Transposer(Mat);
 	Put("Mat transposer :");
 	New_Line;
-	Afficher(Mat);
+	Afficher_Mat(Mat);
 	
 	Res :=Transposer_f(Mat);
 	Put("Res transposer_f :");
 	New_Line;
-	Afficher(Res);
+	Afficher_Mat(Res);
 	
 	-- Test Copier (Procédure et fonction)
 	Copier(Mat,Res);
 	Put("Res Copier :");
 	New_Line;
-	Afficher(Res);
+	Afficher_Mat(Res);
 	
-	Initialiser(Mat,4,4);
+	--Initialiser(Mat,4,4,0.0);
 	Res := Copier_f(Mat);
 	Put("Res Copier_f :");
 	New_Line;
-	Afficher(Res);
+	Afficher_Mat(Res);
 	
 	-- Test Produit (procédure et fonction)
 	Produit(Mat,Res,Res_P_ou_S);
 	Put("Res_P_ou_S Produit :");
 	New_Line;
-	Afficher(Res_P_ou_S);
+	Afficher_Mat(Res_P_ou_S);
 	
-	Res := Produit_f(Mat,Res);
+	
+	New_Line;
+	Put("Mat");
+	New_Line;
+	Afficher_Mat(Mat);
+	New_Line;
+	
+	New_Line;
+	Put("Res");
+	New_Line;
+	Afficher_Mat(Res);
+	New_Line;
+	
+	Initialiser(Res_P_ou_S,4,4,0.0);
+	Res_P_ou_S := Produit_f(Mat,Res);
 	Put("Res_P_ou_S Produit_f :");
 	New_Line;
-	Afficher(Res_P_ou_S);
+	Afficher_Mat(Res_P_ou_S);
+	
+	New_Line;
+	Put("Res");
+	New_Line;
+	Afficher_Mat(Res);
+	New_Line;
+	
+	New_Line;
+	New_Line;
 	
 	-- Test Sommer (procédure et fonction)
 	Sommer(Mat,Res,Res_P_ou_S);
 	Put("Res_P_ou_S Sommer :");
 	New_Line;
-	Afficher(Res_P_ou_S);
+	Afficher_Mat(Res_P_ou_S);
+	New_Line;
 	
 	Res := Sommer_f(Mat,Res);
 	Put("Res_P_ou_S Sommer_f :");
 	New_Line;
-	Afficher(Res_P_ou_S);
+	Afficher_Mat(Res_P_ou_S);
+	New_Line;
 	
 	Produit_Const(5.0,Mat);
 	Put("Mat Prod_Const :");
 	New_Line;
-	Afficher(Mat);
+	Afficher_Mat(Mat);
 	
 	
 	
@@ -131,7 +155,7 @@ procedure
 	Sommer_Const(100.0,Mat);
 	Put("Mat Somme_const :");
 	New_Line;
-	Afficher(Mat);
+	Afficher_Mat(Mat);
 	
 	Put("Nb_ligne :");
 	Put(Nombre_Lignes(Mat),1);
@@ -141,7 +165,7 @@ procedure
 	Put(Nombre_Colonnes(Mat),1);
 	New_Line;
 	
-	Initialiser(Mat,10,10);
+	Initialiser(Mat,10,10,0.0);
 	--Exception
 	Res := Sommer_f(Mat,Res);
 
