@@ -11,6 +11,17 @@ package Matrice_Reel is
 		new Matrice( Num_Colonne => 10, Num_Ligne => 10);
 	use Matrice_Reel;
 	
+	
+procedure Afficher_T_Reel_Int_ou_Float (Val : T_Reel) is
+	begin
+		Put(Val,1);
+end Afficher_T_Reel_Int_ou_Float;
+
+procedure Afficher_Mat is
+            new Afficher(Afficher_T_Reel_Int_ou_Float);
+
+procedure
+	
 	Mat : T_Matrice;
 	Res : T_Matrice;
 	Res_P_ou_S : T_Matrice;

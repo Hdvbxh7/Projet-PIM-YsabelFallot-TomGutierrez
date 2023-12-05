@@ -32,7 +32,7 @@ end Transposer;
 function Transposer_f(Mat : in T_Matrice) return T_Matrice is
 		Mat_Res : T_Matrice;
 	begin
-		Initialiser(Mat_Res,Mat.Nb_Ligne,Mat.Nb_Colonne);
+		Initialiser(Mat_Res,Mat.Nb_Colonne,Mat.Nb_Ligne);
 		for i in 1..Mat.Nb_Ligne loop
 			for j in 1..i loop
 				if i/=j then
@@ -172,7 +172,7 @@ begin
 	for i in 1..Mat.Nb_Ligne loop
 		Put("| ");
 		for j in 1..Mat.Nb_Colonne loop
-			Put(Mat.Matrice(i)(j),1);
+			Afficher_T_Reel(Mat.Matrice(i)(j));
 			Put(" ");
 		end loop;
 		Put("|");
