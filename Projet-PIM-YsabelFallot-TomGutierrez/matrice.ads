@@ -3,6 +3,7 @@ generic
 	 type T_Reel is digits <>; --! type réel de précision quelconque
 	 Num_Colonne : Integer; -- Nombre maximum de colonne possibles pour les matrices
 	 Num_Ligne : Integer; -- Nombre maximum de ligne possibles pour les matrices
+	 Zero :  T_Reel;
 	
 package Matrice is
 
@@ -66,8 +67,8 @@ package Matrice is
 	
 private 
 
-	type T_Tab_Colonne is array (1..100) of T_Reel; -- Premier tableau représentant les colonnes de la matrice
-	type T_Tab_Ligne is array (1..100) of T_Tab_Colonne ; -- Deuxième tableau dont les indices correspondent aux lignes de la matrice et qui contient la tableau des colonnes
+	type T_Tab_Colonne is array (1..Num_Colonne) of T_Reel; -- Premier tableau représentant les colonnes de la matrice
+	type T_Tab_Ligne is array (1..Num_Ligne) of T_Tab_Colonne ; -- Deuxième tableau dont les indices correspondent aux lignes de la matrice et qui contient la tableau des colonnes
 	type T_Matrice is
 		record
 			Matrice : T_Tab_Ligne; -- Tableau de tableau représentant la matrice

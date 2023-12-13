@@ -8,7 +8,7 @@ procedure test_matrice is
 
 -- Intanciation des matrices
 package Matrice_Reel is
-		new Matrice( T_Reel => Float, Num_Colonne => 10, Num_Ligne => 10);
+		new Matrice( T_Reel => Float, Num_Colonne => 10, Num_Ligne => 10, Zero => 0.0);
 	use Matrice_Reel;
 	
 -- Instanciation de la foncion Afficher
