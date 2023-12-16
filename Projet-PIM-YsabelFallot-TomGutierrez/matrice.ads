@@ -13,7 +13,7 @@ package Matrice is
 	procedure Initialiser(Mat : out T_Matrice; Taille_Ligne : in Integer; Taille_Colonne : in Integer; Val : in T_Reel);
 	
 	-- Renvoie la transposer de la matrice Mat
-	function Transposer_f(Mat : in T_Matrice) return T_Matrice;
+	function Transposer(Mat : in T_Matrice) return T_Matrice;
 	
 	-- Fait le produit matriciel de deux matrices et le stocke dans une troisième matrice
 	procedure Produit(A : in T_Matrice; B : in T_Matrice; Mat_Res : out T_Matrice);
@@ -37,7 +37,7 @@ package Matrice is
 	procedure Produit_Const(Const : in T_Reel; Mat : in out T_Matrice);
 	
 	-- Retourne la valeur aux coordonnées données
-	function Obtenir_Val_f(Mat: in T_Matrice; Ind_Ligne : in Integer; Ind_Colonne : in Integer) return T_Reel;
+	function Obtenir_Val(Mat: in T_Matrice; Ind_Ligne : in Integer; Ind_Colonne : in Integer) return T_Reel;
 	
 	-- Fait la somme d'une constante avec une matrice
 	procedure Sommer_Const(Const : in T_Reel ; Mat : in out T_Matrice);

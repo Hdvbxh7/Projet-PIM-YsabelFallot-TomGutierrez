@@ -24,7 +24,7 @@ package body Matrice is
 		end if;
 end Initialiser;
 
-function Transposer_f(Mat : in T_Matrice) return T_Matrice is
+function Transposer(Mat : in T_Matrice) return T_Matrice is
 		Mat_Res : T_Matrice;
 	begin
 		-- Définition de la taille de la matrice transposée
@@ -43,7 +43,7 @@ function Transposer_f(Mat : in T_Matrice) return T_Matrice is
 			end loop;
 		end loop;
 		return Mat_res;
-end Transposer_f;
+end Transposer;
 
 procedure Produit(A : in T_Matrice; B : in T_Matrice; Mat_Res : out T_Matrice) is
 	begin
@@ -172,14 +172,14 @@ procedure Produit_Const (Const : in T_Reel; Mat : in out T_Matrice) is
 		end loop;
 end Produit_Const;
 
-function Obtenir_Val_f(Mat: in T_Matrice; Ind_Ligne : in Integer; Ind_Colonne :in Integer) return T_Reel is
+function Obtenir_Val(Mat: in T_Matrice; Ind_Ligne : in Integer; Ind_Colonne :in Integer) return T_Reel is
 	begin	
 		if Ind_Colonne <=0 or else Ind_Ligne <=0 or else Ind_Ligne > Mat.Nb_Ligne or else Ind_Colonne > Mat.Nb_Colonne then
 			raise INDICE_INVALIDE_EXCEPTION;
 		else
 		 	return Mat.Matrice(Ind_Ligne)(Ind_Colonne);
 		end if;
-end Obtenir_Val_f;
+end Obtenir_Val;
 	
 procedure Sommer_Const(Const : in T_Reel ; Mat : in out T_Matrice) is
 	begin

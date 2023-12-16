@@ -1,0 +1,177 @@
+V "GNAT Lib v12"
+P ZX
+
+RN
+RV NO_EXCEPTIONS
+RV NO_FLOATING_POINT
+RV NO_IO
+
+U matrice%b		matrice.adb		8755f8db NE OO PK GE
+W ada%s			ada.ads			ada.ali
+W ada.float_text_io%s	a-flteio.ads		a-flteio.ali
+W ada.integer_text_io%s	a-inteio.ads		a-inteio.ali
+Z ada.strings.text_buffers%s  a-sttebu.adb	a-sttebu.ali
+W ada.text_io%s		a-textio.adb		a-textio.ali
+W matrice%s		matrice.adb		matrice.ali
+W matrice_exceptions%s	matrice_exceptions.ads	matrice_exceptions.ali
+
+U matrice%s		matrice.ads		dbff3acd BN EE NE OO PK GE
+Z ada.strings.text_buffers%s  a-sttebu.adb	a-sttebu.ali
+
+D ada.ads		20230508121439 76789da1 ada%s
+D a-except.ads		20230508121439 2a7d8d70 ada.exceptions%s
+D a-flteio.ads		20230508121439 e18a47a0 ada.float_text_io%s
+D a-inteio.ads		20230508121439 f64b89a4 ada.integer_text_io%s
+D a-ioexce.ads		20230508121439 40018c65 ada.io_exceptions%s
+D a-stream.ads		20230508121439 119b8fb3 ada.streams%s
+D a-string.ads		20230508121439 90ac6797 ada.strings%s
+D a-sttebu.ads		20230508121439 18209c64 ada.strings.text_buffers%s
+D a-stuten.ads		20230508121439 33c54060 ada.strings.utf_encoding%s
+D a-tags.ads		20230508121439 9eaa38c6 ada.tags%s
+D a-textio.ads		20230508121439 deada98a ada.text_io%s
+D a-tiflio.ads		20230508121439 fcca4daa ada.text_io.float_io%s
+D a-tiinio.ads		20230508121439 390edddb ada.text_io.integer_io%s
+D a-unccon.ads		20230508121439 0e9b276f ada.unchecked_conversion%s
+D interfac.ads		20230508121439 edec285f interfaces%s
+D i-cstrea.ads		20230508121439 e53d8b8e interfaces.c_streams%s
+D matrice.ads		20231216210333 dbff3acd matrice%s
+D matrice.adb		20231216210352 36a34244 matrice%b
+D matrice_exceptions.ads  20231214170434 789add11 matrice_exceptions%s
+D system.ads		20230508121439 a2da961d system%s
+D s-crtl.ads		20230508121439 8a0692f8 system.crtl%s
+D s-exctab.ads		20230508121439 91bef6ef system.exception_table%s
+D s-ficobl.ads		20230508121439 dc5161d4 system.file_control_block%s
+D s-parame.ads		20230508121439 d494a4a6 system.parameters%s
+D s-putima.ads		20230508121439 4e095881 system.put_images%s
+D s-secsta.ads		20230508121439 62cd9202 system.secondary_stack%s
+D s-soflin.ads		20230508121439 df77073e system.soft_links%s
+D s-stache.ads		20230508121439 0b81c1fe system.stack_checking%s
+D s-stalib.ads		20230508121439 1c9580f6 system.standard_library%s
+D s-stoele.ads		20230508121439 6d8e1ff4 system.storage_elements%s
+D s-stoele.adb		20230508121439 8f5a9db6 system.storage_elements%b
+D s-traent.ads		20230508121439 c81cbf8c system.traceback_entries%s
+D s-unstyp.ads		20230508121439 fa2a7f59 system.unsigned_types%s
+D s-wchcon.ads		20230508121439 d9032363 system.wch_con%s
+D unchconv.ads		20230508121439 ca2f9e18 unchecked_conversion%s
+G a e
+G c Z s b [matrice standard 8 9 none]
+X 1 ada.ads
+16K9*Ada 20e8 18|1r6 1r34 2r6 2r37 3r6 3r31
+X 3 a-flteio.ads
+20K13*Float_Text_IO[12|46] 18|3w10 3r35
+X 4 a-inteio.ads
+18K13*Integer_Text_IO[13|46] 18|2w10 2r41
+X 11 a-textio.ads
+58K13*Text_IO 727e16 18|1w10 1r38
+263U14*New_Line 18|204s17
+464U14*Put 18|198s17 201s25 203s17
+X 17 matrice.ads
+3F15 T_Reel 6r18 13r117 34r118 37r44 40r106 43r43 47r50 61r57 18|9r117 156r109
+. 165r37 175r97 184r35
+4i10 Num_Colonne{integer} 61r41
+5i10 Num_Ligne{integer} 62r39
+6*10 Zero{3F15} 18|216r67
+8k9*Matrice 3z15 4z10 5z10 6z10 61E14 70l5 70e12 18|5w6 7b14 235l5 235t12
+10R14*T_Matrice 13r41 16r38 16r56 19r34 19r52 19r77 22r35 22r53 22r71 25r35
+. 25r58 28r33 28r51 28r76 31r34 31r52 31r70 34r44 37r65 40r38 43r65 48r38
+. 51r63 54r41 57r43 63c14 68e27 18|9r41 27r30 27r48 28r27 48r26 48r44 48r69
+. 74r27 74r45 74r63 75r19 102r27 102r51 116r25 116r43 116r68 135r26 135r44
+. 135r62 136r27 156r36 165r58 175r30 184r57 194r29 208r55 224r33 229r35
+13U19*Initialiser 13<31 13>52 13>79 13>108 18|9b19 25l5 25t16
+13r31 Mat{10R14} 18|9b31 15m25 16m25 21m53
+13i52 Taille_Ligne{integer} 18|9b52 11r47 15r41 19r37
+13i79 Taille_Colonne{integer} 18|9b79 11r20 16r43 20r45
+13*108 Val{3F15} 18|9b108 21r64
+16V18*Transposer{10R14} 16>29 18|27b10 46l5 46t15
+16r29 Mat{10R14} 18|27b21 31r37 32r39 35r29 38r66 39r66 41r66
+19U19*Produit 19>27 19>45 19<63 18|48b11 72l5 72t12
+19r27 A{10R14} 18|48b19 51r20 56r37 60r29 62r46 64r98 67r74
+19r45 B{10R14} 18|48b37 51r36 57r39 61r38 64r114 67r90
+19r63 Mat_Res{10R14} 18|48b55 56m17 57m17 64m49 64r74 67m49
+22V18*Produit_f{10R14} 22>28 22>46 18|74b10 100l5 100t14
+22r28 A{10R14} 18|74b20 78r20 83r37 87r29 89r46 91r98 94r74
+22r46 B{10R14} 18|74b38 78r36 84r39 88r38 91r114 94r90
+25U19*Copier 25>26 25<46 18|102b11 114l5 114t11
+25r26 Mat{10R14} 18|102b18 105r35 106r37 109r29 110r37 111r56
+25r46 Copie{10R14} 18|102b39 105m17 106m17 111m33
+28U19*Sommer 28>26 28>44 28<62 18|116b11 133l5 133t11
+28r26 A{10R14} 18|116b18 119r20 119r57 124r37 128r29 129r37 130r58
+28r44 B{10R14} 18|116b36 119r36 119r71 125r39 130r74
+28r62 Mat_Res{10R14} 18|116b54 124m17 125m17 130m33
+31V18*Sommer_f{10R14} 31>27 31>45 18|135b10 154l5 154t13
+31r27 A{10R14} 18|135b19 139r21 139r58 144r37 148r29 149r37 150r58
+31r45 B{10R14} 18|135b37 139r37 139r72 145r39 150r74
+34U19*Enregistrer 34=31 34>55 34>80 34>106 18|21s41 156b11 163l5 163t16
+34r31 Mat{10R14} 18|156b23 158r78 158r113 161m25
+34i55 Ind_Ligne{integer} 18|156b47 158r44 158r66 161r37
+34i80 Ind_Colonne{integer} 18|156b71 158r20 158r99 161r48
+34*106 Valeur{3F15} 18|156b97 161r64
+37U19*Produit_Const 37>33 37=52 18|165b11 173l5 173t18
+37*33 Const{3F15} 18|165b26 170r54
+37r52 Mat{10R14} 18|165b45 168r29 169r37 170m33 170r62
+40V18*Obtenir_Val{3F15} 40>30 40>49 40>73 18|175b10 182l5 182t16
+40r30 Mat{10R14} 18|175b22 177r78 177r113 180r32
+40i49 Ind_Ligne{integer} 18|175b41 177r44 177r66 180r44
+40i73 Ind_Colonne{integer} 18|175b65 177r20 177r99 180r55
+43U19*Sommer_Const 43>32 43=52 18|184b11 192l5 192t17
+43*32 Const{3F15} 18|184b24 189r54
+43r52 Mat{10R14} 18|184b44 187r29 188r37 189m33 189r62
+47U24 Afficher_T_Reel 47>41 18|200s25
+47*41 Val{3F15}
+48u19*Afficher 48>29 18|194b11 206l5 206t13
+48r29 Mat{10R14} 18|194b20 197r21 199r29 200r41
+51V18*Ligne_Vide{boolean} 51>30 51>54 18|208b10 222l5 222t15
+51i30 Num_Ligne{integer} 18|208b22 216r40
+51r54 Mat{10R14} 18|208b46 215r37 216r28
+54V18*Nombre_Lignes{integer} 54>32 18|224b10 227l5 227t18
+54r32 Mat{10R14} 18|224b24 226r24
+57V18*Nombre_Colonnes{integer} 57>34 18|229b10 232l5 232t20
+57r34 Mat{10R14} 18|229b26 231r24
+61A14 T_Tab_Colonne(3F15)<integer> 62r53
+62A14 T_Tab_Ligne(61A14)<integer> 65r35
+65a25 Matrice{62A14} 18|38m49 38r70 39m49 39r70 41m49 41r70 64m57 64r82 64r100
+. 64r116 67m57 67r76 67r92 91m57 91r82 91r100 91r116 94m57 94r76 94r92 111m39
+. 111r60 130m41 130r60 130r76 150m41 150r60 150r76 161m29 170m37 170r66 180r36
+. 189m37 189r66 200r45 216r32
+66i25 Nb_Ligne{integer} 18|15m29 31m25 32r43 35r33 51r38 56m25 56r39 60r31
+. 78r38 83m25 83r39 87r31 105m23 105r39 109r33 119r59 119r73 124m25 124r39
+. 128r31 139r60 139r74 144m25 144r39 148r31 158r82 168r33 177r82 187r33 197r25
+. 215r41 226r28
+67i25 Nb_Colonne{integer} 18|16m29 31r41 32m25 51r22 57m25 57r41 61r40 62r48
+. 78r22 84m25 84r41 88r40 89r48 106m23 106r41 110r41 119r22 119r38 125m25
+. 125r41 129r39 139r23 139r39 145m25 145r41 149r39 158r117 169r41 177r117
+. 188r41 199r33 231r28
+X 18 matrice.adb
+19i29 i{integer} 21r58
+20i37 j{integer} 21r61
+28r17 Mat_Res{17|10R14} 31m17 32m17 38m41 39m41 41m41 45r24
+35i21 i{integer} 36r37 37r36 38r57 38r81 39r60 39r78 41r57 41r78
+36i29 j{integer} 37r39 38r60 38r78 39r57 39r81 41r60 41r81
+60i21 i{integer} 64r65 64r90 64r108 67r65 67r84
+61i29 j{integer} 64r68 64r93 64r127 67r68 67r103
+62i37 k{integer} 63r44 64r111 64r124
+75r9 Mat_Res{17|10R14} 83m17 84m17 91m49 91r74 94m49 99r24
+87i21 i{integer} 91r65 91r90 91r108 94r65 94r84
+88i29 j{integer} 91r68 91r93 91r127 94r68 94r103
+89i37 k{integer} 90r44 91r111 91r124
+109i21 i{integer} 111r47 111r68
+110i29 j{integer} 111r50 111r71
+128i21 i{integer} 130r49 130r68 130r84
+129i29 j{integer} 130r52 130r71 130r87
+136r17 Mat_Res{17|10R14} 144m17 145m17 150m33 153r24
+148i21 i{integer} 150r49 150r68 150r84
+149i29 j{integer} 150r52 150r71 150r87
+168i21 i{integer} 170r45 170r74
+169i29 j{integer} 170r48 170r77
+187i21 i{integer} 189r45 189r74
+188i29 j{integer} 189r48 189r77
+197i13 i{integer} 200r53
+199i21 j{integer} 200r56
+209i17 Num_Colonne{integer} 212m17 215r23 216r51 219m25 219r40
+210b17 A_Que_Zero{boolean} 213m17 215r59 217m33 221r24
+X 19 matrice_exceptions.ads
+2K9*Matrice_Exceptions 18|4w6 4r38 19|8e23
+4X9*INDICE_INVALIDE_EXCEPTION 18|12r31 159r31 178r31
+5X9*PRODUIT_INDEFINI_EXCEPTION 18|52r31 79r31
+6X9*SOMME_INDEFINIE_EXCEPTION 18|120r31 140r31
+

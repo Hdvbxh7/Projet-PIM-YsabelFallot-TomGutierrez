@@ -29,7 +29,7 @@ procedure Tester_Initialiser is
 			pragma Assert (Nombre_Colonnes(Mat) = 4);
 			for i in 1..Nombre_Lignes(Mat) loop
 				for j in 1..Nombre_Colonnes(Mat) loop
-					pragma Assert (Obtenir_Val_f(Mat,i,j) = 0.0);
+					pragma Assert (Obtenir_Val(Mat,i,j) = 0.0);
 				end loop;
 			end loop;
 			
@@ -38,7 +38,7 @@ procedure Tester_Initialiser is
 			pragma Assert (Nombre_Colonnes(Mat) = 4);
 			for i in 1..Nombre_Lignes(Mat) loop
 				for j in 1..Nombre_Colonnes(Mat) loop
-					pragma Assert (Obtenir_Val_f(Mat,i,j) = 6.0);
+					pragma Assert (Obtenir_Val(Mat,i,j) = 6.0);
 				end loop;
 			end loop;
 			
@@ -47,7 +47,7 @@ procedure Tester_Initialiser is
 			pragma Assert (Nombre_Colonnes(Mat) = 4);
 			for i in 1..Nombre_Lignes(Mat) loop
 				for j in 1..Nombre_Colonnes(Mat) loop
-					pragma Assert (Obtenir_Val_f(Mat,i,j) = -26.56);
+					pragma Assert (Obtenir_Val(Mat,i,j) = -26.56);
 				end loop;
 			end loop;
 			
@@ -76,14 +76,14 @@ procedure Tester_Enregistrer is
 				
 				Enregistrer(Mat,2,2,50.0);
 				Enregistrer(Mat,3,1,46.0);
-				pragma Assert (Obtenir_Val_f(Mat,2,2) = 50.0);
-				pragma Assert (Obtenir_Val_f(Mat,3,1) = 46.0);
+				pragma Assert (Obtenir_Val(Mat,2,2) = 50.0);
+				pragma Assert (Obtenir_Val(Mat,3,1) = 46.0);
 				
 				
 				Enregistrer(Mat,1,3,-15.75);
 				Enregistrer(Mat,4,2,-5.0);
-				pragma Assert (Obtenir_Val_f(Mat,1,3) = -15.75);
-				pragma Assert (Obtenir_Val_f(Mat,4,2) = -5.0);
+				pragma Assert (Obtenir_Val(Mat,1,3) = -15.75);
+				pragma Assert (Obtenir_Val(Mat,4,2) = -5.0);
 
 				-- Cas problématiques
 				Enregistrer(Mat,5,3,-15.75);
@@ -104,7 +104,7 @@ procedure Tester_Enregistrer is
 		Put_Line("Fin Tester_Enregistrer");
 end Tester_Enregistrer;
 
-procedure Tester_Obtenir_Valeur_f is
+procedure Tester_Obtenir_Valeur is
 	Mat : T_Matrice;
 	Val : float;
 	begin
@@ -115,34 +115,34 @@ procedure Tester_Obtenir_Valeur_f is
 				Enregistrer(Mat,2,2,50.0);
 				Enregistrer(Mat,3,1,46.0);
 				
-				pragma Assert (Obtenir_Val_f(Mat,2,2) = 50.0);
-				pragma Assert (Obtenir_Val_f(Mat,3,1) = 46.0);
-				pragma Assert (Obtenir_Val_f(Mat,1,3) = 0.0);
-				pragma Assert (Obtenir_Val_f(Mat,1,3) = 0.0);
+				pragma Assert (Obtenir_Val(Mat,2,2) = 50.0);
+				pragma Assert (Obtenir_Val(Mat,3,1) = 46.0);
+				pragma Assert (Obtenir_Val(Mat,1,3) = 0.0);
+				pragma Assert (Obtenir_Val(Mat,1,3) = 0.0);
 				
 				-- Cas problématiques
-				Val := Obtenir_Val_f(Mat,5,2);
+				Val := Obtenir_Val(Mat,5,2);
 				
 				exception 
 					when INDICE_INVALIDE_EXCEPTION => Put_Line("Indices nuls ou négatifs -> Valeur non lue");
 				end;
 		
-			Val := Obtenir_Val_f(Mat,-3,1);
+			Val := Obtenir_Val(Mat,-3,1);
 			
 			exception 
 					when INDICE_INVALIDE_EXCEPTION => Put_Line("Indices nuls ou négatifs -> Valeur non lue");
 			end;
 		
-		Val := Obtenir_Val_f(Mat,-3,0);
+		Val := Obtenir_Val(Mat,-3,0);
 		
 		exception 
 					when INDICE_INVALIDE_EXCEPTION => Put_Line("Indices nuls ou négatifs -> Valeur non lue");
 		
-		Put_Line("Fin Tester_Obtenir_Valeur_f");
+		Put_Line("Fin Tester_Obtenir_Valeur");
 		
-end Tester_Obtenir_Valeur_f;
+end Tester_Obtenir_Valeur;
 
-procedure Tester_Transposer_f is 
+procedure Tester_Transposer is 
 	Mat : T_Matrice;
 	Trans : T_Matrice;
 	begin
@@ -150,12 +150,12 @@ procedure Tester_Transposer_f is
 		Enregistrer(Mat,2,2,50.0);
 		Enregistrer(Mat,3,1,46.0);
 		
-		Trans := Transposer_f(Mat);
+		Trans := Transposer(Mat);
 		pragma Assert (Nombre_Lignes(Mat)=Nombre_Colonnes(Trans));
 		pragma Assert (Nombre_Lignes(Trans)=Nombre_Colonnes(Mat));
 		for i in 1..Nombre_Lignes(Mat) loop
 			for j in 1..Nombre_Colonnes(Mat) loop
-				pragma Assert (Obtenir_Val_f(Mat,i,j) = Obtenir_Val_f(Trans,j,i));
+				pragma Assert (Obtenir_Val(Mat,i,j) = Obtenir_Val(Trans,j,i));
 			end loop;
 		end loop;
 		
@@ -165,17 +165,17 @@ procedure Tester_Transposer_f is
 		Enregistrer(Mat,3,1,46.0);
 		Enregistrer(Mat,1,2,-15.75);
 		
-		Trans := Transposer_f(Mat);
+		Trans := Transposer(Mat);
 		pragma Assert (Nombre_Lignes(Mat)=Nombre_Colonnes(Trans));
 		pragma Assert (Nombre_Lignes(Trans)=Nombre_Colonnes(Mat));
 		for i in 1..Nombre_Lignes(Mat) loop
 			for j in 1..Nombre_Colonnes(Mat) loop
-				pragma Assert (Obtenir_Val_f(Mat,i,j) = Obtenir_Val_f(Trans,j,i));
+				pragma Assert (Obtenir_Val(Mat,i,j) = Obtenir_Val(Trans,j,i));
 			end loop;
 		end loop;
-		Put_Line("Fin Tester_Transposer_f");
+		Put_Line("Fin Tester_Transposer");
 		
-end Tester_Transposer_f;
+end Tester_Transposer;
 
 procedure Tester_Copier is
 	Mat : T_Matrice;
@@ -190,7 +190,7 @@ procedure Tester_Copier is
 		pragma Assert (Nombre_Colonnes(Res)=Nombre_Colonnes(Mat));
 		for i in 1..Nombre_Lignes(Mat) loop
 			for j in 1..Nombre_Colonnes(Mat) loop
-				pragma Assert (Obtenir_Val_f(Mat,i,j) = Obtenir_Val_f(Res,i,j));
+				pragma Assert (Obtenir_Val(Mat,i,j) = Obtenir_Val(Res,i,j));
 			end loop;
 		end loop;
 		
@@ -205,7 +205,7 @@ procedure Tester_Copier is
 		pragma Assert (Nombre_Colonnes(Res)=Nombre_Colonnes(Mat));
 		for i in 1..Nombre_Lignes(Mat) loop
 			for j in 1..Nombre_Colonnes(Mat) loop
-				pragma Assert (Obtenir_Val_f(Mat,i,j) = Obtenir_Val_f(Res,i,j));
+				pragma Assert (Obtenir_Val(Mat,i,j) = Obtenir_Val(Res,i,j));
 			end loop;
 		end loop;
 		
@@ -219,7 +219,7 @@ procedure Tester_Copier is
 		pragma Assert (Nombre_Colonnes(Res)=Nombre_Colonnes(Mat));
 		for i in 1..Nombre_Lignes(Mat) loop
 			for j in 1..Nombre_Colonnes(Mat) loop
-				pragma Assert (Obtenir_Val_f(Mat,i,j) = Obtenir_Val_f(Res,i,j));
+				pragma Assert (Obtenir_Val(Mat,i,j) = Obtenir_Val(Res,i,j));
 			end loop;
 		end loop;
 		
@@ -245,9 +245,9 @@ procedure Tester_Produit is
 			for i in 1..Nombre_Lignes(A) loop
 				for j in 1.. Nombre_Colonnes(B) loop
 					for k in 1.. Nombre_Colonnes(A) loop
-						somme_ligneA_colonneB := somme_ligneA_colonneB + Obtenir_Val_f(A,i,k)*Obtenir_Val_f(B,k,j);
+						somme_ligneA_colonneB := somme_ligneA_colonneB + Obtenir_Val(A,i,k)*Obtenir_Val(B,k,j);
 					end loop;
-					pragma Assert(somme_ligneA_colonneB = Obtenir_Val_f(Res,i,j));
+					pragma Assert(somme_ligneA_colonneB = Obtenir_Val(Res,i,j));
 				end loop;
 			end loop;
 			
@@ -261,9 +261,9 @@ procedure Tester_Produit is
 			for i in 1..Nombre_Lignes(A) loop
 				for j in 1.. Nombre_Colonnes(B) loop
 					for k in 1.. Nombre_Colonnes(A) loop
-						somme_ligneA_colonneB := somme_ligneA_colonneB + Obtenir_Val_f(A,i,k)*Obtenir_Val_f(B,k,j);
+						somme_ligneA_colonneB := somme_ligneA_colonneB + Obtenir_Val(A,i,k)*Obtenir_Val(B,k,j);
 					end loop;
-					pragma Assert(somme_ligneA_colonneB = Obtenir_Val_f(Res,i,j));
+					pragma Assert(somme_ligneA_colonneB = Obtenir_Val(Res,i,j));
 				end loop;
 			end loop;
 			
@@ -301,9 +301,9 @@ procedure Tester_Produit_f is
 			for i in 1..Nombre_Lignes(A) loop
 				for j in 1.. Nombre_Colonnes(B) loop
 					for k in 1.. Nombre_Colonnes(A) loop
-						somme_ligneA_colonneB := somme_ligneA_colonneB + Obtenir_Val_f(A,i,k)*Obtenir_Val_f(B,k,j);
+						somme_ligneA_colonneB := somme_ligneA_colonneB + Obtenir_Val(A,i,k)*Obtenir_Val(B,k,j);
 					end loop;
-					pragma Assert(somme_ligneA_colonneB = Obtenir_Val_f(Res,i,j));
+					pragma Assert(somme_ligneA_colonneB = Obtenir_Val(Res,i,j));
 				end loop;
 			end loop;
 			
@@ -317,9 +317,9 @@ procedure Tester_Produit_f is
 			for i in 1..Nombre_Lignes(A) loop
 				for j in 1.. Nombre_Colonnes(B) loop
 					for k in 1.. Nombre_Colonnes(A) loop
-						somme_ligneA_colonneB := somme_ligneA_colonneB + Obtenir_Val_f(A,i,k)*Obtenir_Val_f(B,k,j);
+						somme_ligneA_colonneB := somme_ligneA_colonneB + Obtenir_Val(A,i,k)*Obtenir_Val(B,k,j);
 					end loop;
-					pragma Assert(somme_ligneA_colonneB = Obtenir_Val_f(Res,i,j));
+					pragma Assert(somme_ligneA_colonneB = Obtenir_Val(Res,i,j));
 				end loop;
 			end loop;
 			
@@ -356,7 +356,7 @@ procedure Tester_Sommer is
 			pragma Assert (Nombre_Colonnes(A)=Nombre_Colonnes(Res));
 			for i in 1..Nombre_Lignes(A) loop
 				for j in 1..Nombre_Colonnes(A) loop
-					pragma Assert (Obtenir_Val_f(A,i,j) + Obtenir_Val_f(B,i,j) = Obtenir_Val_f(Res,i,j));
+					pragma Assert (Obtenir_Val(A,i,j) + Obtenir_Val(B,i,j) = Obtenir_Val(Res,i,j));
 				end loop;
 			end loop;
 
@@ -372,7 +372,7 @@ procedure Tester_Sommer is
 			pragma Assert (Nombre_Colonnes(A)=Nombre_Colonnes(Res));
 			for i in 1..Nombre_Lignes(A) loop
 				for j in 1..Nombre_Colonnes(A) loop
-					pragma Assert (Obtenir_Val_f(A,i,j) + Obtenir_Val_f(B,i,j) = Obtenir_Val_f(Res,i,j));
+					pragma Assert (Obtenir_Val(A,i,j) + Obtenir_Val(B,i,j) = Obtenir_Val(Res,i,j));
 				end loop;
 			end loop;
 			
@@ -409,7 +409,7 @@ procedure Tester_Sommer_f is
 			pragma Assert (Nombre_Colonnes(A)=Nombre_Colonnes(Res));
 			for i in 1..Nombre_Lignes(A) loop
 				for j in 1..Nombre_Colonnes(A) loop
-					pragma Assert (Obtenir_Val_f(A,i,j) + Obtenir_Val_f(B,i,j) = Obtenir_Val_f(Res,i,j));
+					pragma Assert (Obtenir_Val(A,i,j) + Obtenir_Val(B,i,j) = Obtenir_Val(Res,i,j));
 				end loop;
 			end loop;
 
@@ -425,7 +425,7 @@ procedure Tester_Sommer_f is
 			pragma Assert (Nombre_Colonnes(A)=Nombre_Colonnes(Res));
 			for i in 1..Nombre_Lignes(A) loop
 				for j in 1..Nombre_Colonnes(A) loop
-					pragma Assert (Obtenir_Val_f(A,i,j) + Obtenir_Val_f(B,i,j) = Obtenir_Val_f(Res,i,j));
+					pragma Assert (Obtenir_Val(A,i,j) + Obtenir_Val(B,i,j) = Obtenir_Val(Res,i,j));
 				end loop;
 			end loop;
 			
@@ -453,7 +453,7 @@ procedure Tester_Produit_Const is
 		Produit_Const(5.0,Mat);
 		for i in 1..Nombre_Lignes(Mat) loop
 			for j in 1..Nombre_Colonnes(Mat) loop
-				pragma Assert (5.0*Obtenir_Val_f(Copie,i,j) = Obtenir_Val_f(Mat,i,j));
+				pragma Assert (5.0*Obtenir_Val(Copie,i,j) = Obtenir_Val(Mat,i,j));
 			end loop;
 		end loop;
 		
@@ -462,7 +462,7 @@ procedure Tester_Produit_Const is
 		Produit_Const(-3.84653,Mat);
 		for i in 1..Nombre_Lignes(Mat) loop
 			for j in 1..Nombre_Colonnes(Mat) loop
-				pragma Assert (-3.84653*Obtenir_Val_f(Copie,i,j) = Obtenir_Val_f(Mat,i,j));
+				pragma Assert (-3.84653*Obtenir_Val(Copie,i,j) = Obtenir_Val(Mat,i,j));
 			end loop;
 		end loop;
 		
@@ -471,7 +471,7 @@ procedure Tester_Produit_Const is
 		Produit_Const(-3.84653,Mat);
 		for i in 1..Nombre_Lignes(Mat) loop
 			for j in 1..Nombre_Colonnes(Mat) loop
-				pragma Assert (-3.84653*Obtenir_Val_f(Copie,i,j) = Obtenir_Val_f(Mat,i,j));
+				pragma Assert (-3.84653*Obtenir_Val(Copie,i,j) = Obtenir_Val(Mat,i,j));
 			end loop;
 		end loop;
 		
@@ -488,7 +488,7 @@ procedure Tester_Sommer_Const is
 		Sommer_Const(5.0,Mat);
 		for i in 1..Nombre_Lignes(Mat) loop
 			for j in 1..Nombre_Colonnes(Mat) loop
-				pragma Assert (5.0+Obtenir_Val_f(Copie,i,j) = Obtenir_Val_f(Mat,i,j));
+				pragma Assert (5.0+Obtenir_Val(Copie,i,j) = Obtenir_Val(Mat,i,j));
 			end loop;
 		end loop;
 		
@@ -497,7 +497,7 @@ procedure Tester_Sommer_Const is
 		Sommer_Const(-3.84653,Mat);
 		for i in 1..Nombre_Lignes(Mat) loop
 			for j in 1..Nombre_Colonnes(Mat) loop
-				pragma Assert (-3.84653+Obtenir_Val_f(Copie,i,j) = Obtenir_Val_f(Mat,i,j));
+				pragma Assert (-3.84653+Obtenir_Val(Copie,i,j) = Obtenir_Val(Mat,i,j));
 			end loop;
 		end loop;
 		
@@ -506,7 +506,7 @@ procedure Tester_Sommer_Const is
 		Sommer_Const(-3.84653,Mat);
 		for i in 1..Nombre_Lignes(Mat) loop
 			for j in 1..Nombre_Colonnes(Mat) loop
-				pragma Assert (-3.84653+Obtenir_Val_f(Copie,i,j) = Obtenir_Val_f(Mat,i,j));
+				pragma Assert (-3.84653+Obtenir_Val(Copie,i,j) = Obtenir_Val(Mat,i,j));
 			end loop;
 		end loop;
 		
@@ -536,9 +536,9 @@ end Tester_Ligne_Vide;
 	
 	Tester_Initialiser;
 	Tester_Enregistrer;
-	Tester_Obtenir_Valeur_f;
+	Tester_Obtenir_Valeur;
 	Tester_Copier;
-	Tester_Transposer_f;
+	Tester_Transposer;
 	Tester_Produit;
 	Tester_Produit_f;
 	Tester_Sommer;

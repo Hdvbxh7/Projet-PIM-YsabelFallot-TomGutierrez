@@ -14,7 +14,7 @@ with Matrice; -- use Matrice;
 procedure PageRank is
 
     package Matrice_Reel is
-		new Matrice( T_Reel=>Float,Num_Colonne => 1000, Num_Ligne => 1000);
+		new Matrice( T_Reel=>Float,Num_Colonne => 100, Num_Ligne => 100,Zero => 0.0);
 	use Matrice_Reel;
 
         
