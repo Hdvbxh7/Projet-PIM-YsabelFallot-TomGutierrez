@@ -8,30 +8,21 @@ package body Matrice is
 	
 	procedure Initialiser(Mat : out T_Matrice; Taille_Ligne : in Integer; Taille_Colonne : in Integer; Val : in T_Reel) is
 	begin
-		-- Définition de la taille de la matrice
-		Mat.Nb_Ligne := Taille_Ligne;
-		Mat.Nb_Colonne := Taille_Colonne;
-		
-		-- Met tous les coefficients de la matrice à la valeur donnée
-		for i in 1..Taille_Ligne loop
-			for j in 1..Taille_Colonne loop
-				Enregistrer(Mat, i, j, Val);
+		if Taille_Colonne <=0 or else Taille_Ligne <=0 then
+			raise INDICE_INVALIDE_EXCEPTION;
+		else
+			-- Définition de la taille de la matrice
+			Mat.Nb_Ligne := Taille_Ligne;
+			Mat.Nb_Colonne := Taille_Colonne;
+			
+			-- Met tous les coefficients de la matrice à la valeur donnée
+			for i in 1..Taille_Ligne loop
+				for j in 1..Taille_Colonne loop
+					Enregistrer(Mat, i, j, Val);
+				end loop;
 			end loop;
-		end loop;
+		end if;
 end Initialiser;
-	
-procedure Transposer(Mat : in out T_Matrice) is
-		aux : T_Reel;
-	begin
-		for i in 1..Mat.Nb_Ligne loop
-			for j in 1..i loop
-				-- Echange les coefficients des indices (i,j) et (j,i)
-				aux := Mat.Matrice(i)(j);
-				Mat.Matrice(i)(j) := Mat.Matrice(j)(i);
-				Mat.Matrice(j)(i) := aux;
-			end loop;
-		end loop;
-end Transposer;
 
 function Transposer_f(Mat : in T_Matrice) return T_Matrice is
 		Mat_Res : T_Matrice;
@@ -122,26 +113,10 @@ procedure Copier(Mat : in T_Matrice;  Copie : out T_Matrice) is
 		end loop;
 end Copier;
 
-function Copier_f(Mat : in T_Matrice) return T_Matrice is
-	Copie : T_Matrice ;
-	begin
-		-- Attribue les dimensions de la matrice de départ
-		Copie.Nb_Ligne := Mat.Nb_Ligne;
-		Copie.Nb_Colonne := Mat.Nb_Colonne;
-		
-		-- Copie des coefficients de Mat dans Copie
-		for i in 1..Mat.Nb_Ligne loop
-			for j in 1..Mat.Nb_Colonne loop
-				Copie.Matrice(i)(j) := Mat.Matrice(i)(j);
-			end loop;
-		end loop;
-		return Copie;
-end Copier_f;
-
 procedure Sommer(A : in T_Matrice; B : in T_Matrice; Mat_Res : out T_Matrice) is
 	begin
 		-- Vérification de la compatibilité des matrices pour la somme matriciel
-		if A.Nb_Colonne /= B.Nb_Colonne and then A.Nb_Ligne /= B.Nb_Ligne  then
+		if A.Nb_Colonne /= B.Nb_Colonne or else A.Nb_Ligne /= B.Nb_Ligne  then
 			raise SOMME_INDEFINIE_EXCEPTION;
 		end if;
 		
@@ -161,7 +136,7 @@ function Sommer_f(A : in T_Matrice; B : in T_Matrice) return T_Matrice is
 		Mat_Res : T_Matrice;
 	begin
 		-- Vérification de la compatibilité des matrices pour la somme matriciel
-		if A.Nb_Colonne /= B.Nb_Colonne and then A.Nb_Ligne /= B.Nb_Ligne  then
+		if  A.Nb_Colonne /= B.Nb_Colonne or else A.Nb_Ligne /= B.Nb_Ligne  then
 			raise SOMME_INDEFINIE_EXCEPTION;
 		end if;
 		
@@ -180,7 +155,11 @@ end Sommer_f;
 
 procedure Enregistrer(Mat : in out T_Matrice; Ind_Ligne : in Integer; Ind_Colonne : in Integer; Valeur : in T_Reel) is
 	begin
-		Mat.Matrice(Ind_ligne)(Ind_Colonne) := Valeur;
+		if Ind_Colonne <=0 or else Ind_Ligne <=0 or else Ind_Ligne > Mat.Nb_Ligne or else Ind_Colonne > Mat.Nb_Colonne then
+			raise INDICE_INVALIDE_EXCEPTION;
+		else
+			Mat.Matrice(Ind_ligne)(Ind_Colonne) := Valeur;
+		end if;
 end Enregistrer;
 
 procedure Produit_Const (Const : in T_Reel; Mat : in out T_Matrice) is
@@ -193,14 +172,13 @@ procedure Produit_Const (Const : in T_Reel; Mat : in out T_Matrice) is
 		end loop;
 end Produit_Const;
 
-procedure Obtenir_Val(Mat: in T_Matrice; Ind_Ligne : in Integer; Ind_Colonne :in Integer; Valeur : out T_Reel) is
-	begin
-		Valeur := Mat.Matrice(Ind_Ligne)(Ind_Colonne);
-end Obtenir_Val;
-
 function Obtenir_Val_f(Mat: in T_Matrice; Ind_Ligne : in Integer; Ind_Colonne :in Integer) return T_Reel is
 	begin	
-		 return Mat.Matrice(Ind_Ligne)(Ind_Colonne);
+		if Ind_Colonne <=0 or else Ind_Ligne <=0 or else Ind_Ligne > Mat.Nb_Ligne or else Ind_Colonne > Mat.Nb_Colonne then
+			raise INDICE_INVALIDE_EXCEPTION;
+		else
+		 	return Mat.Matrice(Ind_Ligne)(Ind_Colonne);
+		end if;
 end Obtenir_Val_f;
 	
 procedure Sommer_Const(Const : in T_Reel ; Mat : in out T_Matrice) is

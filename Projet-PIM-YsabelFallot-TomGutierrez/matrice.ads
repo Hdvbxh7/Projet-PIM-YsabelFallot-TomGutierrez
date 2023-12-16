@@ -12,9 +12,6 @@ package Matrice is
 	-- Initialiser une matrice.avec tous ses coefficients qui valent Val
 	procedure Initialiser(Mat : out T_Matrice; Taille_Ligne : in Integer; Taille_Colonne : in Integer; Val : in T_Reel);
 	
-	-- Transposer une matrice.
-	procedure Transposer(Mat: in out T_Matrice);
-	
 	-- Renvoie la transposer de la matrice Mat
 	function Transposer_f(Mat : in T_Matrice) return T_Matrice;
 	
@@ -27,9 +24,6 @@ package Matrice is
 	-- Copie une matrice dans une autre
 	procedure Copier(Mat : in T_Matrice; Copie : out T_Matrice);
 	
-	-- Renvoie une copie de Mat
-	function Copier_f(Mat : in T_Matrice) return T_Matrice;
-	
 	-- Somme deux matrices et la stocke dans une troisième matrice
 	procedure Sommer(A : in T_Matrice; B : in T_Matrice; Mat_Res : out T_Matrice);
 	
@@ -40,10 +34,7 @@ package Matrice is
 	procedure Enregistrer(Mat : in out T_Matrice; Ind_Ligne : in Integer;  Ind_Colonne : in Integer; Valeur : in T_Reel);
 
 	-- Fait le produit d'une constante avec une matrice
-	procedure Produit_Const (Const : in T_Reel; Mat : in out T_Matrice);
-	
-	-- Stock dans Valeur le coefficient de la matrice aux coordonnées données
-	procedure Obtenir_Val(Mat: in T_Matrice; Ind_Ligne : in Integer; Ind_Colonne :in Integer; Valeur : out T_Reel);
+	procedure Produit_Const(Const : in T_Reel; Mat : in out T_Matrice);
 	
 	-- Retourne la valeur aux coordonnées données
 	function Obtenir_Val_f(Mat: in T_Matrice; Ind_Ligne : in Integer; Ind_Colonne : in Integer) return T_Reel;

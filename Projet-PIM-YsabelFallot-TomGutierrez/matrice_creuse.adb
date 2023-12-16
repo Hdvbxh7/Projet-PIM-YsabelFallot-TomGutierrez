@@ -4,7 +4,7 @@ with Ada.Float_Text_IO;   use Ada.Float_Text_IO;
 with Matrice_Exceptions;         use Matrice_Exceptions; -- à voir
 with Matrice_creuse;
 
-package body Matrice is
+package body Matrice_creuse is
 	
 procedure Initialiser(Mat : out T_Matrice_Creuse; Taille_Ligne : in Integer; Taille_Colonne : in Integer) is
 	begin
@@ -18,15 +18,18 @@ procedure Initialiser(Mat : out T_Matrice_Creuse; Taille_Ligne : in Integer; Tai
 		end loop;
 end Initialiser;
 
-procedure Detruire_Ligne (Liste_Ligne : in out T_Liste_Ligne) is
-    begin
-        if not Est_Vide(Liste_Ligne) then
-            Detruire_Ligne(Liste_Ligne.all.Suivant);
-            free(Liste_Ligne);
-        end if;
-    end Detruire_Ligne;
+
 
 procedure Detruire (Mat : in out T_Matrice_Creuse) is
+
+	procedure Detruire_Ligne (Liste_Ligne : in out T_Liste_Ligne) is
+	    begin
+		if not Est_Vide(Liste_Ligne) then
+		    Detruire_Ligne(Liste_Ligne.all.Suivant);
+		    free(Liste_Ligne);
+		end if;
+	   end Detruire_Ligne;
+    
     begin
         for i in 1..Taille_Tab loop
 		Detruire_Ligne(Mat.Matrice_Creuse(i));
@@ -51,6 +54,7 @@ function Transposer_f(Mat : in T_Matrice_Creuse) return T_Matrice_Creuse is
 		return Mat_res;
 end Transposer_f;
 
+-- TODO à changer
 function Produit_f(A : in T_Matrice_Creuse; B : in T_Matrice_Creuse) return T_Matrice_Creuse is
 	Mat_Res : T_Matrice_Creuse;
 	begin
@@ -77,56 +81,25 @@ function Produit_f(A : in T_Matrice_Creuse; B : in T_Matrice_Creuse) return T_Ma
 		end loop;
 		return Mat_Res;
 end Produit_f;
-		
-procedure Copier(Mat : in T_Matrice_Creuse;  Copie : out T_Matrice_Creuse) is
-	begin
-		-- Attribue les dimensions de la matrice de départ
-		Copie.Nb_Ligne := Mat.Nb_Ligne;
-		Copie.Nb_Colonne := Mat.Nb_Colonne;
-		
-		-- Copie des coefficients de Mat dans Copie
-		for i in 1..Mat.Nb_Ligne loop
-			for j in 1..Mat.Nb_Colonne loop
-				Copie.Matrice(i)(j) := Mat.Matrice(i)(j);
-			end loop;
-		end loop;
-end Copier;
 
 function Copier_f(Mat : in T_Matrice_Creuse) return T_Matrice_Creuse is
 	Copie : T_Matrice_Creuse ;
 	begin
-		-- Attribue les dimensions de la matrice de départ
-		Copie.Nb_Ligne := Mat.Nb_Ligne;
-		Copie.Nb_Colonne := Mat.Nb_Colonne;
+		-- Initialisation de la matrice copie
+		Initialiser(Mat_Res, Mat.Nb_Colonne, Mat.Nb_Ligne);
 		
 		-- Copie des coefficients de Mat dans Copie
 		for i in 1..Mat.Nb_Ligne loop
-			for j in 1..Mat.Nb_Colonne loop
-				Copie.Matrice(i)(j) := Mat.Matrice(i)(j);
+			Curseur_Ligne := Mat.Matrice_Creuse(i);
+			while Curseur_Ligne /= null loop
+				Enregistrer(Mat_Res,i,Curseur_Ligne.Colonne,Curseur_Ligne.Valeur);
+				Curseur_Ligne := Curseur_Ligne.Suivant;
 			end loop;
 		end loop;
 		return Copie;
 end Copier_f;
 
-procedure Sommer(A : in T_Matrice_Creuse; B : in T_Matrice_Creuse; Mat_Res : out T_Matrice_Creuse) is
-	begin
-		-- Vérification de la compatibilité des matrices pour la somme matriciel
-		if A.Nb_Colonne /= B.Nb_Colonne and then A.Nb_Ligne /= B.Nb_Ligne  then
-			raise SOMME_INDEFINIE_EXCEPTION;
-		end if;
-		
-		-- Attribution des dimensions de la matrice résultat
-		Mat_Res.Nb_Ligne := A.Nb_Ligne;
-		Mat_Res.Nb_Colonne := B.Nb_Colonne;
-		
-		-- Calcul des coefficients de la matrice résultat
-		for i in 1..A.Nb_Ligne loop
-			for j in 1..A.Nb_Colonne loop
-				Mat_Res.Matrice(i)(j) := A.Matrice(i)(j)+B.Matrice(i)(j);
-			end loop;
-		end loop;	
-end Sommer;
-
+-- TODO à changer
 function Sommer_f(A : in T_Matrice_Creuse; B : in T_Matrice_Creuse) return T_Matrice_Creuse is
 		Mat_Res : T_Matrice_Creuse;
 	begin
@@ -135,22 +108,44 @@ function Sommer_f(A : in T_Matrice_Creuse; B : in T_Matrice_Creuse) return T_Mat
 			raise SOMME_INDEFINIE_EXCEPTION;
 		end if;
 		
-		-- Attribution des dimensions de la matrice résultat
-		Mat_Res.Nb_Ligne := A.Nb_Ligne;
-		Mat_Res.Nb_Colonne := B.Nb_Colonne;
+		-- Initilisation de la matrice résultat
+		Initialiser(Mat_Res, A.Nb_Ligne, B.Nb_Colonne);
 		
 		-- Calcul des coefficients de la matrice résultat
 		for i in 1..A.Nb_Ligne loop
-			for j in 1..A.Nb_Colonne loop
-				Mat_Res.Matrice(i)(j) := A.Matrice(i)(j)+B.Matrice(i)(j);
+			while Curseur_Ligne /= null loop
+				Enregistrer(Mat_Res,i,Curseur_Ligne.Colonne, A.Matrice(i).Colonne + B.Matrice(i).Colonne);
+				Curseur_Ligne := Curseur_Ligne.Suivant;
 			end loop;
 		end loop;
 		return Mat_Res;
 end Sommer_f;
 
+-- TODO à changer plus tard, tt
 procedure Enregistrer(Mat : in out T_Matrice_Creuse; Ind_Ligne : in Integer; Ind_Colonne : in Integer; Valeur : in T_Reel) is
+	Curseur_Ligne : T_Liste_Ligne;
+	Est_Enregistre : Boolean;
 	begin
-		Mat.Matrice(Ind_ligne)(Ind_Colonne) := Valeur;
+		Curseur_Ligne := Mat.Matrice_Creuse(Ind_ligne);
+		Est_Enregistre := false;
+		while Curseur_Ligne /= null and then not Est_Enregistre loop
+			if Curseur_Ligne.Colonne < Ind_Colonne then
+				Nouv := new T_Cellule;
+           			Nouv.all.Valeur := Valeur;
+            			Nouv.all.Colonne:= Ind_Colonne;
+            			Nouv.all.Suivant := Curseur_Ligne.Suivant;
+            			Curseur_Ligne.Suivant : = Nouv;
+            			Est_Enregistre := true;
+            		elsif Curseur_Ligne.Colonne = Ind_Colonne then
+            			Curseur_Ligne.Valeur := Valeur;
+            		end if;
+            	end loop;
+            	if Curseur_Ligne = null then
+            		Nouv := new T_Cellule;
+           			Nouv.all.Valeur := Valeur;
+            			Nouv.all.Colonne:= Ind_Colonne;
+            			Nouv.all.Suivant := Curseur_Ligne.Suivant;
+            			Curseur_Ligne.Suivant : = Nouv;
 end Enregistrer;
 
 procedure Produit_Const (Const : in T_Reel; Mat : in out T_Matrice_Creuse) is
@@ -224,4 +219,4 @@ function Nombre_Colonnes(Mat : in T_Matrice_Creuse) return Integer is
 end Nombre_Colonnes;
 
 
-end Matrice;		
+end Matrice_creuse;		
