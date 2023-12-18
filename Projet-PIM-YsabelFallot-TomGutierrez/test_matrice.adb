@@ -532,6 +532,28 @@ procedure Tester_Ligne_Vide is
 
 end Tester_Ligne_Vide;
 
+procedure Tester_Afficher is
+	Mat : T_Matrice;
+	begin
+	
+		Initialiser(Mat,4,5,2.75);
+		Put_Line("Matrice 4x5 avec comme coefficients 2.75");
+		Afficher_Mat(Mat);
+		
+		Initialiser(Mat,3,3,0.0);
+		Enregistrer(Mat,1,2,-1.0);
+		Put_Line("Matrice 3x3 avec comme coefficients 0.0 et -1.0 en 1,2");
+		Afficher_Mat(Mat);
+		
+		Initialiser(Mat,7,1,-5.0);
+		Enregistrer(Mat,2,1,88.0);
+		Put_Line("Matrice 7x1 avec comme coefficients -5.0 et 88.0 en 2,1");
+		Afficher_Mat(Mat);
+		
+		Put_Line("Fin Tester_Afficher");
+		
+end Tester_Afficher;
+
 	begin
 	
 	Tester_Initialiser;
@@ -546,6 +568,7 @@ end Tester_Ligne_Vide;
 	Tester_Produit_Const;
 	Tester_Sommer_Const;
 	Tester_Ligne_Vide;
+	Tester_Afficher;
 
 	Put_Line("Fin des tests");
 		

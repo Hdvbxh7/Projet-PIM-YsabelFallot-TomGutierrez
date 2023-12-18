@@ -26,7 +26,7 @@ procedure Detruire (Mat : in out T_Matrice_Creuse) is
 	    begin
 		if not Est_Vide(Liste_Ligne) then
 		    Detruire_Ligne(Liste_Ligne.all.Suivant);
-		    free(Liste_Ligne);
+		    Free(Liste_Ligne);
 		end if;
 	   end Detruire_Ligne;
     
@@ -36,7 +36,7 @@ procedure Detruire (Mat : in out T_Matrice_Creuse) is
         end loop;
     end Detruire;
 
-function Transposer_f(Mat : in T_Matrice_Creuse) return T_Matrice_Creuse is
+function Transposer(Mat : in T_Matrice_Creuse) return T_Matrice_Creuse is
 		Mat_Res : T_Matrice_Creuse;
 		Curseur_Ligne : T_Liste_Ligne;
 	begin
@@ -52,7 +52,7 @@ function Transposer_f(Mat : in T_Matrice_Creuse) return T_Matrice_Creuse is
 			end loop;
 		end loop;
 		return Mat_res;
-end Transposer_f;
+end Transposer;
 
 -- TODO à changer
 function Produit_f(A : in T_Matrice_Creuse; B : in T_Matrice_Creuse) return T_Matrice_Creuse is
@@ -65,6 +65,13 @@ function Produit_f(A : in T_Matrice_Creuse; B : in T_Matrice_Creuse) return T_Ma
 		
 		-- Initialisation de la matrice résultat
 		Initialiser(Mat_Res, A.Nb_Ligne, B.Nb_Colonne);
+		
+		-- Calcul des coefficients de la matrice résultat
+		for i in 1..A.Nb_Ligne loop
+			-- On regarde si une ligne de A ou une colonne de B est vide
+			if Linge_Vide(i,Mat) or else Ligne_Vide(i,Transposer(B))then
+				Mat_Res.Matrice_Creuse(i).Valeur := Zero;
+			else
 		
 		-- Calcul des coefficients de la matrice résultat
 		for i in 1..A.Nb_Ligne loop
@@ -82,7 +89,7 @@ function Produit_f(A : in T_Matrice_Creuse; B : in T_Matrice_Creuse) return T_Ma
 		return Mat_Res;
 end Produit_f;
 
-function Copier_f(Mat : in T_Matrice_Creuse) return T_Matrice_Creuse is
+function Copier(Mat : in T_Matrice_Creuse) return T_Matrice_Creuse is
 	Copie : T_Matrice_Creuse ;
 	begin
 		-- Initialisation de la matrice copie
@@ -97,7 +104,7 @@ function Copier_f(Mat : in T_Matrice_Creuse) return T_Matrice_Creuse is
 			end loop;
 		end loop;
 		return Copie;
-end Copier_f;
+end Copier;
 
 -- TODO à changer
 function Sommer_f(A : in T_Matrice_Creuse; B : in T_Matrice_Creuse) return T_Matrice_Creuse is
@@ -121,15 +128,30 @@ function Sommer_f(A : in T_Matrice_Creuse; B : in T_Matrice_Creuse) return T_Mat
 		return Mat_Res;
 end Sommer_f;
 
--- TODO à changer plus tard, tt
 procedure Enregistrer(Mat : in out T_Matrice_Creuse; Ind_Ligne : in Integer; Ind_Colonne : in Integer; Valeur : in T_Reel) is
 	Curseur_Ligne : T_Liste_Ligne;
+	Precedent : T_Liste_Ligne;
 	Est_Enregistre : Boolean;
 	begin
 		Curseur_Ligne := Mat.Matrice_Creuse(Ind_ligne);
+		Precedent := null;
 		Est_Enregistre := false;
+		
+		-- Enregistrement en tête de la liste
+		if Curseur_Ligne.Colonne > Ind_Colonne then
+		Nouv := new T_Cellule;
+           		Nouv.all.Valeur := Valeur;
+            		Nouv.all.Colonne:= Ind_Colonne;
+            		Nouv.all.Suivant := Curseur_Ligne.Suivant;
+            		Curseur_Ligne.Suivant : = Nouv;
+            		Est_Enregistre := true;
+            	elsif Curseur_Ligne.Colonne = Ind_Colonne then
+            		Curseur_Ligne.Valeur := Valeur;
+            	end if;
+            	
+            	-- Enregistrement dans le corps de la liste
 		while Curseur_Ligne /= null and then not Est_Enregistre loop
-			if Curseur_Ligne.Colonne < Ind_Colonne then
+			if Curseur_Ligne.Colonne > Ind_Colonne and then Precedent.Colonne < Ind_Colonne then
 				Nouv := new T_Cellule;
            			Nouv.all.Valeur := Valeur;
             			Nouv.all.Colonne:= Ind_Colonne;
@@ -139,73 +161,79 @@ procedure Enregistrer(Mat : in out T_Matrice_Creuse; Ind_Ligne : in Integer; Ind
             		elsif Curseur_Ligne.Colonne = Ind_Colonne then
             			Curseur_Ligne.Valeur := Valeur;
             		end if;
+            		Precedent := Curseur_Ligne;
+            		Curseur_Ligne := Curseur_Ligne.Suivant;
             	end loop;
+            	
+            	-- Enregistrement en fin de liste
             	if Curseur_Ligne = null then
             		Nouv := new T_Cellule;
-           			Nouv.all.Valeur := Valeur;
-            			Nouv.all.Colonne:= Ind_Colonne;
-            			Nouv.all.Suivant := Curseur_Ligne.Suivant;
-            			Curseur_Ligne.Suivant : = Nouv;
+           		Nouv.all.Valeur := Valeur;
+            		Nouv.all.Colonne:= Ind_Colonne;
+            		Nouv.all.Suivant := null;
+            		Curseur_Ligne.Suivant : = Nouv;
+            	end if;
 end Enregistrer;
 
 procedure Produit_Const (Const : in T_Reel; Mat : in out T_Matrice_Creuse) is
+	Curseur_Ligne : T_Liste_Ligne;
 	begin
 		-- Calcul les nouveaux coefficients de la matrice 
 		for i in 1..Mat.Nb_Ligne loop
-			for j in 1..Mat.Nb_Colonne loop
-				Mat.Matrice(i)(j) := Const * Mat.Matrice(i)(j);
+			Curseur_Ligne := Mat.Matrice_Creuse(i);
+			while Curseur_Ligne /= null loop
+				Enregistrer(Mat,i,Curseur_Ligne.Colonne, Const * Obtenir_Val(Mat,i,Curseur_Ligne.Colonne));
+				Curseur_Ligne := Curseur_Ligne.Suivant;
 			end loop;
 		end loop;
 end Produit_Const;
 
-procedure Obtenir_Val(Mat: in T_Matrice_Creuse; Ind_Ligne : in Integer; Ind_Colonne :in Integer; Valeur : out T_Reel) is
-	begin
-		Valeur := Mat.Matrice(Ind_Ligne)(Ind_Colonne);
-end Obtenir_Val;
 
-function Obtenir_Val_f(Mat: in T_Matrice_Creuse; Ind_Ligne : in Integer; Ind_Colonne :in Integer) return T_Reel is
+function Obtenir_Val(Mat: in T_Matrice_Creuse; Ind_Ligne : in Integer; Ind_Colonne :in Integer) return T_Reel is
+	Curseur_Ligne : T_Liste_Ligne;
 	begin	
-		 return Mat.Matrice(Ind_Ligne)(Ind_Colonne);
-end Obtenir_Val_f;
+		Curseur_Ligne := Mat.Matrice_Creuse(Ind_Ligne);
+		while Curseur_Ligne /= null loop
+			if Curseur_Ligne.Colonne = Ind_Colonne then
+				return Curseur_Ligne.Valeur;
+			end if;
+			Curseur_Ligne := Curseur_Ligne.Suivant;
+		end loop
+		return Zero;
+end Obtenir_Val;
 	
 procedure Sommer_Const(Const : in T_Reel ; Mat : in out T_Matrice_Creuse) is
+	Curseur_Ligne : T_Liste_Ligne;
 	begin
 		-- Calcul les nouveaux coefficients de la matrice 
 		for i in 1..Mat.Nb_Ligne loop
-			for j in 1..Mat.Nb_Colonne loop
-				Mat.Matrice(i)(j) := Const + Mat.Matrice(i)(j);
+			Curseur_Ligne := Mat.Matrice_Creuse(i);
+			while Curseur_Ligne /= null loop
+				Enregistrer(Mat,i,Curseur_Ligne.Colonne, Const + Obtenir_Val(Mat,i,Curseur_Ligne.Colonne));
+				Curseur_Ligne := Curseur_Ligne.Suivant;
 			end loop;
 		end loop;
 end Sommer_Const;
 
 procedure Afficher(Mat : in T_Matrice_Creuse) is
-begin
-	-- Affiche chaque coefficient de la matrice, avec chaque ligne entre deux |
-	for i in 1..Mat.Nb_Ligne loop
-		Put("| ");
-		for j in 1..Mat.Nb_Colonne loop
-			Afficher_T_Reel(Mat.Matrice(i)(j));
-			Put(" ");
+	begin
+	
+		-- Affiche chaque coefficient de la matrice, avec chaque ligne entre deux "|"
+		for i in 1..Mat.Nb_Ligne loop
+			Put("| ");		
+			for j in 1..Mat.Nb_Colonne loop
+				Afficher_T_Reel(Obtenir_Val(Mat,i,j));
+				Put(" ");
+			end loop;
+			Put("|");
+			New_Line;
 		end loop;
-		Put("|");
-		New_Line;
-	end loop;
 end Afficher;
 
 function Ligne_Vide (Num_Ligne : in Integer; Mat : in T_Matrice_Creuse) return Boolean is
-		Num_Colonne : Integer;
-		A_Que_Zero : Boolean;
 	begin
-		Num_Colonne := 1;
-		A_Que_Zero := true;
-		-- Parcours les colonnes de la ligne pour détecter la présence d'un 0
-		while Num_Colonne <=Mat.Nb_Ligne and then A_Que_Zero loop
-			if Mat.Matrice(Num_Ligne)(Num_Colonne) /= Zero then
-				A_Que_Zero := false;
-			end if;
-			Num_Colonne := Num_Colonne +1;
-		end loop;
-		return A_Que_Zero;
+		return Mat.Matrice_Creuse(Num_Ligne) = null;
+		
 end Ligne_Vide;
 
 function Nombre_Lignes(Mat : in T_Matrice_Creuse) return Integer is

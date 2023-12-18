@@ -15,13 +15,19 @@ package Matrice_Creuse is
     	procedure Detruire (Mat : in out T_Matrice_Creuse);
 	
 	-- Renvoie la transposer de la matrice Mat
-	function Transposer_f(Mat : in T_Matrice_Creuse) return T_Matrice_Creuse;
+	function Transposer(Mat : in T_Matrice_Creuse) return T_Matrice_Creuse;
+	
+	-- Fait le produit matriciel de deux matrices et le stocke dans une troisième matrice
+	procedure Produit(A : in T_Matrice_Creuse; B : in T_Matrice; Mat_Res : out T_Matrice_Creuse);
 	
 	-- Fait le produit matriciel et renvoie la matrice
 	function Produit_f(A : in T_Matrice_Creuse; B : in T_Matrice_Creuse) return T_Matrice_Creuse;
 	
 	-- Renvoie une copie de Mat
-	function Copier_f(Mat : in T_Matrice_Creuse) return T_Matrice_Creuse;
+	function Copier(Mat : in T_Matrice_Creuse) return T_Matrice_Creuse;
+	
+	-- Somme deux matrices et la stocke dans une troisième matrice
+	procedure Sommer(A : in T_Matrice_Creuse; B : in T_Matrice; Mat_Res : out T_Matrice_Creuse);
 	
 	-- Somme deux matrices et renvoie le résultat
 	function Sommer_f(A : in T_Matrice_Creuse; B : in T_Matrice_Creuse) return T_Matrice_Creuse;
@@ -33,7 +39,7 @@ package Matrice_Creuse is
 	procedure Produit_Const (Const : in T_Reel; Mat : in out T_Matrice_Creuse);
 	
 	-- Retourne la valeur aux coordonnées données
-	function Obtenir_Val_f(Mat: in T_Matrice_Creuse; Ind_Ligne : in Integer; Ind_Colonne : in Integer) return T_Reel;
+	function Obtenir_Val(Mat: in T_Matrice_Creuse; Ind_Ligne : in Integer; Ind_Colonne : in Integer) return T_Reel;
 	
 	-- Fait la somme d'une constante avec une matrice
 	procedure Sommer_Const(Const : in T_Reel ; Mat : in out T_Matrice_Creuse);
