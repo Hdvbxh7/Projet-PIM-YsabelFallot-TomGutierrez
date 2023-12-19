@@ -7,6 +7,7 @@ generic
 package Matrice_Creuse is
 
 	type T_Matrice_Creuse is  private;
+	type T_Liste_Ligne is private;
 	
 	-- Initialiser une matrice.avec tous ses coefficients qui valent Val
 	procedure Initialiser(Mat : out T_Matrice_Creuse; Taille_Ligne : in Integer; Taille_Colonne : in Integer);
@@ -18,16 +19,16 @@ package Matrice_Creuse is
 	function Transposer(Mat : in T_Matrice_Creuse) return T_Matrice_Creuse;
 	
 	-- Fait le produit matriciel de deux matrices et le stocke dans une troisième matrice
-	procedure Produit(A : in T_Matrice_Creuse; B : in T_Matrice; Mat_Res : out T_Matrice_Creuse);
+	procedure Produit(A : in T_Matrice_Creuse; B : in T_Matrice_Creuse; Mat_Res : out T_Matrice_Creuse);
 	
 	-- Fait le produit matriciel et renvoie la matrice
 	function Produit_f(A : in T_Matrice_Creuse; B : in T_Matrice_Creuse) return T_Matrice_Creuse;
 	
 	-- Renvoie une copie de Mat
-	function Copier(Mat : in T_Matrice_Creuse) return T_Matrice_Creuse;
+	procedure Copier(Mat : in T_Matrice_Creuse; Copie : out T_Matrice_Creuse);
 	
 	-- Somme deux matrices et la stocke dans une troisième matrice
-	procedure Sommer(A : in T_Matrice_Creuse; B : in T_Matrice; Mat_Res : out T_Matrice_Creuse);
+	procedure Sommer(A : in T_Matrice_Creuse; B : in T_Matrice_Creuse; Mat_Res : out T_Matrice_Creuse);
 	
 	-- Somme deux matrices et renvoie le résultat
 	function Sommer_f(A : in T_Matrice_Creuse; B : in T_Matrice_Creuse) return T_Matrice_Creuse;
@@ -40,6 +41,9 @@ package Matrice_Creuse is
 	
 	-- Retourne la valeur aux coordonnées données
 	function Obtenir_Val(Mat: in T_Matrice_Creuse; Ind_Ligne : in Integer; Ind_Colonne : in Integer) return T_Reel;
+	
+	-- Renvoie le pointeur correspondant à une ligne
+	function Obtenir_Ptr_Ligne(Mat : in T_Matrice_Creuse; Ind_LIgne : in Integer) return T_Liste_Ligne;
 	
 	-- Fait la somme d'une constante avec une matrice
 	procedure Sommer_Const(Const : in T_Reel ; Mat : in out T_Matrice_Creuse);
