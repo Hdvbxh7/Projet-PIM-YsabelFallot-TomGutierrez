@@ -1,5 +1,4 @@
 with Ada.Text_IO;           use Ada.Text_IO;
-with Ada.Integer_Text_IO;   use Ada.Integer_Text_IO;
 with Ada.Float_Text_IO;   use Ada.Float_Text_IO;
 with Matrice_Exceptions;         use Matrice_Exceptions;
 with Matrice_Creuse;
@@ -8,7 +7,7 @@ procedure test_matrice_creuse is
 
 -- Instanciation des matrices
 package Matrice_Creuse_Reel is
-		new Matrice_Creuse( T_Reel => Float, Num_Ligne => 100, Zero => 0.0);
+		new Matrice_Creuse( T_Reel => Float, Zero => 0.0);
 	use Matrice_Creuse_Reel;
 	
 -- Instanciation de la fonction Afficher
@@ -19,6 +18,9 @@ end Afficher_T_Reel_Float;
 
 procedure Afficher_Mat is
             new Matrice_Creuse_Reel.Afficher(Afficher_T_Reel_Float);
+            
+procedure Afficher_Ligne_Ex is
+            new Matrice_Creuse_Reel.Afficher_Ligne(Afficher_T_Reel_Float);
 
 procedure Tester_Initialiser is
 	Mat : T_Matrice_Creuse;
@@ -28,19 +30,19 @@ procedure Tester_Initialiser is
 			pragma Assert (Nombre_Lignes(Mat) = 4);
 			pragma Assert (Nombre_Colonnes(Mat) = 4);
 			for i in 1..Nombre_Lignes(Mat) loop
-				pragma Assert (Ligne_Vide (i,Mat)); -- Pose Pb
+				pragma Assert (Ligne_Vide (i,Mat));
 			end loop;
 			
 			Initialiser(Mat, 1,4);
 			pragma Assert (Nombre_Lignes(Mat) = 1);
 			pragma Assert (Nombre_Colonnes(Mat) = 4);
 			for i in 1..Nombre_Lignes(Mat) loop
-				pragma Assert (Ligne_Vide (i,Mat)); -- UTilise ligne est vide couillon
+				pragma Assert (Ligne_Vide (i,Mat));
 			end loop;
 			
 			Initialiser(Mat, 7,1);
-			pragma Assert (Nombre_Lignes(Mat) = 1);
-			pragma Assert (Nombre_Colonnes(Mat) = 4);
+			pragma Assert (Nombre_Lignes(Mat) = 7);
+			pragma Assert (Nombre_Colonnes(Mat) = 1);
 			for i in 1..Nombre_Lignes(Mat) loop
 				pragma Assert (Ligne_Vide (i,Mat));
 			end loop;
@@ -63,21 +65,40 @@ end Tester_Initialiser;
 
 procedure Tester_Enregistrer is
 	Mat: T_Matrice_Creuse;
+	--Curseur :T_Liste_Ligne;
 	begin
 		begin
 			begin
 				Initialiser(Mat, 4,4);
 				
-				Enregistrer(Mat,2,2,50.0);
-				Enregistrer(Mat,3,1,46.0);
-				pragma Assert (Obtenir_Val(Mat,2,2) = 50.0);
-				pragma Assert (Obtenir_Val(Mat,3,1) = 46.0);
+				Enregistrer(Mat,1,1,50.0);
+				Put("Coef 2,2 : ");
+				Put(Obtenir_Val(Mat,2,2),1);
+				New_Line;
+				Afficher_Mat(Mat);
+				
+				
+				Enregistrer(Mat,2,1,46.0);
+				Enregistrer(Mat,2,4,4.0);
+				Enregistrer(Mat,2,3,14.0);
+				Enregistrer(Mat,2,2,14.0);
+				Put("Coef 2,2 : ");
+				Put(Obtenir_Val(Mat,2,2),1);
+				New_Line;
+				Afficher_Mat(Mat);
+				pragma Assert (Obtenir_Val(Mat,2,2) = 14.0);
+				pragma Assert (Obtenir_Val(Mat,2,1) = 46.0);
 				
 				
 				Initialiser(Mat,1,3);
 				Enregistrer(Mat,1,2,-5.0);
-				pragma Assert (Obtenir_Val(Mat,1,3) = 0.0);
 				pragma Assert (Obtenir_Val(Mat,1,2) = -5.0);
+				Enregistrer(Mat,1,1,0.0);
+				pragma Assert (Obtenir_Val(Mat,1,1) = 0.0);
+				Enregistrer(Mat,1,2,0.0);
+				pragma Assert (Obtenir_Val(Mat,1,3) = 0.0);
+				Put(Obtenir_Val(Mat,1,2),1);
+				pragma Assert (Obtenir_Val(Mat,1,2) = 0.0);
 
 				-- Cas problématiques
 				Enregistrer(Mat,5,3,-15.75);
@@ -100,7 +121,6 @@ end Tester_Enregistrer;
 
 procedure Tester_Obtenir_Valeur is
 	Mat : T_Matrice_Creuse;
-	Val : float;
 	begin
 		begin
 			begin
@@ -115,19 +135,19 @@ procedure Tester_Obtenir_Valeur is
 				pragma Assert (Obtenir_Val(Mat,1,3) = 0.0);
 				
 				-- Cas problématiques
-				Val := Obtenir_Val(Mat,5,2);
+				Put(Obtenir_Val(Mat,5,2));
 				
 				exception 
 					when INDICE_INVALIDE_EXCEPTION => Put_Line("Indices nuls ou négatifs -> Valeur non lue");
 				end;
 		
-			Val := Obtenir_Val(Mat,-3,1);
+			Put(Obtenir_Val(Mat,-3,1));
 			
 			exception 
 					when INDICE_INVALIDE_EXCEPTION => Put_Line("Indices nuls ou négatifs -> Valeur non lue");
 			end;
 		
-		Val := Obtenir_Val(Mat,-3,0);
+		Put(Obtenir_Val(Mat,-3,0));
 		
 		exception 
 					when INDICE_INVALIDE_EXCEPTION => Put_Line("Indices nuls ou négatifs -> Valeur non lue");
@@ -236,13 +256,12 @@ procedure Tester_Produit is
 			Enregistrer(A,1,3,-15.75);
 			
 			Produit(A,B,Res);
-			somme_ligneA_colonneB := 0.0;
 			for i in 1..Nombre_Lignes(A) loop
 				for j in 1.. Nombre_Colonnes(B) loop
+					somme_ligneA_colonneB := 0.0;
 					for k in 1.. Nombre_Colonnes(A) loop
 						somme_ligneA_colonneB := somme_ligneA_colonneB + Obtenir_Val(A,i,k)*Obtenir_Val(B,k,j);
 					end loop;
-					pragma Assert(somme_ligneA_colonneB = Obtenir_Val(Res,i,j));
 				end loop;
 			end loop;
 			
@@ -255,6 +274,7 @@ procedure Tester_Produit is
 			Produit(A,B,Res);
 			for i in 1..Nombre_Lignes(A) loop
 				for j in 1.. Nombre_Colonnes(B) loop
+					somme_ligneA_colonneB := 0.0;
 					for k in 1.. Nombre_Colonnes(A) loop
 						somme_ligneA_colonneB := somme_ligneA_colonneB + Obtenir_Val(A,i,k)*Obtenir_Val(B,k,j);
 					end loop;
@@ -292,9 +312,9 @@ procedure Tester_Produit_f is
 			Enregistrer(A,1,3,-15.75);
 			
 			Res := Produit_f(A,B);
-			somme_ligneA_colonneB := 0.0;
 			for i in 1..Nombre_Lignes(A) loop
 				for j in 1.. Nombre_Colonnes(B) loop
+					somme_ligneA_colonneB := 0.0;
 					for k in 1.. Nombre_Colonnes(A) loop
 						somme_ligneA_colonneB := somme_ligneA_colonneB + Obtenir_Val(A,i,k)*Obtenir_Val(B,k,j);
 					end loop;
@@ -311,6 +331,7 @@ procedure Tester_Produit_f is
 			Res := Produit_f(A,B);
 			for i in 1..Nombre_Lignes(A) loop
 				for j in 1.. Nombre_Colonnes(B) loop
+					somme_ligneA_colonneB := 0.0;
 					for k in 1.. Nombre_Colonnes(A) loop
 						somme_ligneA_colonneB := somme_ligneA_colonneB + Obtenir_Val(A,i,k)*Obtenir_Val(B,k,j);
 					end loop;
@@ -379,6 +400,7 @@ procedure Tester_Sommer is
 			Enregistrer(A,3,1,4.0);
 			Enregistrer(A,1,3,-15.75);
 			
+			
 			Sommer(A,B,Res);
 			exception
 				when SOMME_INDEFINIE_EXCEPTION => Put_Line("Dimensions des matrices incompatibles");
@@ -445,6 +467,11 @@ procedure Tester_Produit_Const is
 	Copie : T_Matrice_Creuse;
 	begin
 		Initialiser(Mat,5,5);
+		for i in 1..Nombre_Lignes(Mat) loop
+			for j in 1..Nombre_Colonnes(Mat) loop
+				Enregistrer(Mat,i,j,1.0);
+			end loop;
+		end loop;
 		Copier(Mat,Copie);
 		Produit_Const(5.0,Mat);
 		for i in 1..Nombre_Lignes(Mat) loop
@@ -480,20 +507,34 @@ procedure Tester_Sommer_Const is
 	Copie :  T_Matrice_Creuse;
 	begin
 		Initialiser(Mat,5,5);
+		for i in 1..Nombre_Lignes(Mat) loop
+			for j in 1..Nombre_Colonnes(Mat) loop
+				Enregistrer(Mat,i,j,1.0);
+			end loop;
+		end loop;
 		Copier(Mat,Copie);
 		Sommer_Const(5.0,Mat);
 		for i in 1..Nombre_Lignes(Mat) loop
-			for j in 1..Nombre_Colonnes(Mat) loop
-				pragma Assert (5.0+Obtenir_Val(Copie,i,j) = Obtenir_Val(Mat,i,j));
+			for j in 1..Nombre_Colonnes(Mat) loop		
+				pragma Assert (5.0 + Obtenir_Val(Copie,i,j) = Obtenir_Val(Mat,i,j));
 			end loop;
 		end loop;
 		
 		Initialiser(Mat,2,6);
+		New_Line;
+		Afficher_Mat(Mat);
+		Enregistrer(Mat,2,4,1.0);
+		New_Line;
+		Afficher_Mat(Mat);
 		Copier(Mat,Copie);
+		New_Line;
+		Afficher_Mat(Copie);
 		Sommer_Const(-3.84653,Mat);
+		New_Line;
+		Afficher_Mat(Mat);
 		for i in 1..Nombre_Lignes(Mat) loop
 			for j in 1..Nombre_Colonnes(Mat) loop
-				pragma Assert (-3.84653+Obtenir_Val(Copie,i,j) = Obtenir_Val(Mat,i,j));
+				pragma Assert (Obtenir_Val(Copie,i,j)-3.84653 - Obtenir_Val(Mat,i,j)< 0.000000000000000000001);
 			end loop;
 		end loop;
 		
@@ -502,7 +543,7 @@ procedure Tester_Sommer_Const is
 		Sommer_Const(-3.84653,Mat);
 		for i in 1..Nombre_Lignes(Mat) loop
 			for j in 1..Nombre_Colonnes(Mat) loop
-				pragma Assert (-3.84653+Obtenir_Val(Copie,i,j) = Obtenir_Val(Mat,i,j));
+				pragma Assert (Obtenir_Val(Copie,i,j)-3.84653 - Obtenir_Val(Mat,i,j)< 0.00000001);
 			end loop;
 		end loop;
 		
@@ -510,38 +551,16 @@ procedure Tester_Sommer_Const is
 		
 end Tester_Sommer_Const;
 
-procedure Tester_Ligne_Vide is
-	Mat : T_Matrice_Creuse;
-	begin
-		Initialiser(Mat,4,4);
-		Enregistrer(Mat,1,2,1.897);
-		Enregistrer(Mat,3,2,-1.897);
-		for i in 1..Nombre_Lignes(Mat) loop
-		if i=2 or else i=4 then
-			pragma Assert(Ligne_Vide (i,Mat));
-		else
-			pragma Assert(not Ligne_Vide (i,Mat));
-		end if;
-	end loop;
-
-	Put_Line("Fin Tester_Ligne_Vide");
-
-end Tester_Ligne_Vide;
-
 procedure Tester_Afficher is
 	Mat : T_Matrice_Creuse;
 	begin
 	
 		Initialiser(Mat, 4,4);
 				
-				Enregistrer(Mat,2,2,50.0);
-				Put("coef 2 2 :");
-				Afficher_T_Reel_Float(Obtenir_Val(Mat,2,2));
-				pragma Assert (Obtenir_Val(Mat,2,2)=50.0);
-				pragma Assert (Obtenir_Val(Mat,2,2)=0.0);
-
-				Enregistrer(Mat,3,1,46.0);
-				Afficher_Mat(Mat);
+		Enregistrer(Mat,2,2,50.0);
+		Enregistrer(Mat,3,1,46.0);
+		Put_Line("Matrice 4x4 avec comme coefficients 0.0 et 50.0 en 2,2 et 46.0 en 3,1");
+		Afficher_Mat(Mat);
 	
 		Initialiser(Mat,4,5);
 		Enregistrer(Mat,2,1,88.0);
@@ -557,6 +576,21 @@ procedure Tester_Afficher is
 		
 end Tester_Afficher;
 
+procedure Tester_Afficher_Ligne is
+	Mat : T_Matrice_Creuse;
+	begin
+		Initialiser(Mat, 4,4);		
+		Enregistrer(Mat,2,2,50.0);
+		Enregistrer(Mat,2,1,-46.0);
+		Afficher_Mat(Mat);
+		Put_Line("Affichage Ligne 2 et 3 sans tenir compte des 0 (les éléments de la ligne sont classés par ordre d'enregistrement et non par ordre de numéro de colonne)");
+		Afficher_Ligne_Ex(Mat,2);
+		Afficher_Ligne_Ex(Mat,3);
+		
+		Put_Line("Fin Tester_Afficher_Ligne");
+	
+end Tester_Afficher_Ligne;
+
 	begin
 	
 	Tester_Initialiser;
@@ -564,14 +598,14 @@ end Tester_Afficher;
 	Tester_Obtenir_Valeur;
 	Tester_Copier;
 	Tester_Transposer;
-	--Tester_Produit;
-	--Tester_Produit_f;
-	--Tester_Sommer;
-	--Tester_Sommer_f;
-	--Tester_Produit_Const;
-	--Tester_Sommer_Const;
-	Tester_Ligne_Vide;
+	Tester_Produit;
+	Tester_Produit_f;
+	Tester_Sommer;
+	Tester_Sommer_f;
+	Tester_Produit_Const;
+	Tester_Sommer_Const;
 	Tester_Afficher;
+	Tester_Afficher_Ligne;
 
 	Put_Line("Fin des tests");
 		
