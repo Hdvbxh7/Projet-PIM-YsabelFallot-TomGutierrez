@@ -1,0 +1,26 @@
+V "GNAT Lib v12"
+A -gnata
+A -gnatwa
+P ZX
+
+RN
+RV NO_ELABORATION_CODE
+
+U matrice_exceptions%s	matrice_exceptions.ads	789add11 EE OO PK
+Z system%s		system.ads		system.ali
+Z system.exception_table%s  s-exctab.adb	s-exctab.ali
+Z system.standard_library%s  s-stalib.adb	s-stalib.ali
+
+D ada.ads		20230508121439 76789da1 ada%s
+D a-unccon.ads		20230508121439 0e9b276f ada.unchecked_conversion%s
+D matrice_exceptions.ads  20231214170434 789add11 matrice_exceptions%s
+D system.ads		20230508121439 a2da961d system%s
+D s-exctab.ads		20230508121439 91bef6ef system.exception_table%s
+D s-stalib.ads		20230508121439 1c9580f6 system.standard_library%s
+G a e
+X 3 matrice_exceptions.ads
+2K9*Matrice_Exceptions 8l5 8e23
+4X9*INDICE_INVALIDE_EXCEPTION
+5X9*PRODUIT_INDEFINI_EXCEPTION
+6X9*SOMME_INDEFINIE_EXCEPTION
+
