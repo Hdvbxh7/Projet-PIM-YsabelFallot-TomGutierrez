@@ -75,6 +75,7 @@ procedure Produit(A : in T_Matrice_Creuse; B : in T_Matrice_Creuse; Mat_Res : ou
 	Valeur : T_Reel;
 	Curseur_Ligne : T_Ptr_Ligne;
 	Curseur_Liste_Ligne : T_Liste_Ligne;
+	Num_Ligne : Integer;
 	begin
 		-- Vérification de la compatibilité des matrices pour le produit matriciel
 		if A.Nb_Colonne /= B.Nb_Ligne then
@@ -85,29 +86,25 @@ procedure Produit(A : in T_Matrice_Creuse; B : in T_Matrice_Creuse; Mat_Res : ou
 		--Initialiser(Mat_Res, A.Nb_Ligne, B.Nb_Colonne);
 		
 		-- Calcul des coefficients de la matrice résultat
-		for i in 1..A.Nb_Ligne loop
-			-- On regarde si une ligne de A est vide
-			if not Ligne_Vide(i,A) then
-				for j in 1.. B.Nb_Colonne loop
-					Valeur := Zero;
-					
-					Curseur_Ligne := A.Matrice_Creuse;
-					while Curseur_Ligne.all.Num_Ligne /= i loop
-						Curseur_Ligne := Curseur_Ligne.all.Ligne_Suivante;
-					end loop;
-					
-					Curseur_Liste_Ligne := Curseur_Ligne.all.Ligne_Actuelle;
-					while Curseur_Liste_Ligne /= null loop
-						Valeur := Valeur + Obtenir_Val(A,i,Curseur_Liste_Ligne.all.Colonne) * Obtenir_Val(B,Curseur_Liste_Ligne.all.Colonne,j);
-						Curseur_Liste_Ligne := Curseur_Liste_Ligne.all.Suivant;
-					end loop;
-					
-					if Valeur /= Zero then
-						Enregistrer(Mat_Res,i,j,Valeur);
-					end if;
+		
+		Curseur_Ligne := A.Matrice_Creuse;
+		while Curseur_Ligne /= null loop
+			Num_Ligne := Curseur_Ligne.all.Num_Ligne;
+			for j in 1.. B.Nb_Colonne loop
+				Valeur := Zero;	
+				Curseur_Liste_Ligne := Curseur_Ligne.all.Ligne_Actuelle;
+				while Curseur_Liste_Ligne /= null loop
+					Valeur := Valeur + Obtenir_Val(A,Num_Ligne,Curseur_Liste_Ligne.all.Colonne) * Obtenir_Val(B,Curseur_Liste_Ligne.all.Colonne,j);
+					Curseur_Liste_Ligne := Curseur_Liste_Ligne.all.Suivant;
 				end loop;
-			end if;
-		end loop;		
+					
+				if Valeur /= Zero then
+					Enregistrer(Mat_Res,Num_Ligne,j,Valeur);
+				end if;
+			end loop;
+			Curseur_Ligne := Curseur_Ligne.all.Ligne_Suivante;
+		end loop;
+		
 end Produit;
 
 -- TODO non modifée
