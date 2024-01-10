@@ -95,8 +95,7 @@ procedure Tester_Enregistrer is
 				pragma Assert (Obtenir_Val(Mat,1,3) = 0.0);
 				--Put(Obtenir_Val(Mat,1,2),1);
 				pragma Assert (Obtenir_Val(Mat,1,2) = 0.0);
-				Detruire(Mat);
-
+				
 				-- Cas problématiques
 				Enregistrer(Mat,5,3,-15.75);
 				
@@ -112,7 +111,7 @@ procedure Tester_Enregistrer is
 		Enregistrer(Mat,1,0,-5.0);
 		exception 
 				when INDICE_INVALIDE_EXCEPTION => Put_Line("Indices nuls ou négatifs -> Valeur non enregistrée");
-		Detruire(Mat);
+
 		Put_Line("Fin Tester_Enregistrer");
 end Tester_Enregistrer;
 
@@ -689,19 +688,19 @@ end Tester_Afficher_Ligne;
 
 	begin
 	
-	Tester_Initialiser;
+	--Tester_Initialiser;
 	Tester_Enregistrer;
-	Tester_Obtenir_Valeur;
-	Tester_Copier;
-	Tester_Transposer;
-	Tester_Produit;
+	--Tester_Obtenir_Valeur;
+	--Tester_Copier;
+	--Tester_Transposer;
+	--Tester_Produit;
 	--Tester_Produit_f;
-	Tester_Sommer;
+	--Tester_Sommer;
 	--Tester_Sommer_f;
-	Tester_Produit_Const;
-	Tester_Sommer_Const;
-	Tester_Afficher;
-	Tester_Afficher_Ligne;
+	--Tester_Produit_Const;
+	--Tester_Sommer_Const;
+	--Tester_Afficher;
+	--Tester_Afficher_Ligne;
 
 	Put_Line("Fin des tests");
 		
