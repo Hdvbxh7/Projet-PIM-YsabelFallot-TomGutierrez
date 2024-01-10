@@ -271,12 +271,20 @@ procedure Tester_Produit is
 			
 			Initialiser(Res,4,4);
 			Produit(A,B,Res);
+			New_Line;
+			Afficher_Mat(A);
+			New_Line;
+			Afficher_Mat(B);
+			New_Line;
+			Afficher_Mat(Res);
+			New_Line;
 			for i in 1..Nombre_Lignes(A) loop
 				for j in 1.. Nombre_Colonnes(B) loop
 					somme_ligneA_colonneB := 0.0;
 					for k in 1.. Nombre_Colonnes(A) loop
 						somme_ligneA_colonneB := somme_ligneA_colonneB + Obtenir_Val(A,i,k)*Obtenir_Val(B,k,j);
 					end loop;
+					pragma Assert(somme_ligneA_colonneB = Obtenir_Val(Res,i,j));
 				end loop;
 			end loop;
 			Detruire(A);
@@ -291,12 +299,24 @@ procedure Tester_Produit is
 			
 			Initialiser(Res,4,2);
 			Produit(A,B,Res);
+			New_Line;
+			Afficher_Mat(A);
+			New_Line;
+			Afficher_Mat(B);
+			New_Line;
+			Afficher_Mat(Res);
+			New_Line;
 			for i in 1..Nombre_Lignes(A) loop
 				for j in 1.. Nombre_Colonnes(B) loop
 					somme_ligneA_colonneB := 0.0;
 					for k in 1.. Nombre_Colonnes(A) loop
 						somme_ligneA_colonneB := somme_ligneA_colonneB + Obtenir_Val(A,i,k)*Obtenir_Val(B,k,j);
 					end loop;
+					New_Line;
+					Put(somme_ligneA_colonneB);
+					New_Line;
+					Put(Obtenir_Val(Res,i,j));
+					New_Line;
 					pragma Assert(somme_ligneA_colonneB = Obtenir_Val(Res,i,j));
 				end loop;
 			end loop;
