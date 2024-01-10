@@ -1,9 +1,17 @@
 with Ada.Text_IO;           use Ada.Text_IO;
 with Ada.Float_Text_IO;   use Ada.Float_Text_IO;
 with Matrice_Exceptions;         use Matrice_Exceptions;
+
+
 with Matrice;
 
+
 procedure test_matrice is
+
+
+--	package Double_IO is new Ada.Text_IO.Float_IO (T_Double);
+-- use Double_IO;
+
 
 -- Instanciation des matrices
 package Matrice_Reel is
@@ -31,6 +39,7 @@ procedure Tester_Initialiser is
 					pragma Assert (Obtenir_Val(Mat,i,j) = 0.0);
 				end loop;
 			end loop;
+			Detruire(Mat);
 			
 			Initialiser(Mat, 1,4,6.0);
 			pragma Assert (Nombre_Lignes(Mat) = 1);
@@ -40,6 +49,7 @@ procedure Tester_Initialiser is
 					pragma Assert (Obtenir_Val(Mat,i,j) = 6.0);
 				end loop;
 			end loop;
+			Detruire(Mat);
 			
 			Initialiser(Mat, 1,4,-26.56);
 			pragma Assert (Nombre_Lignes(Mat) = 1);
@@ -49,15 +59,18 @@ procedure Tester_Initialiser is
 					pragma Assert (Obtenir_Val(Mat,i,j) = -26.56);
 				end loop;
 			end loop;
+			Detruire(Mat);
 			
 			-- Cas problématiques
 			Initialiser(Mat,5,-2,1.0);
+			Detruire(Mat);
 			
 			exception 
 				when INDICE_INVALIDE_EXCEPTION => Put_Line("Dimensions nulles ou négatives -> matrice non initialisée");
 			end;
 		
 		Initialiser(Mat,-1,0,0.0);
+		Detruire(Mat);
 		
 		exception 
 			when INDICE_INVALIDE_EXCEPTION => Put_Line("Dimensions nulles ou négatives -> matrice non initialisée");
@@ -77,26 +90,31 @@ procedure Tester_Enregistrer is
 				Enregistrer(Mat,3,1,46.0);
 				pragma Assert (Obtenir_Val(Mat,2,2) = 50.0);
 				pragma Assert (Obtenir_Val(Mat,3,1) = 46.0);
+				Detruire(Mat);
 				
 				
 				Enregistrer(Mat,1,3,-15.75);
 				Enregistrer(Mat,4,2,-5.0);
 				pragma Assert (Obtenir_Val(Mat,1,3) = -15.75);
 				pragma Assert (Obtenir_Val(Mat,4,2) = -5.0);
+				Detruire(Mat);
 
 				-- Cas problématiques
 				Enregistrer(Mat,5,3,-15.75);
+				Detruire(Mat);
 				
 				exception 
 					when INDICE_INVALIDE_EXCEPTION => Put_Line("Indices nuls ou négatifs -> Valeur non enregistrée");
 				end;
 				
 			Enregistrer(Mat,4,-2,-5.0);
+			Detruire(Mat);
 			
 			exception 
 					when INDICE_INVALIDE_EXCEPTION => Put_Line("Indices nuls ou négatifs -> Valeur non enregistrée");
 			end;
 		Enregistrer(Mat,1,0,-5.0);
+		Detruire(Mat);
 		exception 
 				when INDICE_INVALIDE_EXCEPTION => Put_Line("Indices nuls ou négatifs -> Valeur non enregistrée");
 		
@@ -118,6 +136,7 @@ procedure Tester_Obtenir_Valeur is
 				pragma Assert (Obtenir_Val(Mat,1,3) = 0.0);
 				pragma Assert (Obtenir_Val(Mat,1,3) = 0.0);
 				
+				
 				-- Cas problématiques
 				Put(Obtenir_Val(Mat,5,2));
 				
@@ -135,7 +154,7 @@ procedure Tester_Obtenir_Valeur is
 		
 		exception 
 					when INDICE_INVALIDE_EXCEPTION => Put_Line("Indices nuls ou négatifs -> Valeur non lue");
-		
+		Detruire(Mat);
 		Put_Line("Fin Tester_Obtenir_Valeur");
 		
 end Tester_Obtenir_Valeur;
@@ -156,6 +175,7 @@ procedure Tester_Transposer is
 				pragma Assert (Obtenir_Val(Mat,i,j) = Obtenir_Val(Trans,j,i));
 			end loop;
 		end loop;
+		Detruire(Mat);
 		
 		
 		Initialiser(Mat,3,2,0.0);
@@ -172,6 +192,8 @@ procedure Tester_Transposer is
 			end loop;
 		end loop;
 		Put_Line("Fin Tester_Transposer");
+		Detruire(Mat);
+		Detruire(Trans);
 		
 end Tester_Transposer;
 

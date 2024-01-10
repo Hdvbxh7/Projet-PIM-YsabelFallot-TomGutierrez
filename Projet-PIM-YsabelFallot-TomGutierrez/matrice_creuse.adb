@@ -51,13 +51,12 @@ procedure Detruire (Mat : in out T_Matrice_Creuse) is
     	
     end Detruire;
 
-function Transposer(Mat : in T_Matrice_Creuse) return T_Matrice_Creuse is
-		Mat_Res : T_Matrice_Creuse;
+procedure Transposer(Mat : in T_Matrice_Creuse; Mat_Res: out T_Matrice_Creuse) is
 		Curseur_Ligne : T_Ptr_Ligne;
 		Curseur_Liste_Ligne : T_Liste_Ligne;
 	begin
 		-- Initialisation de la matrice transposée
-		Initialiser(Mat_Res, Mat.Nb_Colonne, Mat.Nb_Ligne);
+		--Initialiser(Mat_Res, Mat.Nb_Colonne, Mat.Nb_Ligne);
 		
 		-- Définition des coefficients de la matrice transposée
 		Curseur_Ligne := Mat.Matrice_Creuse;
@@ -69,7 +68,6 @@ function Transposer(Mat : in T_Matrice_Creuse) return T_Matrice_Creuse is
 			end loop;
 			Curseur_Ligne := Curseur_Ligne.all.Ligne_Suivante;
 		end loop;
-		return Mat_res;
 end Transposer;
 
 -- TODO non modifée
@@ -82,7 +80,7 @@ procedure Produit(A : in T_Matrice_Creuse; B : in T_Matrice_Creuse; Mat_Res : ou
 		end if;
 		
 		-- Initialisation de la matrice résultat TODO check avec TOM
-		Initialiser(Mat_Res, A.Nb_Ligne, B.Nb_Colonne);
+		--Initialiser(Mat_Res, A.Nb_Ligne, B.Nb_Colonne);
 		
 		-- Calcul des coefficients de la matrice résultat
 		for i in 1..A.Nb_Ligne loop
@@ -111,7 +109,7 @@ function Produit_f(A : in T_Matrice_Creuse; B : in T_Matrice_Creuse) return T_Ma
 		end if;
 		
 		-- Initialisation de la matrice résultat
-		Initialiser(Mat_Res, A.Nb_Ligne, B.Nb_Colonne);
+		--Initialiser(Mat_Res, A.Nb_Ligne, B.Nb_Colonne);
 		
 		-- Calcul des coefficients de la matrice résultat
 		for i in 1..A.Nb_Ligne loop
@@ -137,7 +135,7 @@ procedure Copier(Mat : in T_Matrice_Creuse; Copie : out T_Matrice_Creuse) is
 	Curseur_Liste_Ligne : T_Liste_Ligne;
 	begin
 		-- Initialisation de la matrice copie
-		Initialiser(Copie, Mat.Nb_Ligne, Mat.Nb_Colonne);
+		--Initialiser(Copie, Mat.Nb_Ligne, Mat.Nb_Colonne);
 		
 		-- Copie des coefficients de Mat dans Copie
 		Curseur_Ligne := Mat.Matrice_Creuse;
@@ -162,7 +160,7 @@ procedure Sommer(A : in T_Matrice_Creuse; B : in T_Matrice_Creuse; Mat_Res : out
 		end if;
 		
 		-- Initialisation de la matrice résultat
-		Initialiser(Mat_Res, A.Nb_Ligne, B.Nb_Colonne);
+		--Initialiser(Mat_Res, A.Nb_Ligne, B.Nb_Colonne);
 		
 		-- Calcul des coefficients de la matrice résultat
 		-- On regarde tous les coefficients non  nuls de A
@@ -205,7 +203,7 @@ function Sommer_f(A : in T_Matrice_Creuse; B : in T_Matrice_Creuse) return T_Mat
 		end if;
 		
 		-- Initialisation de la matrice résultat
-		Initialiser(Mat_Res, A.Nb_Ligne, B.Nb_Colonne);
+		-- Initialiser(Mat_Res, A.Nb_Ligne, B.Nb_Colonne);
 		
 		-- Calcul des coefficients de la matrice résultat
 		-- On regarde tous les coefficients non  nuls de A
@@ -287,6 +285,30 @@ procedure Enregistrer(Mat : in out T_Matrice_Creuse; Ind_Ligne : in Integer; Ind
 					end if;
 	end Enregistrer_Ptr_Ligne;
 	
+	procedure Detruire_Ptr_Liste(Liste_Ptr_Ligne : in out T_Ptr_Ligne ; Ind_Ligne: in Integer) is
+	Cuseur_Ptr_Ligne : T_Ptr_Ligne;
+	precedent : T_Ptr_Ligne;
+	begin
+		Cuseur_Ptr_Ligne := Liste_Ptr_Ligne;
+		precedent := null;
+		while Cuseur_Ptr_Ligne.all.Num_Ligne /= Ind_Ligne loop
+			precedent := Cuseur_Ptr_Ligne;
+			Cuseur_Ptr_Ligne := Cuseur_Ptr_Ligne.all.Ligne_Suivante;
+		end loop;
+		if Cuseur_Ptr_Ligne.all.Ligne_Actuelle=null then
+			if precedent = null then 
+				-- On supprime l'élément de tête
+				precedent := Liste_Ptr_Ligne;
+				Liste_Ptr_Ligne:=Liste_Ptr_Ligne.all.Ligne_Suivante;
+				Free_Ptr_Ligne(precedent);
+			else
+				Precedent.all.Ligne_Suivante :=Cuseur_Ptr_Ligne.all.Ligne_Suivante;
+				Free_Ptr_Ligne(Cuseur_Ptr_Ligne);
+			end if;
+		end if;
+	end Detruire_Ptr_Liste;
+	
+	
 	Ligne_Enregistrement : T_Ptr_Ligne;
 	
 	begin	
@@ -302,6 +324,7 @@ procedure Enregistrer(Mat : in out T_Matrice_Creuse; Ind_Ligne : in Integer; Ind
 			
 				if Valeur = Zero and then Obtenir_Val(Mat,Ind_Ligne, Ind_Colonne) /= Zero then
 					Detruire_Cellule(Ligne_Enregistrement.all.Ligne_Actuelle,Ind_Colonne);
+					Detruire_Ptr_Liste(Ligne_Enregistrement, Ind_Ligne);
 				elsif Valeur /= Zero then
 					Enregistrer_Ligne(Ligne_Enregistrement.all.Ligne_Actuelle,Ind_Colonne,Valeur);
 				end if;

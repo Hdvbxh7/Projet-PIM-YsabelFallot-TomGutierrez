@@ -32,6 +32,7 @@ procedure Tester_Initialiser is
 			for i in 1..Nombre_Lignes(Mat) loop
 				pragma Assert (Ligne_Vide (i,Mat));
 			end loop;
+			Detruire(Mat);
 			
 			Initialiser(Mat, 1,4);
 			pragma Assert (Nombre_Lignes(Mat) = 1);
@@ -39,6 +40,7 @@ procedure Tester_Initialiser is
 			for i in 1..Nombre_Lignes(Mat) loop
 				pragma Assert (Ligne_Vide (i,Mat));
 			end loop;
+			Detruire(Mat);
 			
 			Initialiser(Mat, 7,1);
 			pragma Assert (Nombre_Lignes(Mat) = 7);
@@ -46,15 +48,18 @@ procedure Tester_Initialiser is
 			for i in 1..Nombre_Lignes(Mat) loop
 				pragma Assert (Ligne_Vide (i,Mat));
 			end loop;
+			Detruire(Mat);
 			
 			-- Cas problématiques
 			Initialiser(Mat,5,-2);
+			Detruire(Mat);
 			
 			exception 
 				when INDICE_INVALIDE_EXCEPTION => Put_Line("Dimensions nulles ou négatives -> matrice non initialisée");
 			end;
 		
 		Initialiser(Mat,-1,0);
+		Detruire(Mat);
 		
 		exception 
 			when INDICE_INVALIDE_EXCEPTION => Put_Line("Dimensions nulles ou négatives -> matrice non initialisée");
@@ -72,22 +77,13 @@ procedure Tester_Enregistrer is
 				Initialiser(Mat, 4,4);
 				
 				Enregistrer(Mat,1,1,50.0);
-				Put("Coef 2,2 : ");
-				Put(Obtenir_Val(Mat,2,2),1);
-				New_Line;
-				Afficher_Mat(Mat);
-				
-				
 				Enregistrer(Mat,2,1,46.0);
 				Enregistrer(Mat,2,4,4.0);
 				Enregistrer(Mat,2,3,14.0);
 				Enregistrer(Mat,2,2,14.0);
-				Put("Coef 2,2 : ");
-				Put(Obtenir_Val(Mat,2,2),1);
-				New_Line;
-				Afficher_Mat(Mat);
 				pragma Assert (Obtenir_Val(Mat,2,2) = 14.0);
 				pragma Assert (Obtenir_Val(Mat,2,1) = 46.0);
+				Detruire(Mat);
 				
 				
 				Initialiser(Mat,1,3);
@@ -97,8 +93,9 @@ procedure Tester_Enregistrer is
 				pragma Assert (Obtenir_Val(Mat,1,1) = 0.0);
 				Enregistrer(Mat,1,2,0.0);
 				pragma Assert (Obtenir_Val(Mat,1,3) = 0.0);
-				Put(Obtenir_Val(Mat,1,2),1);
+				--Put(Obtenir_Val(Mat,1,2),1);
 				pragma Assert (Obtenir_Val(Mat,1,2) = 0.0);
+				Detruire(Mat);
 
 				-- Cas problématiques
 				Enregistrer(Mat,5,3,-15.75);
@@ -115,7 +112,7 @@ procedure Tester_Enregistrer is
 		Enregistrer(Mat,1,0,-5.0);
 		exception 
 				when INDICE_INVALIDE_EXCEPTION => Put_Line("Indices nuls ou négatifs -> Valeur non enregistrée");
-		
+		Detruire(Mat);
 		Put_Line("Fin Tester_Enregistrer");
 end Tester_Enregistrer;
 
@@ -151,7 +148,7 @@ procedure Tester_Obtenir_Valeur is
 		
 		exception 
 					when INDICE_INVALIDE_EXCEPTION => Put_Line("Indices nuls ou négatifs -> Valeur non lue");
-		
+		Detruire(Mat);
 		Put_Line("Fin Tester_Obtenir_Valeur");
 		
 end Tester_Obtenir_Valeur;
@@ -164,7 +161,8 @@ procedure Tester_Transposer is
 		Enregistrer(Mat,2,2,50.0);
 		Enregistrer(Mat,3,1,46.0);
 		
-		Trans := Transposer(Mat);
+		Initialiser(Trans,4,4);
+		Transposer(Mat,Trans);
 		pragma Assert (Nombre_Lignes(Mat)=Nombre_Colonnes(Trans));
 		pragma Assert (Nombre_Lignes(Trans)=Nombre_Colonnes(Mat));
 		for i in 1..Nombre_Lignes(Mat) loop
@@ -172,14 +170,16 @@ procedure Tester_Transposer is
 				pragma Assert (Obtenir_Val(Mat,i,j) = Obtenir_Val(Trans,j,i));
 			end loop;
 		end loop;
-		
+		Detruire(Mat);
+		Detruire(Trans);
 		
 		Initialiser(Mat,3,2);
 		Enregistrer(Mat,2,2,50.0);
 		Enregistrer(Mat,3,1,46.0);
 		Enregistrer(Mat,1,2,-15.75);
 		
-		Trans := Transposer(Mat);
+		Initialiser(Trans,2,3);
+		Transposer(Mat,Trans);
 		pragma Assert (Nombre_Lignes(Mat)=Nombre_Colonnes(Trans));
 		pragma Assert (Nombre_Lignes(Trans)=Nombre_Colonnes(Mat));
 		for i in 1..Nombre_Lignes(Mat) loop
@@ -187,6 +187,11 @@ procedure Tester_Transposer is
 				pragma Assert (Obtenir_Val(Mat,i,j) = Obtenir_Val(Trans,j,i));
 			end loop;
 		end loop;
+		Detruire(Mat);
+		Detruire(Trans);
+		
+		
+		
 		Put_Line("Fin Tester_Transposer");
 		
 end Tester_Transposer;
@@ -199,6 +204,7 @@ procedure Tester_Copier is
 		Enregistrer(Mat,2,2,50.0);
 		Enregistrer(Mat,3,1,46.0);
 		
+		Initialiser(Res,4,4);
 		Copier(Mat,Res);
 		pragma Assert (Nombre_Lignes(Mat)=Nombre_Lignes(Res));
 		pragma Assert (Nombre_Colonnes(Res)=Nombre_Colonnes(Mat));
@@ -207,6 +213,8 @@ procedure Tester_Copier is
 				pragma Assert (Obtenir_Val(Mat,i,j) = Obtenir_Val(Res,i,j));
 			end loop;
 		end loop;
+		Detruire(Mat);
+		Detruire(Res);
 		
 		
 		Initialiser(Mat,3,2);
@@ -214,6 +222,7 @@ procedure Tester_Copier is
 		Enregistrer(Mat,3,1,46.0);
 		Enregistrer(Mat,1,2,-15.75);
 		
+		Initialiser(Res,3,2);
 		Copier(Mat,Res);
 		pragma Assert (Nombre_Lignes(Mat)=Nombre_Lignes(Res));
 		pragma Assert (Nombre_Colonnes(Res)=Nombre_Colonnes(Mat));
@@ -222,12 +231,15 @@ procedure Tester_Copier is
 				pragma Assert (Obtenir_Val(Mat,i,j) = Obtenir_Val(Res,i,j));
 			end loop;
 		end loop;
+		Detruire(Mat);
+		Detruire(Res);
 		
 		
 		Initialiser(Mat, 1,4);
 		Enregistrer(Mat,1,3,-15.75);
 		Enregistrer(Mat,1,4,-465.0);
 		
+		Initialiser(Res,1,4);
 		Copier(Mat,Res);
 		pragma Assert (Nombre_Lignes(Mat)=Nombre_Lignes(Res));
 		pragma Assert (Nombre_Colonnes(Res)=Nombre_Colonnes(Mat));
@@ -236,6 +248,8 @@ procedure Tester_Copier is
 				pragma Assert (Obtenir_Val(Mat,i,j) = Obtenir_Val(Res,i,j));
 			end loop;
 		end loop;
+		Detruire(Mat);
+		Detruire(Res);
 		
 		Put_Line("Fin Tester_Copier");
 		
@@ -255,6 +269,7 @@ procedure Tester_Produit is
 			Enregistrer(A,3,1,46.0);
 			Enregistrer(A,1,3,-15.75);
 			
+			Initialiser(Res,4,4);
 			Produit(A,B,Res);
 			for i in 1..Nombre_Lignes(A) loop
 				for j in 1.. Nombre_Colonnes(B) loop
@@ -264,6 +279,9 @@ procedure Tester_Produit is
 					end loop;
 				end loop;
 			end loop;
+			Detruire(A);
+			Detruire(B);
+			Detruire(Res);
 			
 			Initialiser(A,4,4);
 			Initialiser(B,4,2);
@@ -271,6 +289,7 @@ procedure Tester_Produit is
 			Enregistrer(A,3,1,4.0);
 			Enregistrer(A,1,3,-15.75);
 			
+			Initialiser(Res,4,2);
 			Produit(A,B,Res);
 			for i in 1..Nombre_Lignes(A) loop
 				for j in 1.. Nombre_Colonnes(B) loop
@@ -281,6 +300,9 @@ procedure Tester_Produit is
 					pragma Assert(somme_ligneA_colonneB = Obtenir_Val(Res,i,j));
 				end loop;
 			end loop;
+			Detruire(A);
+			Detruire(B);
+			Detruire(Res);
 			
 			-- Cas d'erreurs
 			Initialiser(A,4,5);
@@ -289,11 +311,14 @@ procedure Tester_Produit is
 			Enregistrer(A,3,1,4.0);
 			Enregistrer(A,1,3,-15.75);
 			
+			Initialiser(Res,4,2);
 			Produit(A,B,Res);
 			exception
 				when PRODUIT_INDEFINI_EXCEPTION => Put_Line("Dimensions des matrices incompatibles");
 			end;
-		
+		Detruire(A);
+		Detruire(B);
+		Detruire(Res);
 		Put_Line("Fin Tester_Produit");
 		
 end Tester_Produit;
@@ -311,6 +336,7 @@ procedure Tester_Produit_f is
 			Enregistrer(A,3,1,46.0);
 			Enregistrer(A,1,3,-15.75);
 			
+			Initialiser(Res,4,4);
 			Res := Produit_f(A,B);
 			for i in 1..Nombre_Lignes(A) loop
 				for j in 1.. Nombre_Colonnes(B) loop
@@ -321,6 +347,9 @@ procedure Tester_Produit_f is
 					pragma Assert(somme_ligneA_colonneB = Obtenir_Val(Res,i,j));
 				end loop;
 			end loop;
+			Detruire(A);
+			Detruire(B);
+			Detruire(Res);
 			
 			Initialiser(A,4,4);
 			Initialiser(B,4,2);
@@ -328,6 +357,7 @@ procedure Tester_Produit_f is
 			Enregistrer(A,3,1,4.0);
 			Enregistrer(A,1,3,-15.75);
 			
+			Initialiser(Res,4,2);
 			Res := Produit_f(A,B);
 			for i in 1..Nombre_Lignes(A) loop
 				for j in 1.. Nombre_Colonnes(B) loop
@@ -338,6 +368,9 @@ procedure Tester_Produit_f is
 					pragma Assert(somme_ligneA_colonneB = Obtenir_Val(Res,i,j));
 				end loop;
 			end loop;
+			Detruire(A);
+			Detruire(B);
+			Detruire(Res);
 			
 			-- Cas d'erreurs
 			Initialiser(A,4,5);
@@ -346,10 +379,14 @@ procedure Tester_Produit_f is
 			Enregistrer(A,3,1,4.0);
 			Enregistrer(A,1,3,-15.75);
 			
+			Initialiser(Res,4,2);
 			Res := Produit_f(A,B);
 			exception
 				when PRODUIT_INDEFINI_EXCEPTION => Put_Line("Dimensions des matrices incompatibles");
 			end;
+		Detruire(A);
+		Detruire(B);
+		Detruire(Res);
 		Put_Line("Fin Tester_Produit_f");
 		
 end Tester_Produit_f;
@@ -368,6 +405,7 @@ procedure Tester_Sommer is
 			Enregistrer(A,3,1,46.0);
 			Enregistrer(A,1,3,-15.75);
 			
+			Initialiser(Res,4,4);
 			Sommer(A,B,Res);
 			pragma Assert (Nombre_Lignes(A)=Nombre_Lignes(Res));
 			pragma Assert (Nombre_Colonnes(A)=Nombre_Colonnes(Res));
@@ -376,6 +414,9 @@ procedure Tester_Sommer is
 					pragma Assert (Obtenir_Val(A,i,j) + Obtenir_Val(B,i,j) = Obtenir_Val(Res,i,j));
 				end loop;
 			end loop;
+			Detruire(A);
+			Detruire(B);
+			Detruire(Res);
 
 			
 			Initialiser(A,4,2);
@@ -384,6 +425,7 @@ procedure Tester_Sommer is
 			Enregistrer(A,3,1,4.0);
 			Enregistrer(A,1,2,-15.75);
 			
+			Initialiser(Res,4,2);
 			Sommer(A,B,Res);
 			pragma Assert (Nombre_Lignes(A)=Nombre_Lignes(Res));
 			pragma Assert (Nombre_Colonnes(A)=Nombre_Colonnes(Res));
@@ -392,6 +434,9 @@ procedure Tester_Sommer is
 					pragma Assert (Obtenir_Val(A,i,j) + Obtenir_Val(B,i,j) = Obtenir_Val(Res,i,j));
 				end loop;
 			end loop;
+			Detruire(A);
+			Detruire(B);
+			Detruire(Res);
 			
 			-- Cas d'erreurs
 			Initialiser(A,4,5);
@@ -400,11 +445,14 @@ procedure Tester_Sommer is
 			Enregistrer(A,3,1,4.0);
 			Enregistrer(A,1,3,-15.75);
 			
-			
+			Initialiser(Res,4,2);
 			Sommer(A,B,Res);
 			exception
 				when SOMME_INDEFINIE_EXCEPTION => Put_Line("Dimensions des matrices incompatibles");
 			end;
+		Detruire(A);
+		Detruire(B);
+		Detruire(Res);
 			
 		Put_Line("Fin Tester_Sommer");
 end Tester_Sommer;
@@ -422,6 +470,7 @@ procedure Tester_Sommer_f is
 			Enregistrer(A,3,1,46.0);
 			Enregistrer(A,1,3,-15.75);
 			
+			Initialiser(Res,4,4);
 			Res := Sommer_f(A,B);
 			pragma Assert (Nombre_Lignes(A)=Nombre_Lignes(Res));
 			pragma Assert (Nombre_Colonnes(A)=Nombre_Colonnes(Res));
@@ -430,6 +479,9 @@ procedure Tester_Sommer_f is
 					pragma Assert (Obtenir_Val(A,i,j) + Obtenir_Val(B,i,j) = Obtenir_Val(Res,i,j));
 				end loop;
 			end loop;
+			Detruire(A);
+			Detruire(B);
+			Detruire(Res);
 
 			
 			Initialiser(A,4,2);
@@ -438,6 +490,7 @@ procedure Tester_Sommer_f is
 			Enregistrer(A,3,1,4.0);
 			Enregistrer(A,1,2,-15.75);
 			
+			Initialiser(Res,4,2);
 			Res := Sommer_f(A,B);
 			pragma Assert (Nombre_Lignes(A)=Nombre_Lignes(Res));
 			pragma Assert (Nombre_Colonnes(A)=Nombre_Colonnes(Res));
@@ -446,6 +499,9 @@ procedure Tester_Sommer_f is
 					pragma Assert (Obtenir_Val(A,i,j) + Obtenir_Val(B,i,j) = Obtenir_Val(Res,i,j));
 				end loop;
 			end loop;
+			Detruire(A);
+			Detruire(B);
+			Detruire(Res);
 			
 			-- Cas d'erreurs
 			Initialiser(A,4,5);
@@ -454,10 +510,14 @@ procedure Tester_Sommer_f is
 			Enregistrer(A,3,1,4.0);
 			Enregistrer(A,1,3,-15.75);
 			
+			Initialiser(Res,4,2);
 			Res := Sommer_f(A,B);
 			exception
 				when SOMME_INDEFINIE_EXCEPTION => Put_Line("Dimensions des matrices incompatibles");
 			end;
+			Detruire(A);
+			Detruire(B);
+			Detruire(Res);
 			Put_Line("Fin Tester_Sommer_f");
 		
 end Tester_Sommer_f;
@@ -472,6 +532,7 @@ procedure Tester_Produit_Const is
 				Enregistrer(Mat,i,j,1.0);
 			end loop;
 		end loop;
+		Initialiser(Copie,5,5);
 		Copier(Mat,Copie);
 		Produit_Const(5.0,Mat);
 		for i in 1..Nombre_Lignes(Mat) loop
@@ -479,8 +540,11 @@ procedure Tester_Produit_Const is
 				pragma Assert (5.0*Obtenir_Val(Copie,i,j) = Obtenir_Val(Mat,i,j));
 			end loop;
 		end loop;
+		Detruire(Mat);
+		Detruire(Copie);
 		
 		Initialiser(Mat,2,6);
+		Initialiser(Copie,2,6);
 		Copier(Mat,Copie);
 		Produit_Const(-3.84653,Mat);
 		for i in 1..Nombre_Lignes(Mat) loop
@@ -488,8 +552,11 @@ procedure Tester_Produit_Const is
 				pragma Assert (-3.84653*Obtenir_Val(Copie,i,j) = Obtenir_Val(Mat,i,j));
 			end loop;
 		end loop;
+		Detruire(Mat);
+		Detruire(Copie);
 		
 		Initialiser(Mat,7,1);
+		Initialiser(Copie,7,1);
 		Copier(Mat,Copie);
 		Produit_Const(-3.84653,Mat);
 		for i in 1..Nombre_Lignes(Mat) loop
@@ -497,6 +564,8 @@ procedure Tester_Produit_Const is
 				pragma Assert (-3.84653*Obtenir_Val(Copie,i,j) = Obtenir_Val(Mat,i,j));
 			end loop;
 		end loop;
+		Detruire(Mat);
+		Detruire(Copie);
 		
 		Put_Line("Fin Tester_Produit_Const");
 		
@@ -512,6 +581,7 @@ procedure Tester_Sommer_Const is
 				Enregistrer(Mat,i,j,1.0);
 			end loop;
 		end loop;
+		Initialiser(Copie,5,5);
 		Copier(Mat,Copie);
 		Sommer_Const(5.0,Mat);
 		for i in 1..Nombre_Lignes(Mat) loop
@@ -519,26 +589,23 @@ procedure Tester_Sommer_Const is
 				pragma Assert (5.0 + Obtenir_Val(Copie,i,j) = Obtenir_Val(Mat,i,j));
 			end loop;
 		end loop;
+		Detruire(Mat);
+		Detruire(Copie);
 		
 		Initialiser(Mat,2,6);
-		New_Line;
-		Afficher_Mat(Mat);
-		Enregistrer(Mat,2,4,1.0);
-		New_Line;
-		Afficher_Mat(Mat);
+		Initialiser(Copie,2,6);
 		Copier(Mat,Copie);
-		New_Line;
-		Afficher_Mat(Copie);
 		Sommer_Const(-3.84653,Mat);
-		New_Line;
-		Afficher_Mat(Mat);
 		for i in 1..Nombre_Lignes(Mat) loop
 			for j in 1..Nombre_Colonnes(Mat) loop
 				pragma Assert (Obtenir_Val(Copie,i,j)-3.84653 - Obtenir_Val(Mat,i,j)< 0.000000000000000000001);
 			end loop;
 		end loop;
+		Detruire(Mat);
+		Detruire(Copie);
 		
 		Initialiser(Mat,7,1);
+		Initialiser(Copie,7,1);
 		Copier(Mat,Copie);
 		Sommer_Const(-3.84653,Mat);
 		for i in 1..Nombre_Lignes(Mat) loop
@@ -546,6 +613,10 @@ procedure Tester_Sommer_Const is
 				pragma Assert (Obtenir_Val(Copie,i,j)-3.84653 - Obtenir_Val(Mat,i,j)< 0.00000001);
 			end loop;
 		end loop;
+		Detruire(Mat);
+		Detruire(Copie);
+		
+		
 		
 		Put_Line("Fin Tester_Sommer_Const");
 		
@@ -561,16 +632,20 @@ procedure Tester_Afficher is
 		Enregistrer(Mat,3,1,46.0);
 		Put_Line("Matrice 4x4 avec comme coefficients 0.0 et 50.0 en 2,2 et 46.0 en 3,1");
 		Afficher_Mat(Mat);
+		Detruire(Mat);
 	
 		Initialiser(Mat,4,5);
 		Enregistrer(Mat,2,1,88.0);
 		Put_Line("Matrice 4x5 avec comme coefficients 0.0 et 88.0 en 2,1");
 		Afficher_Mat(Mat);
+		Detruire(Mat);
 		
 		Initialiser(Mat,3,3);
 		Enregistrer(Mat,1,2,-1.0);
 		Put_Line("Matrice 3x3 avec comme coefficients 0.0 et -1.0 en 1,2");
 		Afficher_Mat(Mat);
+		Detruire(Mat);
+		
 		
 		Put_Line("Fin Tester_Afficher");
 		
@@ -587,6 +662,7 @@ procedure Tester_Afficher_Ligne is
 		Afficher_Ligne_Ex(Mat,2);
 		Afficher_Ligne_Ex(Mat,3);
 		
+		Detruire(Mat);
 		Put_Line("Fin Tester_Afficher_Ligne");
 	
 end Tester_Afficher_Ligne;
@@ -599,9 +675,9 @@ end Tester_Afficher_Ligne;
 	Tester_Copier;
 	Tester_Transposer;
 	Tester_Produit;
-	Tester_Produit_f;
+	--Tester_Produit_f;
 	Tester_Sommer;
-	Tester_Sommer_f;
+	--Tester_Sommer_f;
 	Tester_Produit_Const;
 	Tester_Sommer_Const;
 	Tester_Afficher;

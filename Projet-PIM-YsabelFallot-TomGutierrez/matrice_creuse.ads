@@ -16,7 +16,7 @@ package Matrice_Creuse is
     	procedure Detruire (Mat : in out T_Matrice_Creuse);
 	
 	-- Renvoie la transposer de la matrice Mat
-	function Transposer(Mat : in T_Matrice_Creuse) return T_Matrice_Creuse;
+	procedure Transposer(Mat : in T_Matrice_Creuse; Mat_Res : out T_Matrice_Creuse);
 	
 	-- Fait le produit matriciel de deux matrices et le stocke dans une troisième matrice
 	procedure Produit(A : in T_Matrice_Creuse; B : in T_Matrice_Creuse; Mat_Res : out T_Matrice_Creuse);
