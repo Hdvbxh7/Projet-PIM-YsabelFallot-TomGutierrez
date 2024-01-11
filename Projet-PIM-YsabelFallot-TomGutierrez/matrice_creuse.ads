@@ -3,11 +3,21 @@ generic
 	 type T_Reel is digits <>; --! type réel de précision quelconque
 	 --Num_Ligne : Integer; -- Nombre maximum de ligne possibles pour les matrices
 	 Zero :  T_Reel;
+	 Taille_Tab : Integer;
 	
 package Matrice_Creuse is
 
 	type T_Matrice_Creuse is  private;
 	type T_Liste_Ligne is private;
+	
+	type T_TableauElements is array (1..Taille_Tab) of T_Reel;
+
+    	type T_Tableau is
+		record
+		    Elements: T_TableauElements;
+		    Taille: Integer;
+		    -- Invariant: 0 <= Taille and Taille <= Capacite;
+		end record;
 	
 	-- Initialiser une matrice.avec tous ses coefficients qui valent Val
 	procedure Initialiser(Mat : out T_Matrice_Creuse; Taille_Ligne : in Integer; Taille_Colonne : in Integer);
@@ -32,6 +42,9 @@ package Matrice_Creuse is
 
 	-- Fait le produit d'une constante avec une matrice
 	procedure Produit_Const (Const : in T_Reel; Mat : in out T_Matrice_Creuse);
+	
+	-- Fait le produit entre une matrice pleine et une matrice creuse
+	function Produit_Tab_Creux (Tab : T_Tableau; Creux : T_Matrice_Creuse) return T_Tableau;
 	
 	-- Retourne la valeur aux coordonnées données
 	function Obtenir_Val(Mat: in T_Matrice_Creuse; Ind_Ligne : in Integer; Ind_Colonne : in Integer) return T_Reel;

@@ -7,7 +7,7 @@ procedure test_matrice_creuse is
 
 -- Instanciation des matrices
 package Matrice_Creuse_Reel is
-		new Matrice_Creuse( T_Reel => Float, Zero => 0.0);
+		new Matrice_Creuse( T_Reel => Float, Zero => 0.0, Taille_Tab => 15);
 	use Matrice_Creuse_Reel;
 	
 -- Instanciation de la fonction Afficher
@@ -21,6 +21,36 @@ procedure Afficher_Mat is
             
 procedure Afficher_Ligne_Ex is
             new Matrice_Creuse_Reel.Afficher_Ligne(Afficher_T_Reel_Float);
+            
+procedure Tester_Produit_Tab_Creux is
+	Res : T_Tableau;
+	Tab : T_Tableau;
+	Creux :T_Matrice_Creuse;
+	begin
+		Tab.Taille := 15;
+		for i in 1..Tab.Taille loop
+			Tab.Elements(i) := 5.0;
+		end loop;
+		
+		Initialiser(Creux, 15,15);
+		for i in 1..Nombre_Lignes(Creux) loop
+			Enregistrer(Creux,i,i,2.0);
+			for j in 1..Nombre_Colonnes(Creux)/2 loop
+				Enregistrer(Creux,i,j,3.0);
+			end loop;
+		end loop;
+		Afficher_Mat(Creux);
+            
+           	Res :=Produit_Tab_Creux(Tab,Creux);
+           	
+           	Put_Line("Res :");
+           	for i in 1..Res.Taille loop
+			Afficher_T_Reel_Float(Res.Elements(i));
+			Put(" | ");
+		end loop;
+		Detruire(Creux);
+           	
+end Tester_Produit_Tab_Creux;
 
 procedure Tester_Initialiser is
 	Mat : T_Matrice_Creuse;
@@ -565,6 +595,8 @@ end Tester_Afficher_Ligne;
 	Tester_Sommer_Const;
 	Tester_Afficher;
 	Tester_Afficher_Ligne;
+	
+	Tester_Produit_Tab_Creux;
 
 	Put_Line("Fin des tests");
 		

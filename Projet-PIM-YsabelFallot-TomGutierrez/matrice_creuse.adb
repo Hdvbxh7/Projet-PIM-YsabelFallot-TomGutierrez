@@ -1,6 +1,7 @@
 with Ada.Text_IO;            use Ada.Text_IO;
 with Matrice_Exceptions;         use Matrice_Exceptions; -- à voir
 with Ada.Unchecked_Deallocation;
+with Ada.Integer_Text_IO;   use Ada.Integer_Text_IO;
 
 
 package body Matrice_creuse is
@@ -106,6 +107,37 @@ procedure Produit(A : in T_Matrice_Creuse; B : in T_Matrice_Creuse; Mat_Res : ou
 		end loop;
 		
 end Produit;
+
+function Produit_Tab_Creux (Tab : in T_Tableau; Creux : in T_Matrice_Creuse) return T_Tableau is 
+	Res : T_Tableau;
+	Curseur_Ligne :T_Ptr_Ligne;
+	Curseur_Liste_Ligne : T_Liste_Ligne;
+	Num_Ligne :Integer;
+	Num_Colonne : Integer;
+	begin
+		Res.Taille := Tab.Taille;
+		for j in 1..Taille_Tab loop
+			Res.Elements(j) := Zero;
+		end loop;
+		
+		
+		--for j in 1..Taille_Tab loop
+			Curseur_Ligne := Creux.Matrice_Creuse;
+			while Curseur_Ligne /= null loop
+				Num_Ligne := Curseur_Ligne.all.Num_Ligne;
+				Curseur_Liste_Ligne := Curseur_Ligne.all.Ligne_Actuelle;
+				while Curseur_Liste_Ligne /= null  loop	
+					Num_Colonne := Curseur_Liste_Ligne.all.Colonne;
+					Res.Elements(Num_Colonne) :=  Res.Elements(Num_Colonne)  + Curseur_Liste_Ligne.all.Valeur*Tab.Elements(Num_Ligne);
+					Curseur_Liste_Ligne := Curseur_Liste_Ligne.all.Suivant;
+				end loop;
+				Curseur_Ligne := Curseur_Ligne.all.Ligne_Suivante;
+			end loop;
+		--end loop;
+	return Res;
+end Produit_Tab_Creux;
+		
+			
 
 procedure Copier(Mat : in T_Matrice_Creuse; Copie : out T_Matrice_Creuse) is
 	Curseur_Ligne : T_Ptr_Ligne;
