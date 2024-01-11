@@ -342,75 +342,6 @@ procedure Tester_Produit is
 		
 end Tester_Produit;
 
-procedure Tester_Produit_f is
-	A : T_Matrice_Creuse;
-	B : T_Matrice_Creuse;
-	Res : T_Matrice_Creuse;
-	somme_ligneA_colonneB: float;
-	begin
-		begin
-			Initialiser(A,4,4);
-			Initialiser(B,4,4);
-			Enregistrer(A,2,2,50.0);
-			Enregistrer(A,3,1,46.0);
-			Enregistrer(A,1,3,-15.75);
-			
-			Initialiser(Res,4,4);
-			Res := Produit_f(A,B);
-			for i in 1..Nombre_Lignes(A) loop
-				for j in 1.. Nombre_Colonnes(B) loop
-					somme_ligneA_colonneB := 0.0;
-					for k in 1.. Nombre_Colonnes(A) loop
-						somme_ligneA_colonneB := somme_ligneA_colonneB + Obtenir_Val(A,i,k)*Obtenir_Val(B,k,j);
-					end loop;
-					pragma Assert(somme_ligneA_colonneB = Obtenir_Val(Res,i,j));
-				end loop;
-			end loop;
-			Detruire(A);
-			Detruire(B);
-			Detruire(Res);
-			
-			Initialiser(A,4,4);
-			Initialiser(B,4,2);
-			Enregistrer(A,2,2,50.0);
-			Enregistrer(A,3,1,4.0);
-			Enregistrer(A,1,3,-15.75);
-			
-			Initialiser(Res,4,2);
-			Res := Produit_f(A,B);
-			for i in 1..Nombre_Lignes(A) loop
-				for j in 1.. Nombre_Colonnes(B) loop
-					somme_ligneA_colonneB := 0.0;
-					for k in 1.. Nombre_Colonnes(A) loop
-						somme_ligneA_colonneB := somme_ligneA_colonneB + Obtenir_Val(A,i,k)*Obtenir_Val(B,k,j);
-					end loop;
-					pragma Assert(somme_ligneA_colonneB = Obtenir_Val(Res,i,j));
-				end loop;
-			end loop;
-			Detruire(A);
-			Detruire(B);
-			Detruire(Res);
-			
-			-- Cas d'erreurs
-			Initialiser(A,4,5);
-			Initialiser(B,4,2);
-			Enregistrer(A,2,2,50.0);
-			Enregistrer(A,3,1,4.0);
-			Enregistrer(A,1,3,-15.75);
-			
-			Initialiser(Res,4,2);
-			Res := Produit_f(A,B);
-			exception
-				when PRODUIT_INDEFINI_EXCEPTION => Put_Line("Dimensions des matrices incompatibles");
-			end;
-		Detruire(A);
-		Detruire(B);
-		Detruire(Res);
-		Put_Line("Fin Tester_Produit_f");
-		
-end Tester_Produit_f;
-
--- TODO à changre
 procedure Tester_Sommer is
 	A : T_Matrice_Creuse;
 	B : T_Matrice_Creuse;
@@ -475,71 +406,6 @@ procedure Tester_Sommer is
 			
 		Put_Line("Fin Tester_Sommer");
 end Tester_Sommer;
-	
-procedure Tester_Sommer_f is
-	A : T_Matrice_Creuse;
-	B : T_Matrice_Creuse;
-	Res : T_Matrice_Creuse;
-	begin
-		begin
-	
-			Initialiser(A,4,4);
-			Initialiser(B,4,4);
-			Enregistrer(A,2,2,50.0);
-			Enregistrer(A,3,1,46.0);
-			Enregistrer(A,1,3,-15.75);
-			
-			Initialiser(Res,4,4);
-			Res := Sommer_f(A,B);
-			pragma Assert (Nombre_Lignes(A)=Nombre_Lignes(Res));
-			pragma Assert (Nombre_Colonnes(A)=Nombre_Colonnes(Res));
-			for i in 1..Nombre_Lignes(A) loop
-				for j in 1..Nombre_Colonnes(A) loop
-					pragma Assert (Obtenir_Val(A,i,j) + Obtenir_Val(B,i,j) = Obtenir_Val(Res,i,j));
-				end loop;
-			end loop;
-			Detruire(A);
-			Detruire(B);
-			Detruire(Res);
-
-			
-			Initialiser(A,4,2);
-			Initialiser(B,4,2);
-			Enregistrer(A,2,2,50.0);
-			Enregistrer(A,3,1,4.0);
-			Enregistrer(A,1,2,-15.75);
-			
-			Initialiser(Res,4,2);
-			Res := Sommer_f(A,B);
-			pragma Assert (Nombre_Lignes(A)=Nombre_Lignes(Res));
-			pragma Assert (Nombre_Colonnes(A)=Nombre_Colonnes(Res));
-			for i in 1..Nombre_Lignes(A) loop
-				for j in 1..Nombre_Colonnes(A) loop
-					pragma Assert (Obtenir_Val(A,i,j) + Obtenir_Val(B,i,j) = Obtenir_Val(Res,i,j));
-				end loop;
-			end loop;
-			Detruire(A);
-			Detruire(B);
-			Detruire(Res);
-			
-			-- Cas d'erreurs
-			Initialiser(A,4,5);
-			Initialiser(B,4,2);
-			Enregistrer(A,2,2,50.0);
-			Enregistrer(A,3,1,4.0);
-			Enregistrer(A,1,3,-15.75);
-			
-			Initialiser(Res,4,2);
-			Res := Sommer_f(A,B);
-			exception
-				when SOMME_INDEFINIE_EXCEPTION => Put_Line("Dimensions des matrices incompatibles");
-			end;
-			Detruire(A);
-			Detruire(B);
-			Detruire(Res);
-			Put_Line("Fin Tester_Sommer_f");
-		
-end Tester_Sommer_f;
 
 procedure Tester_Produit_Const is
 	Mat :  T_Matrice_Creuse;
@@ -688,19 +554,17 @@ end Tester_Afficher_Ligne;
 
 	begin
 	
-	--Tester_Initialiser;
+	Tester_Initialiser;
 	Tester_Enregistrer;
-	--Tester_Obtenir_Valeur;
-	--Tester_Copier;
-	--Tester_Transposer;
-	--Tester_Produit;
-	--Tester_Produit_f;
-	--Tester_Sommer;
-	--Tester_Sommer_f;
-	--Tester_Produit_Const;
-	--Tester_Sommer_Const;
-	--Tester_Afficher;
-	--Tester_Afficher_Ligne;
+	Tester_Obtenir_Valeur;
+	Tester_Copier;
+	Tester_Transposer;
+	Tester_Produit;
+	Tester_Sommer;
+	Tester_Produit_Const;
+	Tester_Sommer_Const;
+	Tester_Afficher;
+	Tester_Afficher_Ligne;
 
 	Put_Line("Fin des tests");
 		

@@ -21,17 +21,11 @@ package Matrice_Creuse is
 	-- Fait le produit matriciel de deux matrices et le stocke dans une troisième matrice
 	procedure Produit(A : in T_Matrice_Creuse; B : in T_Matrice_Creuse; Mat_Res : out T_Matrice_Creuse);
 	
-	-- Fait le produit matriciel et renvoie la matrice
-	function Produit_f(A : in T_Matrice_Creuse; B : in T_Matrice_Creuse) return T_Matrice_Creuse;
-	
 	-- Renvoie une copie de Mat
 	procedure Copier(Mat : in T_Matrice_Creuse; Copie : out T_Matrice_Creuse);
 	
 	-- Somme deux matrices et la stocke dans une troisième matrice
 	procedure Sommer(A : in T_Matrice_Creuse; B : in T_Matrice_Creuse; Mat_Res : out T_Matrice_Creuse);
-	
-	-- Somme deux matrices et renvoie le résultat
-	function Sommer_f(A : in T_Matrice_Creuse; B : in T_Matrice_Creuse) return T_Matrice_Creuse;
 	
 	-- Enregistre la valeur donnée en paramètre au coefficient de coordonnées données
 	procedure Enregistrer(Mat : in out T_Matrice_Creuse; Ind_Ligne : in Integer;  Ind_Colonne : in Integer; Valeur : in T_Reel);
