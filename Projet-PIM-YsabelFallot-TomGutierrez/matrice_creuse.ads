@@ -8,7 +8,6 @@ generic
 package Matrice_Creuse is
 
 	type T_Matrice_Creuse is  private;
-	type T_Liste_Ligne is private;
 	
 	type T_TableauElements is array (1..Taille_Tab) of T_Reel;
 
@@ -54,7 +53,7 @@ package Matrice_Creuse is
 	
 	generic
         with procedure Afficher_Val (Val : in T_Reel);
-	procedure Afficher_Ligne(Mat : in T_Matrice_Creuse; Ind_Ligne : in Integer);
+	procedure Afficher_Colonne(Mat : in T_Matrice_Creuse; Ind_Colonne : in Integer);
 	
 	-- Afficher une matrice, dont les coefficients sont des T_Reel génériques
 	generic
@@ -72,27 +71,27 @@ package Matrice_Creuse is
 	
 private 
 	type T_Cellule;
-	type T_Ligne;
-	type T_Liste_Ligne is access T_Cellule ; -- Premier tableau représentant les colonnes de la matrice
-	type T_Ptr_Ligne is access T_Ligne ; -- Deuxième tableau dont les indices correspondent aux lignes de la matrice et qui contient la tableau des colonnes
+	type T_Colonne;
+	type T_Liste_Colonne is access T_Cellule ; -- Premier tableau représentant les colonnes de la matrice
+	type T_Ptr_Colonne is access T_Colonne; -- Deuxième tableau dont les indices correspondent aux lignes de la matrice et qui contient la tableau des colonnes
 	
 	type T_Cellule is
 		record
-			Colonne : Integer; -- Clé de la valeur dans la liste représentant les éléments d'une ligne, numéro de colonne de l'élément
+			Ligne : Integer; -- Clé de la valeur dans la liste représentant les éléments d'une ligne, numéro de colonne de l'élément
 			Valeur : T_Reel; -- Valeur d'un coefficient
-			Suivant : T_Liste_Ligne; -- Pointeur vers l'élément suivant de la même ligne
+			Suivant : T_Liste_Colonne; -- Pointeur vers l'élément suivant de la même ligne
 		end record;
 		
-	type T_Ligne is 
+	type T_Colonne is 
 		record
-			Num_Ligne : Integer;
-			Ligne_Actuelle : T_Liste_Ligne;
-			Ligne_Suivante : T_Ptr_Ligne;
+			Num_Colonne: Integer;
+			Colonne_Actuelle : T_Liste_Colonne;
+			Colonne_Suivante : T_Ptr_Colonne;
 		end record;
 	
 	type T_Matrice_Creuse is
 		record
-			Matrice_Creuse : T_Ptr_Ligne; -- Tableau de pointeurs représentant la matrice
+			Matrice_Creuse : T_Ptr_Colonne; -- Tableau de pointeurs représentant la matrice
 			Nb_Ligne : Integer; -- Nombre de lignes de la matrice
 			Nb_Colonne : Integer; -- Nombre de colonnes de la matrice
 		end record;
