@@ -5,7 +5,7 @@ generic
 	 Num_Ligne : Integer; -- Nombre maximum de ligne possibles pour les matrices
 	 Zero :  T_Reel;
 	
-package Matrice is
+package Matrice_Pleine is
 
 	type T_Matrice_Pleine is  private;
 	
@@ -69,4 +69,4 @@ private
 			Nb_Colonne : Integer; -- Nombre de colonnes de la matrice
 		end record;
 		
-end Matrice;
+end Matrice_Pleine;

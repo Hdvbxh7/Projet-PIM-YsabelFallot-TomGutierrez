@@ -1,8 +1,6 @@
 with Ada.Text_IO;            use Ada.Text_IO;
-with Matrice_Exceptions;         use Matrice_Exceptions; -- à voir
+with Matrice_Exceptions;         use Matrice_Exceptions;
 with Ada.Unchecked_Deallocation;
-with Ada.Integer_Text_IO;   use Ada.Integer_Text_IO;
-
 
 package body Matrice_creuse is
 
@@ -28,9 +26,9 @@ procedure Initialiser(Mat : out T_Matrice_Creuse; Taille_Ligne : in Integer; Tai
 		
 end Initialiser;
 			
-
 procedure Detruire (Mat : in out T_Matrice_Creuse) is
 
+	-- Détruit les éléments d'une colonne
 	procedure Detruire_Colonne (Liste_Colonne : in out T_Liste_Colonne) is
 	    begin
 		if  Liste_Colonne /= null then
@@ -39,10 +37,12 @@ procedure Detruire (Mat : in out T_Matrice_Creuse) is
 		end if;
 	   end Detruire_Colonne;
 	   
+	 -- Détruire les éléments de la liste de colonne
 	procedure Detruire_Ptr_Colonne (Liste_Ptr_Colonne : in out T_Ptr_Colonne) is
 	    begin
 		if  Liste_Ptr_Colonne /= null then
 		    Detruire_Ptr_Colonne(Liste_Ptr_Colonne.all.Colonne_Suivante);
+			-- Détruit les éléments de la colonne actuelle
 		    Detruire_Colonne(Liste_Ptr_Colonne.all.Colonne_Actuelle);
 		    Free_Ptr_Colonne(Liste_Ptr_Colonne);
 		end if;
@@ -50,6 +50,7 @@ procedure Detruire (Mat : in out T_Matrice_Creuse) is
     
     begin
     	
+    	-- Détruire la liste de colonne
     	Detruire_Ptr_Colonne(Mat.Matrice_Creuse);
     	
     end Detruire;
@@ -114,6 +115,11 @@ function Produit_Tab_Creux (Tab : in T_Tableau; Creux : in T_Matrice_Creuse) ret
 	Curseur_Liste_Colonne : T_Liste_Colonne;
 	Num_Colonne : Integer;
 	begin
+		-- Vérification que le tableau et la matrice sont de bonnes tailles
+		if Tab.Taille /= Creux.Nb_Ligne then
+			raise PRODUIT_INDEFINI_EXCEPTION;
+		end if;
+		
 		-- Initialisation du tableau résultat
 		Res.Taille := Tab.Taille;
 		for j in 1..Taille_Tab loop
@@ -204,26 +210,29 @@ end Sommer;
 
 procedure Enregistrer(Mat : in out T_Matrice_Creuse; Ind_Ligne : in Integer; Ind_Colonne : in Integer; Valeur : in T_Reel) is
 
+	-- Enregistre une valeur dans une colonne donnée
 	procedure Enregistrer_Colonne (Liste_Colonne : in out T_Liste_Colonne; Ind_Ligne: in Integer; Valeur : in T_Reel) is
-				begin
-					if Liste_Colonne=null then
-					    Liste_Colonne := new T_Cellule;
-					    Liste_Colonne.all.Valeur := Valeur;
-					    Liste_Colonne.all.Ligne := Ind_Ligne;
-					    Liste_Colonne.all.Suivant := null;
-					elsif Liste_Colonne.all.Ligne = Ind_Ligne then
-					    Liste_Colonne.all.Valeur := Valeur;
-					else
-					    Enregistrer_Colonne(Liste_Colonne.all.Suivant, Ind_Ligne, Valeur);
-					end if;
+		begin
+			if Liste_Colonne=null then
+				Liste_Colonne := new T_Cellule;
+				Liste_Colonne.all.Valeur := Valeur;
+				Liste_Colonne.all.Ligne := Ind_Ligne;
+				Liste_Colonne.all.Suivant := null;
+			elsif Liste_Colonne.all.Ligne = Ind_Ligne then
+				Liste_Colonne.all.Valeur := Valeur;
+			else
+				Enregistrer_Colonne(Liste_Colonne.all.Suivant, Ind_Ligne, Valeur);
+			end if;
 	end Enregistrer_Colonne;
 	
+	-- Détruit une valeur dans une colonne donnée
 	procedure Detruire_Cellule(Liste_Colonne : in out T_Liste_Colonne; Ind_Ligne : in Integer) is
 	Cuseur_Liste_Colonne: T_Liste_Colonne;
 	precedent : T_Liste_Colonne;
 	begin
 		Cuseur_Liste_Colonne := Liste_Colonne;
 		precedent := null;
+		-- Parcours de la liste jusqu'à trouver l'élément à la bonne ligne (si il existe)
 		while Cuseur_Liste_Colonne.all.Ligne /= Ind_Ligne loop
 			precedent := Cuseur_Liste_Colonne;
 			Cuseur_Liste_Colonne := Cuseur_Liste_Colonne.all.Suivant;
@@ -239,28 +248,32 @@ procedure Enregistrer(Mat : in out T_Matrice_Creuse; Ind_Ligne : in Integer; Ind
 		end if;
 	end Detruire_Cellule;
 	
-		procedure Enregistrer_Ptr_Colonne (Liste_Ptr_Colonne : in out T_Ptr_Colonne; Ind_Colonne: in Integer) is
-				begin
-					if Liste_Ptr_Colonne =null then
-					    Liste_Ptr_Colonne  := new T_Colonne;
-					    Liste_Ptr_Colonne.all.Num_Colonne := Ind_Colonne;
-					    Liste_Ptr_Colonne.all.Colonne_Actuelle := null;
-					    Liste_Ptr_Colonne.all.Colonne_Suivante := null;
-					elsif Liste_Ptr_Colonne.all.Num_Colonne /= Ind_Colonne then
-					    Enregistrer_Ptr_Colonne(Liste_Ptr_Colonne.all.Colonne_Suivante, Ind_Colonne);
-					end if;
+	-- Créer la case contenant le pointeur d'une colonne si cette case n'existe pas
+	procedure Enregistrer_Ptr_Colonne (Liste_Ptr_Colonne : in out T_Ptr_Colonne; Ind_Colonne: in Integer) is
+		begin
+			if Liste_Ptr_Colonne =null then
+				Liste_Ptr_Colonne := new T_Colonne;
+				Liste_Ptr_Colonne.all.Num_Colonne := Ind_Colonne;
+				Liste_Ptr_Colonne.all.Colonne_Actuelle := null;
+				Liste_Ptr_Colonne.all.Colonne_Suivante := null;
+			elsif Liste_Ptr_Colonne.all.Num_Colonne /= Ind_Colonne then
+				Enregistrer_Ptr_Colonne(Liste_Ptr_Colonne.all.Colonne_Suivante, Ind_Colonne);
+			end if;
 	end Enregistrer_Ptr_Colonne;
 	
+	-- Détruit la case contenant le pointeur vers la colonne Ind_Colonne
 	procedure Detruire_Ptr_Colonne(Liste_Ptr_Colonne : in out T_Ptr_Colonne ; Ind_Colonne: in Integer) is
 	Cuseur_Ptr_Colonne : T_Ptr_Colonne;
 	precedent : T_Ptr_Colonne;
 	begin
 		Cuseur_Ptr_Colonne := Liste_Ptr_Colonne;
 		precedent := null;
+		-- Parcours de la liste jusqu'à trouver la bonne colonne (si elle existe)
 		while Cuseur_Ptr_Colonne.all.Num_Colonne /= Ind_Colonne loop
 			precedent := Cuseur_Ptr_Colonne;
 			Cuseur_Ptr_Colonne := Cuseur_Ptr_Colonne.all.Colonne_Suivante;
 		end loop;
+		-- On supprime que si la colonne Actuelle (de num Ind_Colonne) est vide
 		if Cuseur_Ptr_Colonne.all.Colonne_Actuelle = null then
 			if precedent = null then 
 				-- On supprime l'élément de tête
@@ -278,22 +291,28 @@ procedure Enregistrer(Mat : in out T_Matrice_Creuse; Ind_Ligne : in Integer; Ind
 	Colonne_Enregistrement : T_Ptr_Colonne;
 	
 	begin	
-	
+		-- Vérification des indices
 		if Ind_Colonne <=0 or else Ind_Ligne <=0 or else Ind_Ligne > Mat.Nb_Ligne or else Ind_Colonne > Mat.Nb_Colonne then
 			raise INDICE_INVALIDE_EXCEPTION;
-		else
-			Enregistrer_Ptr_Colonne(Mat.Matrice_Creuse,Ind_Colonne);
-			Colonne_Enregistrement := Mat.Matrice_Creuse;
-			while Colonne_Enregistrement.all.Num_Colonne /= Ind_Colonne loop
-					Colonne_Enregistrement := Colonne_Enregistrement.all.Colonne_Suivante;
-			end loop;
+		end if;
+		
+		-- On crée la case contenant le pointeur vers la colonne si elle n'existe pas
+		Enregistrer_Ptr_Colonne(Mat.Matrice_Creuse,Ind_Colonne);
+		-- On parcourt la liste pour trouver sur la colonne Ind_Colonne
+		Colonne_Enregistrement := Mat.Matrice_Creuse;
+		while Colonne_Enregistrement.all.Num_Colonne /= Ind_Colonne loop
+				Colonne_Enregistrement := Colonne_Enregistrement.all.Colonne_Suivante;
+		end loop;
 			
-				if Valeur = Zero and then Obtenir_Val(Mat,Ind_Ligne, Ind_Colonne) /= Zero then
-					Detruire_Cellule(Colonne_Enregistrement.all.Colonne_Actuelle,Ind_Ligne);
-					Detruire_Ptr_Colonne(Colonne_Enregistrement, Ind_Colonne);
-				elsif Valeur /= Zero then
-					Enregistrer_Colonne(Colonne_Enregistrement.all.Colonne_Actuelle,Ind_Ligne,Valeur);
-				end if;
+		-- Disjonction de cas pour savoir si on doit enregistrer la valeur ou supprimer la case mémoire si elle vaut Zero
+		if Valeur = Zero and then Obtenir_Val(Mat,Ind_Ligne, Ind_Colonne) /= Zero then
+			-- Destruction de la cellule où le Zero apparaît
+			Detruire_Cellule(Colonne_Enregistrement.all.Colonne_Actuelle,Ind_Ligne);
+			-- Destruction de la case contenant le pointeur de la colonne si la colonne devient vide (que des Zero)
+			Detruire_Ptr_Colonne(Colonne_Enregistrement, Ind_Colonne);
+		elsif Valeur /= Zero then
+			-- Enregistrement de valeur
+			Enregistrer_Colonne(Colonne_Enregistrement.all.Colonne_Actuelle,Ind_Ligne,Valeur);
 		end if;
 end Enregistrer;
 

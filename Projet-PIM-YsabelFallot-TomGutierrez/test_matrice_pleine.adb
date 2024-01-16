@@ -3,7 +3,7 @@ with Ada.Float_Text_IO;   use Ada.Float_Text_IO;
 with Matrice_Exceptions;         use Matrice_Exceptions;
 
 
-with Matrice;
+with Matrice_Pleine;
 
 
 procedure tesT_Matrice_Pleine is
@@ -12,7 +12,7 @@ procedure tesT_Matrice_Pleine is
 
 -- Instanciation des matrices
 package Matrice_Reel is
-		new Matrice( T_Reel => Float, Num_Colonne => 10, Num_Ligne => 10, Zero => 0.0);
+		new Matrice_Pleine( T_Reel => Float, Num_Colonne => 10, Num_Ligne => 10, Zero => 0.0);
 	use Matrice_Reel;
 	
 -- Instanciation de la fonction Afficher

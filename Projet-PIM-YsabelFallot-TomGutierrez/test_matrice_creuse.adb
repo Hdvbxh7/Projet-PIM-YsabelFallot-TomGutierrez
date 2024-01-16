@@ -389,6 +389,8 @@ procedure Tester_Produit_Tab_Creux is
             
            	Res :=Produit_Tab_Creux(Tab,Creux);
            	
+           	-- Vérification des dimensions
+		pragma Assert (Res.Taille=Nombre_Colonnes(Creux));
            	-- Vérification des coefficients
 		for j in 1..Nombre_Colonnes(Creux) loop
 			somme_produit := 0.0;

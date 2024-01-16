@@ -1,7 +1,7 @@
 with Ada.Text_IO;            use Ada.Text_IO;
 with Matrice_Exceptions;         use Matrice_Exceptions;
 
-package body Matrice is
+package body Matrice_Pleine is
 	
 	procedure Initialiser(Mat : out T_Matrice_Pleine; Taille_Ligne : in Integer; Taille_Colonne : in Integer; Val : in T_Reel) is
 	begin
@@ -226,4 +226,4 @@ function Nombre_Colonnes(Mat : in T_Matrice_Pleine) return Integer is
 end Nombre_Colonnes;
 
 
-end Matrice;		
+end Matrice_Pleine;		
