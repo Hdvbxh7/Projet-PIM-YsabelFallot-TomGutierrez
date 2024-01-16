@@ -14,16 +14,18 @@ package body Matrice_creuse is
 	
 procedure Initialiser(Mat : out T_Matrice_Creuse; Taille_Ligne : in Integer; Taille_Colonne : in Integer) is
 	begin
+		-- Vérification que les indices sont correctes
 		if Taille_Colonne <=0 or else Taille_Ligne <=0 then
 			raise INDICE_INVALIDE_EXCEPTION;
-		else
-		
-			-- Définition de la taille de la matrice
-			Mat.Nb_Ligne := Taille_Ligne;
-			Mat.Nb_Colonne := Taille_Colonne;
-
-			Mat.Matrice_Creuse := null;
 		end if;
+		
+		-- Définition de la taille de la matrice
+		Mat.Nb_Ligne := Taille_Ligne;
+		Mat.Nb_Colonne := Taille_Colonne;
+	
+		-- Définition de la matrice
+		Mat.Matrice_Creuse := null;
+		
 end Initialiser;
 			
 
@@ -56,12 +58,15 @@ procedure Transposer(Mat : in T_Matrice_Creuse; Mat_Res: out T_Matrice_Creuse) i
 		Curseur_Colonne: T_Ptr_Colonne;
 		Curseur_Liste_Colonne: T_Liste_Colonne;
 	begin
+		-- Définition de la taille de la matrice
+		Mat_Res.Nb_Ligne := Mat.Nb_Colonne;
+		Mat_Res.Nb_Colonne := Mat.Nb_Ligne;
 		
 		-- Définition des coefficients de la matrice transposée
 		Curseur_Colonne := Mat.Matrice_Creuse;
-		while Curseur_Colonne /= null loop
+		while Curseur_Colonne /= null loop -- Parcours de des colonnes de la matrice
 			Curseur_Liste_Colonne := Curseur_Colonne.all.Colonne_Actuelle;
-			while Curseur_Liste_Colonne /= null loop
+			while Curseur_Liste_Colonne /= null loop -- Parcours des éléments d'une colonne
 				Enregistrer(Mat_Res,Curseur_Colonne.all.Num_Colonne,Curseur_Liste_Colonne.all.Ligne,Curseur_Liste_Colonne.all.Valeur);
 				Curseur_Liste_Colonne := Curseur_Liste_Colonne.all.Suivant;
 			end loop;
@@ -81,22 +86,22 @@ procedure Produit(A : in T_Matrice_Creuse; B : in T_Matrice_Creuse; Mat_Res : ou
 			raise PRODUIT_INDEFINI_EXCEPTION;
 		end if;
 		
-		-- Calcul des coefficients de la matrice résultat
+		-- Définition de la taille de la matrice
+		Mat_Res.Nb_Ligne := A.Nb_Ligne;
+		Mat_Res.Nb_Colonne := B.Nb_Colonne;
 		
+		-- Calcul des coefficients de la matrice résultat
 		Curseur_Colonne := B.Matrice_Creuse;
-		while Curseur_Colonne /= null loop
+		while Curseur_Colonne /= null loop -- Parcours de des colonnes de la matrice B
 			Num_Colonne := Curseur_Colonne.all.Num_Colonne;
-			for i in 1.. A.Nb_Ligne loop
-				Valeur := Zero;	
+			for i in 1.. A.Nb_Ligne loop -- Boucle sur toutes les lignes de A
+				Valeur := Zero;	-- Initialisation de coef(i,Num_Colonne) de Mat_Res
 				Curseur_Liste_Colonne := Curseur_Colonne.all.Colonne_Actuelle;
-				while Curseur_Liste_Colonne /= null loop
+				while Curseur_Liste_Colonne /= null loop -- Parcours des éléments d'une colonne
 					Valeur := Valeur + Obtenir_Val(A,i,Curseur_Liste_Colonne.all.Ligne)* Curseur_Liste_Colonne.all.Valeur;
 					Curseur_Liste_Colonne := Curseur_Liste_Colonne.all.Suivant;
 				end loop;
-					
-				if Valeur /= Zero then
-					Enregistrer(Mat_Res,i,Num_Colonne,Valeur);
-				end if;
+				Enregistrer(Mat_Res,i,Num_Colonne,Valeur);
 			end loop;
 			Curseur_Colonne := Curseur_Colonne.all.Colonne_Suivante;
 		end loop;
@@ -109,36 +114,40 @@ function Produit_Tab_Creux (Tab : in T_Tableau; Creux : in T_Matrice_Creuse) ret
 	Curseur_Liste_Colonne : T_Liste_Colonne;
 	Num_Colonne : Integer;
 	begin
+		-- Initialisation du tableau résultat
 		Res.Taille := Tab.Taille;
 		for j in 1..Taille_Tab loop
 			Res.Elements(j) := Zero;
 		end loop;
 		
-			Curseur_Colonne := Creux.Matrice_Creuse;
-			while Curseur_Colonne /= null loop
-				Num_Colonne := Curseur_Colonne.all.Num_Colonne;
-				Curseur_Liste_Colonne := Curseur_Colonne.all.Colonne_Actuelle;
-				while Curseur_Liste_Colonne /= null  loop	
-					Res.Elements(Num_Colonne) :=  Res.Elements(Num_Colonne)  + Tab.Elements(Curseur_Liste_Colonne.all.Ligne)*Curseur_Liste_Colonne.all.Valeur;
-					Curseur_Liste_Colonne := Curseur_Liste_Colonne.all.Suivant;
-				end loop;
-				Curseur_Colonne := Curseur_Colonne.all.Colonne_Suivante;
+		-- Remplissage du tableau résultat
+		Curseur_Colonne := Creux.Matrice_Creuse;
+		while Curseur_Colonne /= null loop -- Parcours de des colonnes de la matrice B
+			Num_Colonne := Curseur_Colonne.all.Num_Colonne;
+			Curseur_Liste_Colonne := Curseur_Colonne.all.Colonne_Actuelle;
+			while Curseur_Liste_Colonne /= null loop -- Parcours des éléments d'une colonne	
+				Res.Elements(Num_Colonne) :=  Res.Elements(Num_Colonne)  + Tab.Elements(Curseur_Liste_Colonne.all.Ligne)*Curseur_Liste_Colonne.all.Valeur;
+				Curseur_Liste_Colonne := Curseur_Liste_Colonne.all.Suivant;
 			end loop;
-	return Res;
-end Produit_Tab_Creux;
-		
-			
+			Curseur_Colonne := Curseur_Colonne.all.Colonne_Suivante;
+		end loop;
+		return Res;
+end Produit_Tab_Creux;		
 
 procedure Copier(Mat : in T_Matrice_Creuse; Copie : out T_Matrice_Creuse) is
 	Curseur_Colonne : T_Ptr_Colonne;
 	Curseur_Liste_Colonne : T_Liste_Colonne;
 	begin
 		
+		-- Définition de la taille de la matrice
+		Copie.Nb_Ligne := Mat.Nb_Ligne;
+		Copie.Nb_Colonne := Mat.Nb_Colonne;
+		
 		-- Copie des coefficients de Mat dans Copie
 		Curseur_Colonne := Mat.Matrice_Creuse;
-		while Curseur_Colonne /= null loop
+		while Curseur_Colonne /= null loop -- Parcours de des colonnes de la matrice Mat
 			Curseur_Liste_Colonne := Curseur_Colonne.all.Colonne_Actuelle;
-			while Curseur_Liste_Colonne /= null loop
+			while Curseur_Liste_Colonne /= null loop -- Parcours des éléments d'une colonne	
 				Enregistrer(Copie,Curseur_Liste_Colonne.all.Ligne,Curseur_Colonne.all.Num_Colonne,Curseur_Liste_Colonne.all.Valeur);
 				Curseur_Liste_Colonne := Curseur_Liste_Colonne.all.Suivant;
 			end loop;
@@ -158,16 +167,21 @@ procedure Sommer(A : in T_Matrice_Creuse; B : in T_Matrice_Creuse; Mat_Res : out
 			raise SOMME_INDEFINIE_EXCEPTION;
 		end if;
 		
+		-- Définition de la taille de la matrice
+		Mat_Res.Nb_Ligne := A.Nb_Ligne;
+		Mat_Res.Nb_Colonne := A.Nb_Colonne;
+		
 		-- Calcul des coefficients de la matrice résultat
+		
 		-- On regarde tous les coefficients non  nuls de A
 		Curseur_Colonne := A.Matrice_Creuse;
-		while Curseur_Colonne /= null loop
+		while Curseur_Colonne /= null loop -- Parcours de des colonnes de la matrice A
 			Num_Colonne := Curseur_Colonne.all.Num_Colonne;
 			Curseur_Liste_Colonne := Curseur_Colonne.all.Colonne_Actuelle;
-			while Curseur_Liste_Colonne /= null loop
+			while Curseur_Liste_Colonne /= null loop -- Parcours des éléments d'une colonne	
 				Num_Ligne := Curseur_Liste_Colonne.all.Ligne;
 				Valeur := Curseur_Liste_Colonne.all.Valeur + Obtenir_Val(B,Num_Ligne,Num_Colonne);
-				Enregistrer(Mat_Res,Num_Ligne,Num_Colonne, Valeur);
+				Enregistrer(Mat_Res,Num_Ligne,Num_Colonne, Valeur); -- On met le résultat de l'addition dans la matrice Res
 				Curseur_Liste_Colonne := Curseur_Liste_Colonne.all.Suivant;
 			end loop;
 			Curseur_Colonne := Curseur_Colonne.all.Colonne_Suivante;
@@ -175,13 +189,13 @@ procedure Sommer(A : in T_Matrice_Creuse; B : in T_Matrice_Creuse; Mat_Res : out
 		
 		-- On regarde tous les coefficients non nuls de B
 		Curseur_Colonne := B.Matrice_Creuse;
-		while Curseur_Colonne /= null loop
+		while Curseur_Colonne /= null loop -- Parcours de des colonnes de la matrice B
 			Num_Colonne := Curseur_Colonne.all.Num_Colonne;
 			Curseur_Liste_Colonne := Curseur_Colonne.all.Colonne_Actuelle;
-			while Curseur_Liste_Colonne /= null loop
+			while Curseur_Liste_Colonne /= null loop -- Parcours des éléments d'une colonne	
 				Num_Ligne := Curseur_Liste_Colonne.all.Ligne;
 				Valeur := Obtenir_Val(A,Num_Ligne,Num_Colonne) + Curseur_Liste_Colonne.all.Valeur;
-				Enregistrer(Mat_Res,Num_Ligne,Num_Colonne, Valeur);
+				Enregistrer(Mat_Res,Num_Ligne,Num_Colonne, Valeur); -- On met le résultat de l'addition dans la matrice Res
 				Curseur_Liste_Colonne := Curseur_Liste_Colonne.all.Suivant;
 			end loop;
 			Curseur_Colonne := Curseur_Colonne.all.Colonne_Suivante;
@@ -289,9 +303,9 @@ procedure Produit_Const (Const : in T_Reel; Mat : in out T_Matrice_Creuse) is
 	begin
 		-- Calcul les nouveaux coefficients de la matrice
 		Curseur_Colonne := Mat.Matrice_Creuse;
-		while Curseur_Colonne /= null loop
+		while Curseur_Colonne /= null loop -- Parcours de des colonnes de la matrice Mat
 			Curseur_Liste_Colonne := Curseur_Colonne.all.Colonne_Actuelle;
-			while Curseur_Liste_Colonne /= null loop
+			while Curseur_Liste_Colonne /= null loop -- Parcours des éléments d'une colonne	
 				Enregistrer(Mat,Curseur_Liste_Colonne.all.Ligne,Curseur_Colonne.all.Num_Colonne, Const * Curseur_Liste_Colonne.all.Valeur);
 				Curseur_Liste_Colonne := Curseur_Liste_Colonne.Suivant;
 			end loop;
@@ -304,28 +318,29 @@ function Obtenir_Val(Mat: in T_Matrice_Creuse; Ind_Ligne : in Integer; Ind_Colon
 	Curseur_Colonne : T_Ptr_Colonne;
 	Curseur_Liste_Colonne : T_Liste_Colonne;
 	begin	
+		-- Vérification des indices
 		if Ind_Colonne <=0 or else Ind_Ligne <=0 or else Ind_Ligne > Mat.Nb_Ligne or else Ind_Colonne > Mat.Nb_Colonne then
 			raise INDICE_INVALIDE_EXCEPTION;
+		end if;
+
+		-- Parcourir la liste jusqu’à trouver la colonne Num_Colonne 
+		Curseur_Colonne := Mat.Matrice_Creuse;
+		while Curseur_Colonne /= null and then Curseur_Colonne.all.Num_Colonne /= Ind_Colonne loop
+			Curseur_Colonne := Curseur_Colonne.all.Colonne_Suivante;
+		end loop;
+			
+		-- Retourner la valeur aux coordonnées (Ind_Ligne,Ind_Colonne)
+		if  Curseur_Colonne = null then 
+			return Zero;	
 		else
-			Curseur_Colonne := Mat.Matrice_Creuse;
-			while Curseur_Colonne /= null and then Curseur_Colonne.all.Num_Colonne /= Ind_Colonne loop
-				Curseur_Colonne := Curseur_Colonne.all.Colonne_Suivante;
+			Curseur_Liste_Colonne :=Curseur_Colonne.all.Colonne_Actuelle;
+			while Curseur_Liste_Colonne /= null loop -- Parcours des éléments de la colonne Ind_Colonne
+				if Curseur_Liste_Colonne.all.Ligne = Ind_Ligne then
+					return Curseur_Liste_Colonne.all.Valeur;
+				end if;
+				Curseur_Liste_Colonne := Curseur_Liste_Colonne.all.Suivant;
 			end loop;
-			
-			if  Curseur_Colonne = null then 
-				return Zero;
-				
-			else -- Curseur_Ligne.all.Num_Ligne = Ind_Ligne
-			
-				Curseur_Liste_Colonne :=Curseur_Colonne.all.Colonne_Actuelle;
-				while Curseur_Liste_Colonne /= null loop
-					if Curseur_Liste_Colonne.all.Ligne = Ind_Ligne then
-						return Curseur_Liste_Colonne.all.Valeur;
-					end if;
-					Curseur_Liste_Colonne := Curseur_Liste_Colonne.all.Suivant;
-				end loop;
-				return Zero;
-			end if;
+			return Zero;
 		end if;
 end Obtenir_Val;
 	
@@ -336,9 +351,9 @@ procedure Sommer_Const(Const : in T_Reel ; Mat : in out T_Matrice_Creuse) is
 	begin
 		-- Calcul les nouveaux coefficients de la matrice
 		Curseur_Colonne := Mat.Matrice_Creuse;
-		while Curseur_Colonne /= null loop
+		while Curseur_Colonne /= null loop -- Parcours de des colonnes de la matrice Mat
 			Curseur_Liste_Colonne := Curseur_Colonne.all.Colonne_actuelle;
-			while Curseur_Liste_Colonne /= null loop
+			while Curseur_Liste_Colonne /= null loop -- Parcours des éléments d'une colonne	
 				Val := Const + Curseur_Liste_Colonne.all.Valeur;
 				Enregistrer(Mat,Curseur_Liste_Colonne.all.Ligne,Curseur_Colonne.all.Num_Colonne, Val);
 				Curseur_Liste_Colonne := Curseur_Liste_Colonne.all.Suivant;
@@ -346,40 +361,6 @@ procedure Sommer_Const(Const : in T_Reel ; Mat : in out T_Matrice_Creuse) is
 			Curseur_Colonne := Curseur_Colonne.all.Colonne_Suivante;
 		end loop;
 end Sommer_Const;
-
-procedure Afficher_Colonne(Mat : in T_Matrice_Creuse; Ind_Colonne : in Integer) is
-	Curseur_Colonne : T_Ptr_Colonne;
-	Curseur_Liste_Colonne : T_Liste_Colonne;
-	begin
-			Curseur_Colonne:= Mat.Matrice_Creuse;
-			while Curseur_Colonne /= null and then Curseur_Colonne.all.Num_Colonne /= Ind_Colonne loop
-				Curseur_Colonne := Curseur_Colonne.all.Colonne_Suivante;
-			end loop;
-			
-			if Curseur_Colonne =null then
-			
-				for j in 1..Mat.Nb_Ligne loop
-					Afficher_Val(Zero);
-					Put(" ");
-				end loop;
-				Put("|");
-				New_Line;
-				
-			else -- Curseir_Ligne.all.Num_Ligne = Ind_Ligne 
-				
-				Curseur_Liste_Colonne := Curseur_Colonne.all.Colonne_Actuelle;
-				Put("| ");		
-				while Curseur_Liste_Colonne /= null loop
-					Afficher_Val(Obtenir_Val(Mat,Curseur_Liste_Colonne.all.Ligne,Ind_Colonne));
-					Put(" ");
-					Curseur_Liste_Colonne := Curseur_Liste_Colonne.all.Suivant;
-				end loop;
-				Put("|");
-				New_Line;
-				
-				
-			end if;
-end Afficher_Colonne;
 
 procedure Afficher(Mat : in T_Matrice_Creuse) is
 	begin
@@ -396,23 +377,10 @@ procedure Afficher(Mat : in T_Matrice_Creuse) is
 		end loop;
 end Afficher;
 
-function Ligne_Vide (Num_Ligne : in Integer; Mat : in T_Matrice_Creuse) return Boolean is
---	Curseur_Ligne : T_Ptr_Ligne;
+function Est_Vide(Mat : in T_Matrice_Creuse) return Boolean is
 	begin
---		Curseur_Ligne := Mat.Matrice_Creuse;
---		
---		while Curseur_Ligne /= null and then Curseur_Ligne.all.Num_Ligne /= Num_Ligne loop
---					Curseur_Ligne := Curseur_Ligne.all.Ligne_Suivante;
---			end loop;
---			
---			if Curseur_Ligne =null  then
---				return true;
---			
---			else -- cad Curseur_Ligne.all.Num_Ligne = Num_Ligne 
---				return false;
---			end if;
-	return true;
-end Ligne_Vide;
+		return Mat.Matrice_Creuse = null;
+end Est_Vide;
 
 function Nombre_Lignes(Mat : in T_Matrice_Creuse) return Integer is
 	begin

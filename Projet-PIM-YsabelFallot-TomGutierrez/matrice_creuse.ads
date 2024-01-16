@@ -51,17 +51,12 @@ package Matrice_Creuse is
 	-- Fait la somme d'une constante avec une matrice
 	procedure Sommer_Const(Const : in T_Reel ; Mat : in out T_Matrice_Creuse);
 	
-	generic
-        with procedure Afficher_Val (Val : in T_Reel);
-	procedure Afficher_Colonne(Mat : in T_Matrice_Creuse; Ind_Colonne : in Integer);
-	
 	-- Afficher une matrice, dont les coefficients sont des T_Reel génériques
 	generic
         with procedure Afficher_T_Reel (Val : in T_Reel);
 	procedure Afficher (Mat : in T_Matrice_Creuse);
 	
-	-- Savoir si la ligne de la matrice ne contient que des 0
-	function Ligne_Vide (Num_Ligne : in Integer; Mat : in T_Matrice_Creuse) return Boolean;
+	function Est_Vide(Mat : in T_Matrice_Creuse) return Boolean;
 	
 	-- Récupère le nombre de ligne d'une matrice
 	function Nombre_Lignes(Mat : in T_Matrice_Creuse) return Integer;
@@ -72,21 +67,21 @@ package Matrice_Creuse is
 private 
 	type T_Cellule;
 	type T_Colonne;
-	type T_Liste_Colonne is access T_Cellule ; -- Premier tableau représentant les colonnes de la matrice
-	type T_Ptr_Colonne is access T_Colonne; -- Deuxième tableau dont les indices correspondent aux lignes de la matrice et qui contient la tableau des colonnes
+	type T_Liste_Colonne is access T_Cellule ; -- Premier liste contenant les éléments d'une colonne
+	type T_Ptr_Colonne is access T_Colonne; -- Deuxième liste contenant les pointeurs vers la tête de chaque colonne 
 	
 	type T_Cellule is
 		record
-			Ligne : Integer; -- Clé de la valeur dans la liste représentant les éléments d'une ligne, numéro de colonne de l'élément
+			Ligne : Integer; -- Clé de la valeur dans la liste contenant les éléments d'une colonne
 			Valeur : T_Reel; -- Valeur d'un coefficient
-			Suivant : T_Liste_Colonne; -- Pointeur vers l'élément suivant de la même ligne
+			Suivant : T_Liste_Colonne; -- Pointeur vers l'élément suivant de la même colonne
 		end record;
 		
 	type T_Colonne is 
 		record
-			Num_Colonne: Integer;
-			Colonne_Actuelle : T_Liste_Colonne;
-			Colonne_Suivante : T_Ptr_Colonne;
+			Num_Colonne: Integer; -- Clé de la valeur dans la liste contenant les pointeurs vers la tête de chaque colonne 
+			Colonne_Actuelle : T_Liste_Colonne; -- pointeur vers la tête de la liste représentant la colonne Num_Colonne
+			Colonne_Suivante : T_Ptr_Colonne; -- Pointeur vers la tête de la liste représentant la colonne suivante
 		end record;
 	
 	type T_Matrice_Creuse is
